@@ -108,7 +108,7 @@ bool randomArrayTest(int sortFunction(int[], int), int size) {
 }
 
 double timeTest(int sortFunction(int[], int)) {
-	const int size = 100000;
+	const int size = 10000;
 	int* randomArrayOfInt = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		randomArrayOfInt[i] = randomNumber(-size * 10, size * 10);
@@ -172,12 +172,30 @@ void runSystemTest(int sortFunction(int[], int)) {
 	printf((randomArrayTest(sortFunction, 11)) ? "----complete-----\n" : "-----failed-----\n");
 	printf("Time test: %lf\n", timeTest(sortFunction));
 	printf("Test on an array of identical elements\n");
-	printf((identicalArrayTest(sortFunction)) ? "------complete-----\n" : "-----failed----\n");
+	printf((identicalArrayTest(sortFunction)) ? "-----complete-----\n" : "-----failed----\n");
 	printf("Test on an ordered array\n");
 	printf((orderedArrayTest(sortFunction)) ? "-----complete-----\n" : "-----failed----\n");
 	printf("\n--------------------------------------------------------------------\n\n");
 }
 
+int insertionSort(int array[], int size) {
+	if (size <= 0 || size > 200000) {
+		return -1;
+	}
+
+	for (int i = 1; i < size; ++i) {
+		int j = i;
+		while (array[j] < array[j - 1] && j > 0) {
+			swapFunctionForArray(array, j, j - 1);
+			--j;
+		}
+	}
+
+	return 1;
+}
+
 void main() {
 	srand(time(NULL));
+	printf("Insertion sort\n");
+	runSystemTest(insertionSort);
 }
