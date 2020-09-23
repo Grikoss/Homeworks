@@ -107,20 +107,6 @@ bool randomArrayTest(int sortFunction(int[], int, int, int), int size) {
 	return check;
 }
 
-double timeTest(int sortFunction(int[], int, int, int)) {
-	const int size = 10000;
-	int* randomArrayOfInt = (int*)calloc(size, sizeof(int));
-	for (int i = 0; i < size; ++i) {
-		randomArrayOfInt[i] = randomNumber(-size * 10, size * 10);
-	}
-
-	clock_t time = clock();
-	sortFunction(randomArrayOfInt, size, 0, size - 1);
-	time = clock() - time;
-	free(randomArrayOfInt);
-	return ((double)time) / CLOCKS_PER_SEC;;
-}
-
 bool identicalArrayTest(int sortFunction(int[], int, int, int)) {
 	const int size = 10;
 	int* array = (int*)calloc(size, sizeof(int));
@@ -170,7 +156,6 @@ void runSystemTest(int sortFunction(int[], int, int, int)) {
 	printf((randomArrayTest(sortFunction, 1)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("Test random array\n");
 	printf((randomArrayTest(sortFunction, 29)) ? "----complete-----\n" : "-----failed-----\n");
-	printf("Time test: %lf\n", timeTest(sortFunction));
 	printf("Test on an array of identical elements\n");
 	printf((identicalArrayTest(sortFunction)) ? "-----complete-----\n" : "-----failed----\n");
 	printf("Test on an ordered array\n");
@@ -204,7 +189,7 @@ int quickSort(int array[], int size, int startIndex, int endIndex) {
 		return 1;
 	}
 
-	const int keyElement = selectionOfKeyElement(array, size);
+	const int keyElement = selectionOfKeyElement(array, size, startIndex);
 	int counterStart = startIndex;
 	int counterEnd = endIndex;
 	while (counterStart < counterEnd && counterEnd > 0) {
@@ -222,14 +207,14 @@ int quickSort(int array[], int size, int startIndex, int endIndex) {
 	quickSort(array, endIndex - counterStart, counterStart + 1, endIndex);
 }
 
-int selectionOfKeyElement(int array[], int size) {
+int selectionOfKeyElement(int array[], int size, int startIndex) {
 	if (size < 10 || size > 200000) {
 		printf("selectionOfKeyElement - error: invalid size\n");
 		return -1;
 	}
 
 	const int step = size / 10;
-	int index = 0;
+	int index = startIndex;
 	int elements[10] = { 0 };
 	for (int i = 0; i < 10; ++i) {
 		elements[i] = array[index];
