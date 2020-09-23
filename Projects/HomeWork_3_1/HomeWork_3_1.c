@@ -204,7 +204,19 @@ int quickSort(int array[], int size) {
 		return 1;
 	}
 
+	const int keyElement = selectionOfKeyElement(array, size);
+	int counterStart = 0;
+	int counterEnd = size - 1;
+	while (counterStart < counterEnd) {
+		if (array[counterStart] >= keyElement) {
+			while (array[counterEnd >= keyElement]) {
+				--counterEnd;
+			}
+			swapFunctionForArray(array, counterStart, counterEnd);
+		}
 
+		++counterStart;
+	}
 }
 
 int selectionOfKeyElement(int array[], int size) {
@@ -241,4 +253,6 @@ void main() {
 	srand(time(NULL));
 	printf("Insertion sort\n");
 	runSystemTest(insertionSort);
+	printf("qsort\n");
+	runSystemTest(quickSort);
 }
