@@ -178,63 +178,6 @@ void runSystemTest(int sortFunction(int[], int)) {
 	printf("\n--------------------------------------------------------------------\n\n");
 }
 
-int bubbleSorting(int array[], int size) {
-	if (size <= 0) {
-		return -1;
-	}
-
-	for (int i = 0; i < size - 1; ++i) {
-		for (int j = 0; j <= size - i - 1; ++j) {
-			if (array[j] < array[j + 1]) {
-				swapFunctionForArray(array, j, j + 1);
-			}
-		}
-	}
-
-	doABarrelRoll(array, 0, size - 1);
-	return 1;
-}
-
-int sortingByCounting(int array[], int size) {
-	if (size <= 0) {
-		return -1;
-	}
-
-	int maxNumber = array[0];
-	int minNumber = array[0];
-	for (int i = 1; i < size; ++i) {
-		if (minNumber > array[i]) {
-			minNumber = array[i];
-		}
-
-		if (maxNumber < array[i]) {
-			maxNumber = array[i];
-		}
-	}
-
-	int quantity = maxNumber - minNumber + 1;
-	int* arrayOfValues = (int*)calloc(quantity, sizeof(int));
-	for (int i = 0; i < size; ++i) {
-		++arrayOfValues[array[i] - minNumber];
-	}
-
-	int index = 0;
-	for (int i = 0; i < quantity; ++i) {
-		while (arrayOfValues[i] > 0) {
-			array[index] = i + minNumber;
-			--arrayOfValues[i];
-			++index;
-		}
-	}
-
-	free(arrayOfValues);
-	return 1;
-}
-
 void main() {
 	srand(time(NULL));
-	printf("Test sorting by counting\n");
-	runSystemTest(sortingByCounting);
-	printf("Test bubble sort\n");
-	runSystemTest(bubbleSorting);
 }
