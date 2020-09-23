@@ -108,7 +108,7 @@ bool randomArrayTest(int sortFunction(int[], int, int, int), int size) {
 }
 
 bool identicalArrayTest(int sortFunction(int[], int, int, int)) {
-	const int size = 10;
+	const int size = 50;
 	int* array = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		array[i] = 5;
@@ -127,7 +127,7 @@ bool identicalArrayTest(int sortFunction(int[], int, int, int)) {
 }
 
 bool orderedArrayTest(int sortFunction(int[], int, int, int)) {
-	const int size = 10;
+	const int size = 50;
 	int* array = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		array[i] = i;
@@ -164,13 +164,13 @@ void runSystemTest(int sortFunction(int[], int, int, int)) {
 }
 
 int insertionSort(int array[], int size, int startIndex, int endIndex) {
-	if (size <= 0 || size > 200000) {
+	if (size <= 0) {
 		return -1;
 	}
 
 	for (int i = startIndex + 1; i <= endIndex; ++i) {
 		int j = i;
-		while (array[j] < array[j - 1] && j > 0) {
+		while (array[j] < array[j - 1] && j > startIndex) {
 			swapFunctionForArray(array, j, j - 1);
 			--j;
 		}
@@ -179,41 +179,8 @@ int insertionSort(int array[], int size, int startIndex, int endIndex) {
 	return 1;
 }
 
-int quickSort(int array[], int size, int startIndex, int endIndex) {
-	if (size <= 0 || size > 200000) {
-		return -1;
-	}
-
-	if (size < 10) {
-		insertionSort(array, size, startIndex, endIndex);
-		return 1;
-	}
-
-	const int keyElement = selectionOfKeyElement(array, size, startIndex);
-	int counterStart = startIndex;
-	int counterEnd = endIndex;
-	while (counterStart < counterEnd && counterEnd > 0) {
-		if (array[counterStart] >= keyElement) {
-			while (array[counterEnd] >= keyElement) {
-				--counterEnd;
-			}
-
-			if (counterEnd <= 0 || counterStart >= counterEnd) {
-				break;
-			}
-
-			swapFunctionForArray(array, counterStart, counterEnd);
-		}
-
-		++counterStart;
-	}
-
-	quickSort(array, counterStart - startIndex, startIndex, counterStart);
-	quickSort(array, endIndex - counterStart, counterStart, endIndex);
-}
-
 int selectionOfKeyElement(int array[], int size, int startIndex) {
-	if (size < 10 || size > 200000) {
+	if (size < 10) {
 		printf("selectionOfKeyElement - error: invalid size\n");
 		return -1;
 	}
@@ -238,8 +205,46 @@ int selectionOfKeyElement(int array[], int size, int startIndex) {
 			indexOfkeyElement = i;
 		}
 	}
-	
+
 	return elements[indexOfkeyElement];
+}
+
+int quickSort(int array[], int size, int startIndex, int endIndex) {
+	if (size <= 0) {
+		return -1;
+	}
+
+	if (size < 10) {
+		insertionSort(array, size, startIndex, endIndex);
+		return 1;
+	}
+
+	const int keyElement = selectionOfKeyElement(array, size, startIndex);
+	int counterStart = startIndex;
+	int counterEnd = endIndex;
+	while (counterStart < counterEnd && counterEnd > startIndex) {
+		if (array[counterStart] >= keyElement) {
+			while (array[counterEnd] >= keyElement) {
+				--counterEnd;
+				if (counterEnd == startIndex) {
+					counterStart = startIndex + size / 2;
+					break;
+				}
+			}
+
+			if (counterEnd <= 0 || counterStart >= counterEnd) {
+				break;
+			}
+
+			swapFunctionForArray(array, counterStart, counterEnd);
+		}
+
+		++counterStart;
+	}
+
+	quickSort(array, counterStart - startIndex, startIndex, counterStart);
+	quickSort(array, endIndex - counterStart, counterStart, endIndex);
+	return 1;
 }
 
 void main() {
