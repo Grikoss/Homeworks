@@ -194,6 +194,49 @@ int insertionSort(int array[], int size) {
 	return 1;
 }
 
+int quickSort(int array[], int size) {
+	if (size <= 0 || size > 200000) {
+		return -1;
+	}
+
+	if (size < 10) {
+		insertionSort(array, size);
+		return 1;
+	}
+
+
+}
+
+int selectionOfKeyElement(int array[], int size) {
+	if (size <= 10 || size > 200000) {
+		printf("selectionOfKeyElement - error: invalid size\n");
+		return -1;
+	}
+
+	const int step = size / 10;
+	int index = 0;
+	int elements[10] = { 0 };
+	for (int i = 0; i < 10; ++i) {
+		elements[i] = array[index];
+		index += step;
+	}
+
+	int theArithmeticMean = 0;
+	for (int i = 0; i < 10; ++i) {
+		theArithmeticMean += elements[i];
+	}
+
+	theArithmeticMean /= 10;
+	int indexOfkeyElement = 0;
+	for (int i = 1; i < 10; ++i) {
+		if (abs(theArithmeticMean - elements[indexOfkeyElement]) > abs(theArithmeticMean - elements[i])) {
+			indexOfkeyElement = i;
+		}
+	}
+	
+	return elements[indexOfkeyElement];
+}
+
 void main() {
 	srand(time(NULL));
 	printf("Insertion sort\n");
