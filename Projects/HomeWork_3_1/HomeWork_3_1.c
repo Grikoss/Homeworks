@@ -28,11 +28,11 @@ void doABarrelRoll(int arrayOfValues[], int begin, int end) {
 	}
 }
 
-bool minusTenSizeTest(int sortFunction(int[], int)) {
+bool minusTenSizeTest(int sortFunction(int[], int, int, int)) {
 	const int size = -10;
 	int* array = (int*)calloc(size, sizeof(int));
 	bool check = true;
-	if (sortFunction(array, size) != -1 || sortFunction(array, size) != -1) {
+	if (sortFunction(array, size, 0, size - 1) != -1 || sortFunction(array, size, 0, size - 1) != -1) {
 		check = false;
 	}
 
@@ -40,11 +40,11 @@ bool minusTenSizeTest(int sortFunction(int[], int)) {
 	return check;
 }
 
-bool zeroSizeTest(int sortFunction(int[], int)) {
+bool zeroSizeTest(int sortFunction(int[], int, int, int)) {
 	const int size = 0;
 	int* array = (int*)calloc(size, sizeof(int));
 	bool check = true;
-	if (sortFunction(array, size) != -1 || sortFunction(array, size) != -1) {
+	if (sortFunction(array, size, 0, size - 1) != -1 || sortFunction(array, size, 0, size - 1) != -1) {
 		check = false;
 	}
 
@@ -52,11 +52,11 @@ bool zeroSizeTest(int sortFunction(int[], int)) {
 	return check;
 }
 
-bool oneSizeTest(int sortFunction(int[], int)) {
+bool oneSizeTest(int sortFunction(int[], int, int, int)) {
 	const int size = 1;
 	int* array = (int*)calloc(size, sizeof(int));
 	bool check = true;
-	if (sortFunction(array, size) < 0 || sortFunction(array, size) < 0) {
+	if (sortFunction(array, size, 0, size - 1) < 0 || sortFunction(array, size, 0, size - 1) < 0) {
 		check = false;
 	}
 
@@ -64,7 +64,7 @@ bool oneSizeTest(int sortFunction(int[], int)) {
 	return check;
 }
 
-bool randomArrayTest(int sortFunction(int[], int), int size) {
+bool randomArrayTest(int sortFunction(int[], int, int, int), int size) {
 	if (size <= 0 || size > 200000) {
 		printf("Invalid array size\n");
 		return false;
@@ -90,7 +90,7 @@ bool randomArrayTest(int sortFunction(int[], int), int size) {
 		swapFunctionForArray(randomArrayOfInt, firstRandomNumber, secondRandomNumber);
 	}
 
-	sortFunction(randomArrayOfInt, size);
+	sortFunction(randomArrayOfInt, size, 0, size - 1);
 	for (int i = 0; i < size; ++i) {
 		printf("Must be: %6i. %7i Output: %6i. %7i\n", (i + 1), randomOrderedArrayOfInt[i], (i + 1), randomArrayOfInt[i]);
 	}
@@ -107,7 +107,7 @@ bool randomArrayTest(int sortFunction(int[], int), int size) {
 	return check;
 }
 
-double timeTest(int sortFunction(int[], int)) {
+double timeTest(int sortFunction(int[], int, int, int)) {
 	const int size = 10000;
 	int* randomArrayOfInt = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
@@ -115,20 +115,20 @@ double timeTest(int sortFunction(int[], int)) {
 	}
 
 	clock_t time = clock();
-	sortFunction(randomArrayOfInt, size);
+	sortFunction(randomArrayOfInt, size, 0, size - 1);
 	time = clock() - time;
 	free(randomArrayOfInt);
 	return ((double)time) / CLOCKS_PER_SEC;;
 }
 
-bool identicalArrayTest(int sortFunction(int[], int)) {
+bool identicalArrayTest(int sortFunction(int[], int, int, int)) {
 	const int size = 10;
 	int* array = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		array[i] = 5;
 	}
 
-	sortFunction(array, size);
+	sortFunction(array, size, 0, size - 1);
 	bool check = true;
 	for (int i = 0; i < size; ++i) {
 		if (array[i] != 5) {
@@ -140,14 +140,14 @@ bool identicalArrayTest(int sortFunction(int[], int)) {
 	return check;
 }
 
-bool orderedArrayTest(int sortFunction(int[], int)) {
+bool orderedArrayTest(int sortFunction(int[], int, int, int)) {
 	const int size = 10;
 	int* array = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		array[i] = i;
 	}
 
-	sortFunction(array, size);
+	sortFunction(array, size, 0, size - 1);
 	bool check = true;
 	for (int i = 0; i < size; ++i) {
 		if (array[i] != i) {
@@ -159,7 +159,7 @@ bool orderedArrayTest(int sortFunction(int[], int)) {
 	return check;
 }
 
-void runSystemTest(int sortFunction(int[], int)) {
+void runSystemTest(int sortFunction(int[], int, int, int)) {
 	printf("Test on invalid size = -10\n");
 	printf((minusTenSizeTest(sortFunction)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("Test on invalid size = 0\n");
@@ -169,7 +169,7 @@ void runSystemTest(int sortFunction(int[], int)) {
 	printf("Test random array of one element\n");
 	printf((randomArrayTest(sortFunction, 1)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("Test random array\n");
-	printf((randomArrayTest(sortFunction, 11)) ? "----complete-----\n" : "-----failed-----\n");
+	printf((randomArrayTest(sortFunction, 29)) ? "----complete-----\n" : "-----failed-----\n");
 	printf("Time test: %lf\n", timeTest(sortFunction));
 	printf("Test on an array of identical elements\n");
 	printf((identicalArrayTest(sortFunction)) ? "-----complete-----\n" : "-----failed----\n");
@@ -178,12 +178,12 @@ void runSystemTest(int sortFunction(int[], int)) {
 	printf("\n--------------------------------------------------------------------\n\n");
 }
 
-int insertionSort(int array[], int size) {
+int insertionSort(int array[], int size, int startIndex, int endIndex) {
 	if (size <= 0 || size > 200000) {
 		return -1;
 	}
 
-	for (int i = 1; i < size; ++i) {
+	for (int i = startIndex + 1; i <= endIndex; ++i) {
 		int j = i;
 		while (array[j] < array[j - 1] && j > 0) {
 			swapFunctionForArray(array, j, j - 1);
@@ -194,22 +194,22 @@ int insertionSort(int array[], int size) {
 	return 1;
 }
 
-int quickSort(int array[], int size) {
+int quickSort(int array[], int size, int startIndex, int endIndex) {
 	if (size <= 0 || size > 200000) {
 		return -1;
 	}
 
 	if (size < 10) {
-		insertionSort(array, size);
+		insertionSort(array, size, startIndex, endIndex);
 		return 1;
 	}
 
 	const int keyElement = selectionOfKeyElement(array, size);
-	int counterStart = 0;
-	int counterEnd = size - 1;
-	while (counterStart < counterEnd) {
-		if (array[counterStart] >= keyElement && counterStart < size) {
-			while (array[counterEnd] >= keyElement && counterEnd > 0) {
+	int counterStart = startIndex;
+	int counterEnd = endIndex;
+	while (counterStart < counterEnd && counterEnd > 0) {
+		if (array[counterStart] >= keyElement && counterEnd > 0 && counterStart < counterEnd) {
+			while (array[counterEnd] >= keyElement && counterEnd > 0 && counterStart < counterEnd) {
 				--counterEnd;
 			}
 			swapFunctionForArray(array, counterStart, counterEnd);
@@ -217,6 +217,9 @@ int quickSort(int array[], int size) {
 
 		++counterStart;
 	}
+
+	quickSort(array, counterStart - startIndex + 1, startIndex, counterStart);
+	quickSort(array, endIndex - counterStart, counterStart + 1, endIndex);
 }
 
 int selectionOfKeyElement(int array[], int size) {
