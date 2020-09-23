@@ -193,18 +193,23 @@ int quickSort(int array[], int size, int startIndex, int endIndex) {
 	int counterStart = startIndex;
 	int counterEnd = endIndex;
 	while (counterStart < counterEnd && counterEnd > 0) {
-		if (array[counterStart] >= keyElement && counterEnd > 0 && counterStart < counterEnd) {
-			while (array[counterEnd] >= keyElement && counterEnd > 0 && counterStart < counterEnd) {
+		if (array[counterStart] >= keyElement) {
+			while (array[counterEnd] >= keyElement) {
 				--counterEnd;
 			}
+
+			if (counterEnd <= 0 || counterStart >= counterEnd) {
+				break;
+			}
+
 			swapFunctionForArray(array, counterStart, counterEnd);
 		}
 
 		++counterStart;
 	}
 
-	quickSort(array, counterStart - startIndex + 1, startIndex, counterStart);
-	quickSort(array, endIndex - counterStart, counterStart + 1, endIndex);
+	quickSort(array, counterStart - startIndex, startIndex, counterStart);
+	quickSort(array, endIndex - counterStart, counterStart, endIndex);
 }
 
 int selectionOfKeyElement(int array[], int size, int startIndex) {
