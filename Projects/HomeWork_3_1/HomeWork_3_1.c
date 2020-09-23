@@ -208,8 +208,8 @@ int quickSort(int array[], int size) {
 	int counterStart = 0;
 	int counterEnd = size - 1;
 	while (counterStart < counterEnd) {
-		if (array[counterStart] >= keyElement) {
-			while (array[counterEnd >= keyElement]) {
+		if (array[counterStart] >= keyElement && counterStart < size) {
+			while (array[counterEnd] >= keyElement && counterEnd > 0) {
 				--counterEnd;
 			}
 			swapFunctionForArray(array, counterStart, counterEnd);
@@ -220,7 +220,7 @@ int quickSort(int array[], int size) {
 }
 
 int selectionOfKeyElement(int array[], int size) {
-	if (size <= 10 || size > 200000) {
+	if (size < 10 || size > 200000) {
 		printf("selectionOfKeyElement - error: invalid size\n");
 		return -1;
 	}
