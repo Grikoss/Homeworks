@@ -228,7 +228,8 @@ int quickSort(int array[], int startIndex, int endIndex) {
 			while (array[counterEnd] >= keyElement) {
 				--counterEnd;
 				if (counterEnd == startIndex) {
-					return;
+					++counterStart;
+					break;
 				}
 			}
 
