@@ -182,8 +182,7 @@ int insertionSort(int array[], int startIndex, int endIndex) {
 
 int selectionOfKeyElement(int array[], int size, int startIndex) {
 	if (size < 10) {
-		printf("selectionOfKeyElement - error: invalid size\n");
-		return -1;
+		return array[startIndex];
 	}
 
 	const int step = size / 10;
@@ -217,7 +216,7 @@ int quickSort(int array[], int startIndex, int endIndex) {
 	}
 
 	if (size < 10) {
-		insertionSort(array, size, startIndex, endIndex);
+		insertionSort(array, startIndex, endIndex);
 		return 1;
 	}
 
@@ -229,12 +228,11 @@ int quickSort(int array[], int startIndex, int endIndex) {
 			while (array[counterEnd] >= keyElement) {
 				--counterEnd;
 				if (counterEnd == startIndex) {
-					counterStart = startIndex + size / 2;
-					break;
+					return;
 				}
 			}
 
-			if (counterEnd <= 0 || counterStart >= counterEnd) {
+			if (counterStart >= counterEnd) {
 				break;
 			}
 
@@ -244,7 +242,7 @@ int quickSort(int array[], int startIndex, int endIndex) {
 		++counterStart;
 	}
 
-	quickSort(array, startIndex, counterStart);
+	quickSort(array, startIndex, counterStart - 1);
 	quickSort(array, counterStart, endIndex);
 	return 1;
 }
