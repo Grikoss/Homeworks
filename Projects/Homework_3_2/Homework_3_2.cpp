@@ -180,7 +180,7 @@ int insertionSort(int array[], int startIndex, int endIndex) {
 	return 1;
 }
 
-int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool *isSuccesful) {
+int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool* isSuccesful) {
 	const int size = endIndex - startIndex + 1;
 	*isSuccesful = false;
 	if (size < 10) {
