@@ -91,10 +91,6 @@ bool randomArrayTest(int sortFunction(int[], int, int), int size) {
 	}
 
 	sortFunction(randomArrayOfInt, 0, size - 1);
-	for (int i = 0; i < size; ++i) {
-		printf("Must be: %6i. %7i Output: %6i. %7i\n", (i + 1), randomOrderedArrayOfInt[i], (i + 1), randomArrayOfInt[i]);
-	}
-
 	bool check = true;
 	for (int i = 0; i < size; ++i) {
 		if (randomArrayOfInt[i] != randomOrderedArrayOfInt[i]) {
@@ -145,7 +141,7 @@ bool orderedArrayTest(int sortFunction(int[], int, int)) {
 	return check;
 }
 
-void runSystemTest(int sortFunction(int[], int, int)) {
+void runSortTest(int sortFunction(int[], int, int)) {
 	printf("Test on invalid size = -10\n");
 	printf((minusTenSizeTest(sortFunction)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("Test on invalid size = 0\n");
@@ -273,10 +269,122 @@ int quickSort(int array[], int startIndex, int endIndex) {
 	return 1;
 }
 
+int searchingElement(int array[], int startIndex, int endIndex, int element, bool* isSuccessful) {
+	int size = endIndex - startIndex + 1;
+	int keyelement = size / 2;
+	if (size <= 0) {
+		*isSuccessful = false;
+		return -1;
+	}
+
+	if (size == 1 && element != array[startIndex]) {
+		*isSuccessful = false;
+		return -1;
+	}
+
+	if (array[startIndex + size / 2] == element) {
+		*isSuccessful = true;
+		return startIndex + size / 2;
+	}
+
+	if (array[startIndex + size / 2] > element) {
+		*isSuccessful = false;
+		return searchingElement(array, startIndex, startIndex + size / 2 - 1, element, isSuccessful);
+	}
+	
+	if (array[startIndex + size / 2] < element) {
+		*isSuccessful = false;
+		return searchingElement(array, startIndex + size / 2 + 1, endIndex, element, isSuccessful);
+	}
+
+
+	*isSuccessful = false;
+	return -1;
+}
+
+bool searchingElementTestOnRandomValue(int function(int[], int, int, int, bool*)) {
+	int array[51] = { 0 };
+	for (int i = 0; i < 51; ++i) {
+		array[i] = i;
+	}
+
+	int element = randomNumber(0, 50);
+	bool isSuccessful = false;
+	if (function(array, 0, 50, element, &isSuccessful) == element && isSuccessful) {
+		return true;
+	}
+
+	return false;
+}
+
+bool searchingElementTestOnInvalidSize(int function(int[], int, int, int, bool*)) {
+	bool isSuccessful = false;
+	int array[50] = { 0 };
+	if (function(array, 0, -1, 10, &isSuccessful) == -1 && !isSuccessful) {
+		return true;
+	}
+
+	return false;
+}
+
+bool searchingElementTestOnMissingElement(int function(int[], int, int, int, bool*)) {
+	bool isSuccessful = false;
+	int array[51] = { 0 };
+	for (int i = 0; i < 51; ++i) {
+		array[i] = i * 2;
+	}
+
+	if (function(array, 0, 50, 39, &isSuccessful) == -1 && !isSuccessful) {
+		return true;
+	}
+
+	return false;
+}
+
+void runSearchingElementTest(int function(int[], int, int, int, bool*)) {
+	printf("Invalid size test\n");
+	printf((searchingElementTestOnInvalidSize(function)) ? "-----complete-----\n" : "-----failed----\n");
+	printf("Missing element test\n");
+	printf((searchingElementTestOnMissingElement(function)) ? "-----complete-----\n" : "-----failed----\n");
+	printf("Test on random value\n");
+	printf((searchingElementTestOnRandomValue(function)) ? "-----complete-----\n" : "-----failed----\n");
+	printf("\n--------------------------------------------------------------------\n\n");
+}
+
+void runSystemTest() {
+	printf("Insertion sort\n");
+	runSortTest(insertionSort);
+	printf("qsort\n");
+	runSortTest(quickSort);
+	printf("Searching element\n");
+	runSearchingElementTest(searchingElement);
+}
+
+void randomizeArray(int array[], int size) {
+	for (int i = 0; i < size; ++i) {
+		array[i] = randomNumber(-100, 100);
+	}
+}
+
 void main() {
 	srand(time(NULL));
-	printf("Insertion sort\n");
-	runSystemTest(insertionSort);
-	printf("qsort\n");
-	runSystemTest(quickSort);
+	runSystemTest();
+	int sizeOfrandomArray = 100;
+	int* randomArray = (int*)calloc(sizeOfrandomArray, sizeof(int));
+	randomizeArray(randomArray, sizeOfrandomArray);
+
+	int sizeOfRandomElements = 1;
+	int* randomElements = (int*)calloc(sizeOfRandomElements, sizeof(int));
+	randomizeArray(randomElements, sizeOfRandomElements);
+
+	quickSort(randomArray, 0, sizeOfrandomArray - 1);
+	bool isSuccessful = false;
+	int index = 0;
+	for (int i = 0; i < sizeOfRandomElements; ++i) {
+		index = searchingElement(randomArray, 0, sizeOfrandomArray - 1, randomElements[i], &isSuccessful);
+		printf((isSuccessful) ? "Element %i found. Its index - %i\n" : "Element %i is not found\n", randomElements[i], index);
+	}
+
+	free(randomArray);
+	free(randomElements);
 }
