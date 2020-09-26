@@ -180,9 +180,12 @@ int insertionSort(int array[], int startIndex, int endIndex) {
 	return 1;
 }
 
-int selectionOfKeyElement(int array[], int size, int startIndex) {
+int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool *isSuccesful) {
+	const int size = endIndex - startIndex + 1;
+	*isSuccesful = false;
 	if (size < 10) {
-		return array[startIndex];
+		printf("Invalid size (selection of key element)\n");
+		return -1;
 	}
 
 	const int step = size / 10;
@@ -198,15 +201,36 @@ int selectionOfKeyElement(int array[], int size, int startIndex) {
 		theArithmeticMean += elements[i];
 	}
 
-	theArithmeticMean /= 10;
-	int indexOfkeyElement = 0;
-	for (int i = 1; i < 10; ++i) {
-		if (abs(theArithmeticMean - elements[indexOfkeyElement]) > abs(theArithmeticMean - elements[i])) {
-			indexOfkeyElement = i;
+	int counter = 0;
+	for (int i = 0; i < 10; ++i) {
+		if (theArithmeticMean / 10 == elements[i]) {
+			++counter;
 		}
 	}
 
-	return elements[indexOfkeyElement];
+	if (counter == 10) {
+		int keyElement = array[startIndex];
+		for (int i = startIndex + 1; i <= endIndex; ++i) {
+			if (keyElement != array[i]) {
+				*isSuccesful = true;
+				return i;
+			}
+		}
+	}
+	else {
+		theArithmeticMean /= 10;
+		int indexOfkeyElement = 0;
+		for (int i = 1; i < 10; ++i) {
+			if (abs(theArithmeticMean - elements[indexOfkeyElement]) > abs(theArithmeticMean - elements[i])) {
+				indexOfkeyElement = i;
+			}
+		}
+
+		*isSuccesful = true;
+		return elements[indexOfkeyElement];
+	}
+
+	return -1;
 }
 
 int quickSort(int array[], int startIndex, int endIndex) {
@@ -220,17 +244,18 @@ int quickSort(int array[], int startIndex, int endIndex) {
 		return 1;
 	}
 
-	const int keyElement = selectionOfKeyElement(array, size, startIndex);
+	bool isSelectionOfKeyElementSuccesful = true;
+	const int keyElement = selectionOfKeyElement(array, startIndex, endIndex, &isSelectionOfKeyElementSuccesful);
+	if (!isSelectionOfKeyElementSuccesful) {
+		return 1;
+	}
+
 	int counterStart = startIndex;
 	int counterEnd = endIndex;
-	while (counterStart < counterEnd && counterEnd > startIndex) {
+	while (counterStart < counterEnd) {
 		if (array[counterStart] >= keyElement) {
 			while (array[counterEnd] >= keyElement) {
 				--counterEnd;
-				if (counterEnd == startIndex) {
-					++counterStart;
-					break;
-				}
 			}
 
 			if (counterStart >= counterEnd) {
