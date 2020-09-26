@@ -28,11 +28,11 @@ void doABarrelRoll(int arrayOfValues[], int begin, int end) {
 	}
 }
 
-bool minusTenSizeTest(int sortFunction(int[], int, int, int)) {
+bool minusTenSizeTest(int sortFunction(int[], int, int)) {
 	const int size = -10;
 	int* array = (int*)calloc(size, sizeof(int));
 	bool check = true;
-	if (sortFunction(array, size, 0, size - 1) != -1 || sortFunction(array, size, 0, size - 1) != -1) {
+	if (sortFunction(array, 0, size - 1) != -1 || sortFunction(array, 0, size - 1) != -1) {
 		check = false;
 	}
 
@@ -40,11 +40,11 @@ bool minusTenSizeTest(int sortFunction(int[], int, int, int)) {
 	return check;
 }
 
-bool zeroSizeTest(int sortFunction(int[], int, int, int)) {
+bool zeroSizeTest(int sortFunction(int[], int, int)) {
 	const int size = 0;
 	int* array = (int*)calloc(size, sizeof(int));
 	bool check = true;
-	if (sortFunction(array, size, 0, size - 1) != -1 || sortFunction(array, size, 0, size - 1) != -1) {
+	if (sortFunction(array, 0, size - 1) != -1 || sortFunction(array, 0, size - 1) != -1) {
 		check = false;
 	}
 
@@ -52,11 +52,11 @@ bool zeroSizeTest(int sortFunction(int[], int, int, int)) {
 	return check;
 }
 
-bool oneSizeTest(int sortFunction(int[], int, int, int)) {
+bool oneSizeTest(int sortFunction(int[], int, int)) {
 	const int size = 1;
 	int* array = (int*)calloc(size, sizeof(int));
 	bool check = true;
-	if (sortFunction(array, size, 0, size - 1) < 0 || sortFunction(array, size, 0, size - 1) < 0) {
+	if (sortFunction(array, 0, size - 1) < 0 || sortFunction(array, 0, size - 1) < 0) {
 		check = false;
 	}
 
@@ -64,7 +64,7 @@ bool oneSizeTest(int sortFunction(int[], int, int, int)) {
 	return check;
 }
 
-bool randomArrayTest(int sortFunction(int[], int, int, int), int size) {
+bool randomArrayTest(int sortFunction(int[], int, int), int size) {
 	if (size <= 0 || size > 200000) {
 		printf("Invalid array size\n");
 		return false;
@@ -90,7 +90,7 @@ bool randomArrayTest(int sortFunction(int[], int, int, int), int size) {
 		swapFunctionForArray(randomArrayOfInt, firstRandomNumber, secondRandomNumber);
 	}
 
-	sortFunction(randomArrayOfInt, size, 0, size - 1);
+	sortFunction(randomArrayOfInt, 0, size - 1);
 	for (int i = 0; i < size; ++i) {
 		printf("Must be: %6i. %7i Output: %6i. %7i\n", (i + 1), randomOrderedArrayOfInt[i], (i + 1), randomArrayOfInt[i]);
 	}
@@ -107,14 +107,14 @@ bool randomArrayTest(int sortFunction(int[], int, int, int), int size) {
 	return check;
 }
 
-bool identicalArrayTest(int sortFunction(int[], int, int, int)) {
+bool identicalArrayTest(int sortFunction(int[], int, int)) {
 	const int size = 50;
 	int* array = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		array[i] = 5;
 	}
 
-	sortFunction(array, size, 0, size - 1);
+	sortFunction(array, 0, size - 1);
 	bool check = true;
 	for (int i = 0; i < size; ++i) {
 		if (array[i] != 5) {
@@ -126,14 +126,14 @@ bool identicalArrayTest(int sortFunction(int[], int, int, int)) {
 	return check;
 }
 
-bool orderedArrayTest(int sortFunction(int[], int, int, int)) {
+bool orderedArrayTest(int sortFunction(int[], int, int)) {
 	const int size = 50;
 	int* array = (int*)calloc(size, sizeof(int));
 	for (int i = 0; i < size; ++i) {
 		array[i] = i;
 	}
 
-	sortFunction(array, size, 0, size - 1);
+	sortFunction(array, 0, size - 1);
 	bool check = true;
 	for (int i = 0; i < size; ++i) {
 		if (array[i] != i) {
@@ -145,7 +145,7 @@ bool orderedArrayTest(int sortFunction(int[], int, int, int)) {
 	return check;
 }
 
-void runSystemTest(int sortFunction(int[], int, int, int)) {
+void runSystemTest(int sortFunction(int[], int, int)) {
 	printf("Test on invalid size = -10\n");
 	printf((minusTenSizeTest(sortFunction)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("Test on invalid size = 0\n");
@@ -163,7 +163,8 @@ void runSystemTest(int sortFunction(int[], int, int, int)) {
 	printf("\n--------------------------------------------------------------------\n\n");
 }
 
-int insertionSort(int array[], int size, int startIndex, int endIndex) {
+int insertionSort(int array[], int startIndex, int endIndex) {
+	const int size = endIndex - startIndex + 1;
 	if (size <= 0) {
 		return -1;
 	}
@@ -179,9 +180,11 @@ int insertionSort(int array[], int size, int startIndex, int endIndex) {
 	return 1;
 }
 
-int selectionOfKeyElement(int array[], int size, int startIndex) {
+int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool *isSuccesful) {
+	const int size = endIndex - startIndex + 1;
+	*isSuccesful = false;
 	if (size < 10) {
-		printf("selectionOfKeyElement - error: invalid size\n");
+		printf("Invalid size (selection of key element)\n");
 		return -1;
 	}
 
@@ -198,41 +201,64 @@ int selectionOfKeyElement(int array[], int size, int startIndex) {
 		theArithmeticMean += elements[i];
 	}
 
-	theArithmeticMean /= 10;
-	int indexOfkeyElement = 0;
-	for (int i = 1; i < 10; ++i) {
-		if (abs(theArithmeticMean - elements[indexOfkeyElement]) > abs(theArithmeticMean - elements[i])) {
-			indexOfkeyElement = i;
+	int counter = 0;
+	for (int i = 0; i < 10; ++i) {
+		if (theArithmeticMean / 10 == elements[i]) {
+			++counter;
 		}
 	}
 
-	return elements[indexOfkeyElement];
+	if (counter == 10) {
+		int keyElement = array[startIndex];
+		for (int i = startIndex + 1; i <= endIndex; ++i) {
+			if (keyElement != array[i]) {
+				*isSuccesful = true;
+				return i;
+			}
+		}
+	}
+	else {
+		theArithmeticMean /= 10;
+		int indexOfkeyElement = 0;
+		for (int i = 1; i < 10; ++i) {
+			if (abs(theArithmeticMean - elements[indexOfkeyElement]) > abs(theArithmeticMean - elements[i])) {
+				indexOfkeyElement = i;
+			}
+		}
+
+		*isSuccesful = true;
+		return elements[indexOfkeyElement];
+	}
+
+	return -1;
 }
 
-int quickSort(int array[], int size, int startIndex, int endIndex) {
+int quickSort(int array[], int startIndex, int endIndex) {
+	const int size = endIndex - startIndex + 1;
 	if (size <= 0) {
 		return -1;
 	}
 
 	if (size < 10) {
-		insertionSort(array, size, startIndex, endIndex);
+		insertionSort(array, startIndex, endIndex);
 		return 1;
 	}
 
-	const int keyElement = selectionOfKeyElement(array, size, startIndex);
+	bool isSelectionOfKeyElementSuccesful = true;
+	const int keyElement = selectionOfKeyElement(array, startIndex, endIndex, &isSelectionOfKeyElementSuccesful);
+	if (!isSelectionOfKeyElementSuccesful) {
+		return 1;
+	}
+
 	int counterStart = startIndex;
 	int counterEnd = endIndex;
-	while (counterStart < counterEnd && counterEnd > startIndex) {
+	while (counterStart < counterEnd) {
 		if (array[counterStart] >= keyElement) {
 			while (array[counterEnd] >= keyElement) {
 				--counterEnd;
-				if (counterEnd == startIndex) {
-					counterStart = startIndex + size / 2;
-					break;
-				}
 			}
 
-			if (counterEnd <= 0 || counterStart >= counterEnd) {
+			if (counterStart >= counterEnd) {
 				break;
 			}
 
@@ -242,8 +268,8 @@ int quickSort(int array[], int size, int startIndex, int endIndex) {
 		++counterStart;
 	}
 
-	quickSort(array, counterStart - startIndex, startIndex, counterStart);
-	quickSort(array, endIndex - counterStart, counterStart, endIndex);
+	quickSort(array, startIndex, counterStart - 1);
+	quickSort(array, counterStart, endIndex);
 	return 1;
 }
 
