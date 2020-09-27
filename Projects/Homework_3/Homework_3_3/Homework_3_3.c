@@ -7,6 +7,12 @@ int randomNumber(int minNumber, int maxNumber) {
 	return rand() % (maxNumber + 1 - minNumber) + minNumber;
 }
 
+void swapFunctionForArray(int array[], int numberOne, int numberTwo) {
+	const int swap = array[numberOne];
+	array[numberOne] = array[numberTwo];
+	array[numberTwo] = swap;
+}
+
 bool InvalidArraySizeTest(int function(int[], int, int, bool*)) {
 	int array[5] = { 0 };
 	bool isSuccessful = true;
@@ -56,40 +62,143 @@ void runSystemTest(int function()) {
 	printf("\n-----------------------------------------------------------------\n\n");
 }
 
-int mostCommonElemnet(int array[], int startIndex, int endIndex, bool* isSuccessful) {
+int insertionSort(int array[], int startIndex, int endIndex) {
+	const int size = endIndex - startIndex + 1;
+	if (size <= 0) {
+		return -1;
+	}
+
+	for (int i = startIndex + 1; i <= endIndex; ++i) {
+		int j = i;
+		while (array[j] < array[j - 1] && j > startIndex) {
+			swapFunctionForArray(array, j, j - 1);
+			--j;
+		}
+	}
+
+	return 1;
+}
+
+double selectionOfKeyElement(int array[], int startIndex, int endIndex, bool* isSuccessful) {
+	const int size = endIndex - startIndex + 1;
+	*isSuccessful = false;
+	if (size < 10) {
+		printf("Invalid size (selection of key element)\n");
+		return -1;
+	}
+
+	const int step = size / 10;
+	int index = startIndex;
+	int elements[10] = { 0 };
+	for (int i = 0; i < 10; ++i) {
+		elements[i] = array[index];
+		index += step;
+	}
+
+	double theArithmeticMean = 0;
+	for (int i = 0; i < 10; ++i) {
+		theArithmeticMean += elements[i];
+	}
+
+	theArithmeticMean /= 10;
+	int counter = 0;
+	for (int i = 0; i < 10; ++i) {
+		if (theArithmeticMean == elements[i]) {
+			++counter;
+		}
+	}
+
+	if (counter == 10) {
+		int keyElement = array[startIndex];
+		for (int i = startIndex + 1; i <= endIndex; ++i) {
+			if (keyElement != array[i] && array[i] > keyElement) {
+				*isSuccessful = true;
+				return array[i];
+			}
+
+			if (keyElement != array[i] && array[i] < keyElement) {
+				*isSuccessful = true;
+				return keyElement;
+			}
+		}
+	}
+	else {
+		*isSuccessful = true;
+		return theArithmeticMean;
+	}
+
+	return -1;
+}
+
+int quickSort(int array[], int startIndex, int endIndex) {
+	const int size = endIndex - startIndex + 1;
+	if (size <= 0) {
+		return -1;
+	}
+
+	if (size < 10) {
+		insertionSort(array, startIndex, endIndex);
+		return 1;
+	}
+
+	bool isSelectionOfKeyElementSuccesful = true;
+	const double keyElement = selectionOfKeyElement(array, startIndex, endIndex, &isSelectionOfKeyElementSuccesful);
+	if (!isSelectionOfKeyElementSuccesful) {
+		return 1;
+	}
+
+	int counterStart = startIndex;
+	int counterEnd = endIndex;
+	while (counterStart < counterEnd) {
+		if (array[counterStart] >= keyElement) {
+			while (array[counterEnd] >= keyElement) {
+				--counterEnd;
+			}
+
+			if (counterStart >= counterEnd) {
+				break;
+			}
+
+			swapFunctionForArray(array, counterStart, counterEnd);
+		}
+
+		++counterStart;
+	}
+
+	quickSort(array, startIndex, counterStart - 1);
+	quickSort(array, counterStart, endIndex);
+	return 1;
+}
+
+int mostCommonElement(int array[], int startIndex, int endIndex, bool* isSuccessful) {
 	const int size = endIndex - startIndex + 1;
 	if (size <= 0) {
 		*isSuccessful = false;
 		return 0;
 	}
 
-	int maxNumber = array[0];
-	int minNumber = array[0];
-	for (int i = 1; i < size; ++i) {
-		if (minNumber > array[i]) {
-			minNumber = array[i];
+	quickSort(array, startIndex, endIndex);
+	int counter = 1;
+	int counterMax = 0;
+	int mostCommonElement = 0;
+	int i = startIndex + 1;
+	while (i <= endIndex) {
+		if (counter > counterMax) {
+			mostCommonElement = array[i - 1];
+			counterMax = counter;
 		}
 
-		if (maxNumber < array[i]) {
-			maxNumber = array[i];
+		if (array[i - 1] == array[i]) {
+			++counter;
 		}
-	}
-
-	int quantity = maxNumber - minNumber + 1;
-	int* arrayOfValues = (int*)calloc(quantity, sizeof(int));
-	for (int i = 0; i < size; ++i) {
-		++arrayOfValues[array[i] - minNumber];
-	}
-
-	int mostCommonElement = array[0];
-	for (int i = minNumber; i <= maxNumber; ++i) {
-		if (arrayOfValues[mostCommonElement - minNumber] < arrayOfValues[i - minNumber]) {
-			mostCommonElement = i;
+		else {
+			counter = 1;
 		}
+
+		++i;
 	}
 
 	*isSuccessful = true;
-	free(arrayOfValues);
 	return mostCommonElement;
 }
 
@@ -107,13 +216,13 @@ void printfArray(int array[], int size) {
 
 void main() {
 	srand(time(NULL));
-	runSystemTest(mostCommonElemnet);
-	int sizeOfrandomArray = 20;
-	int* randomArray = (int*)calloc(sizeOfrandomArray, sizeof(int));
-	randomizeArray(randomArray, sizeOfrandomArray);
-	printfArray(randomArray, sizeOfrandomArray);
+	runSystemTest(mostCommonElement);
+	int sizeOfRandomArray = 20;
+	int* randomArray = (int*)calloc(sizeOfRandomArray, sizeof(int));
+	randomizeArray(randomArray, sizeOfRandomArray);
+	printfArray(randomArray, sizeOfRandomArray);
 	bool isSuccessful = false;
-	printf("Most common element is %i\n", mostCommonElemnet(randomArray, 0, sizeOfrandomArray - 1, &isSuccessful));
+	printf("Most common element is %i\n", mostCommonElement(randomArray, 0, sizeOfRandomArray - 1, &isSuccessful));
 	printf((isSuccessful) ? "successfully" : "isn't successfully");
 	free(randomArray);
 }
