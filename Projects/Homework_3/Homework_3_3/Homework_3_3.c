@@ -218,12 +218,11 @@ void printfArray(int array[], int size) {
 void main() {
 	srand(time(NULL));
 	runSystemTest(mostCommonElement);
-	int sizeOfRandomArray = 5;
+	int sizeOfRandomArray = 6;
 	int* randomArray = (int*)calloc(sizeOfRandomArray, sizeof(int));
 	randomizeArray(randomArray, sizeOfRandomArray);
 	printfArray(randomArray, sizeOfRandomArray);
 	bool isSuccessful = false;
 	printf("Most common element is %i\n", mostCommonElement(randomArray, 0, sizeOfRandomArray - 1, &isSuccessful));
-	printf((isSuccessful) ? "successfully" : "isn't successfully");
 	free(randomArray);
 }
