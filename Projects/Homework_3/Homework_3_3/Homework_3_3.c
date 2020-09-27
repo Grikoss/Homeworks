@@ -44,8 +44,13 @@ bool orderedArrayTest(int function(int[], int, int, bool*)) {
 }
 
 bool workingValuesTest(int function(int[], int, int)) {
-	int array[] = { 1,2,4,4,3,3,2,3,3,3,3,4,5,6,7,6,7,8,9,6,100,-23543,3445,3,4 };
+	int array[] = { 1, 2, 4, 4, 3, 3, 2, 3, 3, 3, 3, 4, 5, 6, 7, 6, 7, 8 ,9 ,6 , 100, -23543, 3445, 3, 4 };
 	return function(array, 0, 24) == 3;
+}
+
+bool workingValuesTestTwo(int function(int[], int, int)) {
+	int array[] = { 1, 2, 2, 3, 3, 3 };
+	return function(array, 0, 5) == 3;
 }
 
 void runSystemTest(int function()) {
@@ -59,6 +64,8 @@ void runSystemTest(int function()) {
 	printf((orderedArrayTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("workingValuesTest\n");
 	printf((workingValuesTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
+	printf("workingValuesTest two\n");
+	printf((workingValuesTestTwo(function)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("\n-----------------------------------------------------------------\n\n");
 }
 
