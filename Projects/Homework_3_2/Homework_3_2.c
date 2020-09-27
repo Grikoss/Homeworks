@@ -141,7 +141,13 @@ bool orderedArrayTest(int sortFunction(int[], int, int)) {
 	return check;
 }
 
+void keyElementTest(int sortFunction(int[], int, int)) {
+	int array[] = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0 };
+	sortFunction(array, 0, 12);
+}
+
 void runSortTest(int sortFunction(int[], int, int)) {
+	keyElementTest(sortFunction);
 	printf("Test on invalid size = -10\n");
 	printf((minusTenSizeTest(sortFunction)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("Test on invalid size = 0\n");
@@ -176,9 +182,9 @@ int insertionSort(int array[], int startIndex, int endIndex) {
 	return 1;
 }
 
-int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool* isSuccesful) {
+double selectionOfKeyElement(int array[], int startIndex, int endIndex, bool* isSuccessful) {
 	const int size = endIndex - startIndex + 1;
-	*isSuccesful = false;
+	*isSuccessful = false;
 	if (size < 10) {
 		printf("Invalid size (selection of key element)\n");
 		return -1;
@@ -192,14 +198,15 @@ int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool* isSuc
 		index += step;
 	}
 
-	int theArithmeticMean = 0;
+	double theArithmeticMean = 0;
 	for (int i = 0; i < 10; ++i) {
 		theArithmeticMean += elements[i];
 	}
 
+	theArithmeticMean /= 10;
 	int counter = 0;
 	for (int i = 0; i < 10; ++i) {
-		if (theArithmeticMean / 10 == elements[i]) {
+		if (theArithmeticMean == elements[i]) {
 			++counter;
 		}
 	}
@@ -207,23 +214,20 @@ int selectionOfKeyElement(int array[], int startIndex, int endIndex, bool* isSuc
 	if (counter == 10) {
 		int keyElement = array[startIndex];
 		for (int i = startIndex + 1; i <= endIndex; ++i) {
-			if (keyElement != array[i]) {
-				*isSuccesful = true;
-				return i;
+			if (keyElement != array[i] && array[i] > keyElement) {
+				*isSuccessful = true;
+				return array[i];
+			}
+
+			if (keyElement != array[i] && array[i] < keyElement) {
+				*isSuccessful = true;
+				return keyElement;
 			}
 		}
 	}
 	else {
-		theArithmeticMean /= 10;
-		int indexOfkeyElement = 0;
-		for (int i = 1; i < 10; ++i) {
-			if (abs(theArithmeticMean - elements[indexOfkeyElement]) > abs(theArithmeticMean - elements[i])) {
-				indexOfkeyElement = i;
-			}
-		}
-
-		*isSuccesful = true;
-		return elements[indexOfkeyElement];
+		*isSuccessful = true;
+		return theArithmeticMean;
 	}
 
 	return -1;
@@ -240,9 +244,9 @@ int quickSort(int array[], int startIndex, int endIndex) {
 		return 1;
 	}
 
-	bool isSelectionOfKeyElementSuccesful = true;
-	const int keyElement = selectionOfKeyElement(array, startIndex, endIndex, &isSelectionOfKeyElementSuccesful);
-	if (!isSelectionOfKeyElementSuccesful) {
+	bool isSelectionOfKeyElementSuccessful = true;
+	const double keyElement = selectionOfKeyElement(array, startIndex, endIndex, &isSelectionOfKeyElementSuccessful);
+	if (!isSelectionOfKeyElementSuccessful) {
 		return 1;
 	}
 
@@ -271,7 +275,6 @@ int quickSort(int array[], int startIndex, int endIndex) {
 
 int searchingElement(int array[], int startIndex, int endIndex, int element, bool* isSuccessful) {
 	int size = endIndex - startIndex + 1;
-	int keyelement = size / 2;
 	if (size <= 0) {
 		*isSuccessful = false;
 		return -1;
@@ -369,11 +372,15 @@ void randomizeArray(int array[], int size) {
 void main() {
 	srand(time(NULL));
 	runSystemTest();
-	int sizeOfrandomArray = 100;
+	int sizeOfrandomArray = 0;
+	printf("Enter size of array\n");
+	scanf("%d", &sizeOfrandomArray);
 	int* randomArray = (int*)calloc(sizeOfrandomArray, sizeof(int));
 	randomizeArray(randomArray, sizeOfrandomArray);
 
-	int sizeOfRandomElements = 1;
+	int sizeOfRandomElements = 0;
+	printf("Enter the number of random numbers\n");
+	scanf("%d", &sizeOfRandomElements);
 	int* randomElements = (int*)calloc(sizeOfRandomElements, sizeof(int));
 	randomizeArray(randomElements, sizeOfRandomElements);
 
