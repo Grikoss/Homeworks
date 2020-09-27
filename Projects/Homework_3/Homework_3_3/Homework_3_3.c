@@ -183,15 +183,16 @@ int mostCommonElement(int array[], int startIndex, int endIndex, bool* isSuccess
 	int mostCommonElement = 0;
 	int i = startIndex + 1;
 	while (i <= endIndex) {
+		if (array[i - 1] == array[i]) {
+			++counter;
+		}
+
 		if (counter > counterMax) {
 			mostCommonElement = array[i - 1];
 			counterMax = counter;
 		}
 
-		if (array[i - 1] == array[i]) {
-			++counter;
-		}
-		else {
+		if (array[i - 1] != array[i]) {
 			counter = 1;
 		}
 
@@ -204,7 +205,7 @@ int mostCommonElement(int array[], int startIndex, int endIndex, bool* isSuccess
 
 void randomizeArray(int array[], int size) {
 	for (int i = 0; i < size; ++i) {
-		array[i] = randomNumber(0, 1);
+		array[i] = randomNumber(0, 2);
 	}
 }
 
@@ -217,7 +218,7 @@ void printfArray(int array[], int size) {
 void main() {
 	srand(time(NULL));
 	runSystemTest(mostCommonElement);
-	int sizeOfRandomArray = 20;
+	int sizeOfRandomArray = 5;
 	int* randomArray = (int*)calloc(sizeOfRandomArray, sizeof(int));
 	randomizeArray(randomArray, sizeOfRandomArray);
 	printfArray(randomArray, sizeOfRandomArray);
