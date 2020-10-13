@@ -1,29 +1,31 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <locale.h>
-void printIntegerAsBinary(int number) {
+#include <stdbool.h>
+#include "binary.h"
+
+void printfBoolArray(bool array[]) {
 	for (int i = 0; i < 32; ++i) {
-		printf(((number & 0b10000000000000000000000000000000) != 0) ? "1" : "0");
-		number <<= 1;
+		printf(array[i] ? "1" : "0");
 	}
-	
+
 	printf("\n");
 }
 
-
 void main() {
 	setlocale(LC_ALL, "Russian");
-	printf("¬ведите два числа:\n");
-	int numberOne = 0;
-	int numberTwo = 0;
-	scanf_s("%i", &numberOne);
-	scanf_s("%i", &numberTwo);
-	printf("ѕервое число в дополнительном двоичном коде: ");
-	printIntegerAsBinary(numberOne);
-	printf("¬торое число в дополнителном двоичном коде: ");
-	printIntegerAsBinary(numberTwo);
-	int sum = 0;
-	sum = numberOne + numberTwo;
-	printf("—умма в дополнителном двоичном коде: ");
-	printIntegerAsBinary(sum);
-	printf("—умма в дес€тичном виде = %i", sum);
+	int valueOne = 0;
+	int valueTwo = 0;
+	printf("¬ведите целое число\n");
+	while (scanf("%i", &valueOne) == 0);
+	printf("¬ведите другое целое число\n");
+	while (scanf("%i", &valueTwo) == 0);
+	printf("\n");
+	bool binaryValueOne[32] = { 0 };
+	bool binaryValueTwo[32] = { 0 };
+	binaryUnpacker(valueOne, binaryValueOne);
+	binaryUnpacker(valueTwo, binaryValueTwo);
+	printf("%i - ", valueOne);
+	printfBoolArray(binaryValueOne);
+	printf("%i - ", valueTwo);
+	printfBoolArray(binaryValueTwo);
 }
