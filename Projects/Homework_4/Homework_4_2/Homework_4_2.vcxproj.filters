@@ -18,5 +18,13 @@
     <ClCompile Include="Homework_4_2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="qsort.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="qsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
