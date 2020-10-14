@@ -33,14 +33,7 @@ void binarySummator(bool arrayOne[], bool arrayTwo[], bool resultArray[]) {
 
 void binaryUnpacker(int value, bool array[]) {
 	for (int i = 0; i < SIZEOFINT; ++i) {
-		if ((value & 1) == 1) {
-			array[i] = 1;
-		}
-		else 
-		{
-			array[i] = 0;
-		}
-
+		array[i] = (value & 1) == 1;
 		value >>= 1;
 	}
 }

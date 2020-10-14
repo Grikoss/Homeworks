@@ -13,7 +13,7 @@ void printfBoolArray(bool array[]) {
 	printf("\n");
 }
 
-void test(int valueOne, int valueTwo) {
+bool isTestFailed(int valueOne, int valueTwo) {
 	bool binaryValueOne[SIZEOFINT] = { 0 };
 	bool binaryValueTwo[SIZEOFINT] = { 0 };
 	binaryUnpacker(valueOne, binaryValueOne);
@@ -22,17 +22,23 @@ void test(int valueOne, int valueTwo) {
 	binarySummator(binaryValueOne, binaryValueTwo, binaryResult);
 	if (valueOne + valueTwo != binaryPacker(binaryResult)) {
 		printf("Test failed\n");
-		abort();
+		return true;
 	}
+
+	return false;
 }
 
 void systemTest(void) {
-	test(5, 10);
-	test(-5, -26);
-	test(10, -18);
-	test(2147483648, 2147483648);
-	test(-214748364, -214748364);
-	test(-214748364, 2147483648);
+	bool check = false;
+	check += isTestFailed(5, 10);
+	check += isTestFailed(-5, -26);
+	check += isTestFailed(10, -18);
+	check += isTestFailed(2147483648, 2147483648);
+	check += isTestFailed(-214748364, -214748364);
+	check += isTestFailed(-214748364, 2147483648);
+	if (check) {
+		abort();
+	}
 }
 
 void main() {
@@ -55,7 +61,7 @@ void main() {
 	printfBoolArray(binaryValueTwo);
 	bool binaryResult[SIZEOFINT] = { 0 };
 	binarySummator(binaryValueOne, binaryValueTwo, binaryResult);
-	int sum = binaryPacker(binaryResult);
+	const int sum = binaryPacker(binaryResult);
 	printf("\n");
 	printf("Sum = %i - ", sum);
 	printfBoolArray(binaryResult);
