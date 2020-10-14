@@ -116,11 +116,11 @@ void main() {
 	int sizeOfRandomArray = 6;
 	int* randomArray = (int*)calloc(sizeOfRandomArray, sizeof(int));
 	randomizeArray(randomArray, sizeOfRandomArray);
+	printf("Check:\n");
 	printfArray(randomArray, sizeOfRandomArray);
 	bool isSuccessful = false;
 	printf("Most common element is %i\n", mostCommonElement(randomArray, 0, sizeOfRandomArray - 1, &isSuccessful));
 	free(randomArray);
-	printf("\nRead array:\n");
 	FILE* file = fopen("input.txt", "r");
 	if (file == NULL) {
 		printf("File not found!");
@@ -128,6 +128,10 @@ void main() {
 	}
 
 	int* array = NULL;
-	int size = readFromFile(file, array);
+	int size = readFromFile(file, &array);
 	fclose(file);
+	printf("\nData from file:\n");
+	printfArray(array, size);
+	printf("Most common element is %i\n", mostCommonElement(array, 0, size - 1, &isSuccessful));
+	free(array);
 }

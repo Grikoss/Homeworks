@@ -74,7 +74,7 @@ void addNewItem(HeadPointer* pointer) {
 	pointer->head = item;
 }
 
-int readFromFile(FILE* file, int* array) {
+int readFromFile(FILE* file, int** array) {
 	HeadPointer* box = createNewBox();
 	addNewItem(box);
 	int size = 0;
@@ -89,11 +89,7 @@ int readFromFile(FILE* file, int* array) {
 		++size;
 	}
 
-	array = convertingCharToInt(box, size);
+	*array = convertingCharToInt(box, size);
 	deleteBox(box);
-	for (int i = 0; i < size; ++i) {
-		printf("%i\n", array[i]);
-	}
-
 	return size;
 }
