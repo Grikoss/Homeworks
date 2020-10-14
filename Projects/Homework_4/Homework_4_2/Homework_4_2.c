@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "qsort.h"
+#include "Reading.h"
 
 int randomNumber(int minNumber, int maxNumber) {
 	return rand() % (maxNumber + 1 - minNumber) + minNumber;
@@ -119,4 +120,23 @@ void main() {
 	bool isSuccessful = false;
 	printf("Most common element is %i\n", mostCommonElement(randomArray, 0, sizeOfRandomArray - 1, &isSuccessful));
 	free(randomArray);
+	printf("\nRead array:\n");
+	FILE* file = fopen("input.txt", "r");
+	if (file == NULL) {
+		printf("File not found!");
+		return;
+	}
+
+	int* array = (int*)calloc(1, sizeof(int));
+	if (array == NULL) {
+		return;
+	}
+
+	int size = readFromFile(file, array);
+	for (int i = 0; i < size; ++i) {
+		printf("%i\n", array[i]);
+	}
+
+	fclose(file);
+	free(array);
 }
