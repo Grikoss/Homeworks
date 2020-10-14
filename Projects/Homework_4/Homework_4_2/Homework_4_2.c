@@ -23,9 +23,10 @@ bool ArraySizeOneTest(int function(int[], int, int, bool*)) {
 	return isSuccessful;
 }
 
-bool identicalArrayTest(int function(int[], int, int)) {
+bool identicalArrayTest(int function(int[], int, int, bool*)) {
 	int array[25] = { 0 };
-	return function(array, 0, 24) == 0;
+	bool isSuccessful = false;
+	return function(array, 0, 24, &isSuccessful) == 0;
 }
 
 bool orderedArrayTest(int function(int[], int, int, bool*)) {
@@ -39,17 +40,19 @@ bool orderedArrayTest(int function(int[], int, int, bool*)) {
 	return isSuccessful;
 }
 
-bool workingValuesTest(int function(int[], int, int)) {
+bool workingValuesTest(int function(int[], int, int, bool*)) {
 	int array[] = { 1, 2, 4, 4, 3, 3, 2, 3, 3, 3, 3, 4, 5, 6, 7, 6, 7, 8 ,9 ,6 , 100, -23543, 3445, 3, 4 };
-	return function(array, 0, 24) == 3;
+	bool isSuccessful = false;
+	return function(array, 0, 24, &isSuccessful) == 3;
 }
 
-bool workingValuesTestTwo(int function(int[], int, int)) {
+bool workingValuesTestTwo(int function(int[], int, int, bool*)) {
 	int array[] = { 1, 2, 2, 3, 3, 3 };
-	return function(array, 0, 5) == 3;
+	bool isSuccessful = false;
+	return function(array, 0, 5, &isSuccessful) == 3;
 }
 
-void runSystemTest(int function()) {
+void runSystemTest(int function(int[], int, int, bool*)) {
 	printf("InvalidArraySizeTest\n");
 	printf((InvalidArraySizeTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("ArraySizeOneTest\n");
