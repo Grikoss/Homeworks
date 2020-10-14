@@ -2,11 +2,12 @@
 
 #include <stdbool.h>
 #include "binary.h"
+#define SIZEOFINT 32
 
 void binarySummator(bool arrayOne[], bool arrayTwo[], bool resultArray[]) {
 	bool overFlow = 0;
 	int subSum = 0;
-	for (int i = 0; i < 32; ++i) {
+	for (int i = 0; i < SIZEOFINT; ++i) {
 		subSum = arrayOne[i] + arrayTwo[i] + overFlow;
 		switch (subSum)
 		{
@@ -30,57 +31,30 @@ void binarySummator(bool arrayOne[], bool arrayTwo[], bool resultArray[]) {
 	}
 }
 
-void binaryConverterOfExtraCode(bool array[]) {
-	for (int i = 0; i < 32; ++i) {
-			if (array[i]) {
-				array[i] = 0;
-			}
-			else
-			{
-				array[i] = 1;
-			}
+void binaryUnpacker(int value, bool array[]) {
+	for (int i = 0; i < SIZEOFINT; ++i) {
+		if ((value & 1) == 1) {
+			array[i] = 1;
+		}
+		else 
+		{
+			array[i] = 0;
 		}
 
-	bool additionalArray[32] = { 0 };
-	additionalArray[0] = 1;
-	bool storagearray[32] = { 0 };
-	binarySummator(array, additionalArray, storagearray);
-	for (int i = 0; i < 32; ++i) {
-		array[i] = storagearray[i];
-	}
-}
-
-void binaryUnpacker(int value, bool array[]) {
-	bool minus = value < 0;
-	for (int i = 0; i < 32; ++i) {
-		array[i] = value % 2;
-		value /= 2;
-	}
-
-	if (minus) {
-		binaryConverterOfExtraCode(array);
+		value >>= 1;
 	}
 }
 
 int binaryPacker(bool array[]) {
 	int value = 0;
-	bool minus = false;
-	if (array[31]) {
-		binaryConverterOfExtraCode(array);
-		minus = true;
-	}
 
 	int powerOfTwo = 1;
-	for (int i = 0; i < 32; ++i) {
+	for (int i = 0; i < SIZEOFINT; ++i) {
 		if (array[i]) {
 			value += powerOfTwo;
 		}
 
 		powerOfTwo *= 2;
-	}
-
-	if (minus) {
-		return -value;
 	}
 
 	return value;
