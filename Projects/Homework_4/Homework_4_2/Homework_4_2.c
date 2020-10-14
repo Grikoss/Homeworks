@@ -127,16 +127,7 @@ void main() {
 		return;
 	}
 
-	int* array = (int*)calloc(1, sizeof(int));
-	if (array == NULL) {
-		return;
-	}
-
+	int* array = NULL;
 	int size = readFromFile(file, array);
-	for (int i = 0; i < size; ++i) {
-		printf("%i\n", array[i]);
-	}
-
 	fclose(file);
-	free(array);
 }

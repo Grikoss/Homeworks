@@ -2,30 +2,98 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
 #include"Reading.h"
 
-int readFromFile(FILE* file, int array[]) {
-	free(array);
-	array = (int*)calloc(1, sizeof(int));
-	int index = 0;
-	while (!feof(file))
-	{
-		unsigned char* buffer = (unsigned char*)malloc(4 * sizeof(unsigned char));
-		if (buffer == NULL) {
-			return 0;
-		}
+typedef struct ScannedItem {
+	char item[100];
+	struct ScannedItem* next;
+} ScannedItem;
 
-		const int readBytes = fscanf(file, "%s", buffer);
-		if (readBytes < 0) 
-		{ 
-			break;
-		}
+typedef struct HeadPointer {
+	ScannedItem* head;
+} HeadPointer;
 
-		array[index] = *buffer;
-		++index;
-		array = realloc(array, (index + 1) * sizeof(int));
-		free(buffer); 
+HeadPointer* createNewBox() {
+	ScannedItem* item = malloc(sizeof(ScannedItem));
+	if (item == NULL) {
+		return NULL;
 	}
 
-	return index + 1;
+	HeadPointer* pointer = malloc(sizeof(HeadPointer));
+	if (pointer == NULL) {
+		return NULL;
+	}
+
+	item->next = NULL;
+	pointer->head = item;
+	return pointer;
+}
+
+bool isEnd(HeadPointer* pointer) {
+	return pointer->head->next == NULL;
+}
+
+void deleteBox(HeadPointer* pointer) {
+	while (!isEnd(pointer)) {
+		ScannedItem* oldHead = pointer->head;
+		pointer->head = pointer->head->next;
+		free(oldHead);
+	}
+
+	free(pointer->head);
+	free(pointer);
+}
+
+int* convertingCharToInt(HeadPointer* pointer, int size) {
+	ScannedItem* oldHead = pointer->head;
+	pointer->head = pointer->head->next;
+	int* array = (int*)calloc(size, sizeof(int));
+	if (array == NULL) {
+		return array;
+	}
+
+	int index = 0;
+	while (!isEnd(pointer)) {
+		array[index] = atoi(pointer->head->item);
+		pointer->head = pointer->head->next;
+		++index;
+	}
+
+	pointer->head = oldHead;
+	return array;
+}
+
+void addNewItem(HeadPointer* pointer) {
+	ScannedItem* item = malloc(sizeof(ScannedItem));
+	if (item == NULL) {
+		return;
+	}
+
+	item->next = pointer->head;
+	pointer->head = item;
+}
+
+int readFromFile(FILE* file, int* array) {
+	HeadPointer* box = createNewBox();
+	addNewItem(box);
+	int size = 0;
+	while (!feof(file))
+	{
+		const int readBytes = fscanf(file, "%s", box->head->item);
+		if (readBytes < 0) { 
+			break; 
+		}
+
+		addNewItem(box);
+		++size;
+	}
+
+	array = convertingCharToInt(box, size);
+	deleteBox(box);
+	for (int i = 0; i < size; ++i) {
+		printf("%i\n", array[i]);
+	}
+
+	return size;
 }
