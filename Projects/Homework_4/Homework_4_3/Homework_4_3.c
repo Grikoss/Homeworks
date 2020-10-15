@@ -33,3 +33,14 @@ bool isEnd(TelephoneDirectory* book){
 	return book->head->next == NULL;
 }
 
+void deleteTelephoneDirectory(TelephoneDirectory* book) {
+	while (!isEnd(book)) {
+		Contact* oldHead = book->head;
+		book->head = book->head->next;
+		free(oldHead);
+	}
+
+	free(book->head);
+	free(book);
+}
+
