@@ -11,6 +11,6 @@ void main() {
 
 	fgets(string, sizeof(string), stdin);
 	int value = postfixCalculator(string);
-	printf("%i\n", value);
+	printf("Result = %i\n", value);
 	return;
 }
