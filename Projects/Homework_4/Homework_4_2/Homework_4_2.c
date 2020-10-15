@@ -9,14 +9,14 @@ int randomNumber(int minNumber, int maxNumber) {
 	return rand() % (maxNumber + 1 - minNumber) + minNumber;
 }
 
-bool InvalidArraySizeTest(int function(int[], int, int, bool*)) {
+bool invalidArraySizeTest(int function(int[], int, int, bool*)) {
 	int array[5] = { 0 };
 	bool isSuccessful = true;
 	function(array, 5, 4, &isSuccessful);
 	return !isSuccessful;
 }
 
-bool ArraySizeOneTest(int function(int[], int, int, bool*)) {
+bool arraySizeOneTest(int function(int[], int, int, bool*)) {
 	int array[5] = { 0 };
 	bool isSuccessful = false;
 	function(array, 4, 4, &isSuccessful);
@@ -54,9 +54,9 @@ bool workingValuesTestTwo(int function(int[], int, int, bool*)) {
 
 void runSystemTest(int function(int[], int, int, bool*)) {
 	printf("InvalidArraySizeTest\n");
-	printf((InvalidArraySizeTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
+	printf((invalidArraySizeTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("ArraySizeOneTest\n");
-	printf((ArraySizeOneTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
+	printf((arraySizeOneTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("identicalArrayTest\n");
 	printf((identicalArrayTest(function)) ? "-----complete-----\n" : "-----failed-----\n");
 	printf("orderedArrayTest\n");

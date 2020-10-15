@@ -1,9 +1,7 @@
-#pragma once
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include"Reading.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "Reading.h"
 
 typedef struct ScannedItem {
 	char item[100];
@@ -45,22 +43,20 @@ void deleteBox(HeadPointer* pointer) {
 	free(pointer);
 }
 
-int* convertingCharToInt(HeadPointer* pointer, int size) {
+int* convertCharToInt(HeadPointer* pointer, int size) {
 	ScannedItem* oldHead = pointer->head;
 	pointer->head = pointer->head->next;
 	int* array = (int*)calloc(size, sizeof(int));
 	if (array == NULL) {
-		return array;
+		return NULL;
 	}
 
 	int index = 0;
-	while (!isEnd(pointer)) {
-		array[index] = atoi(pointer->head->item);
-		pointer->head = pointer->head->next;
+	for (HeadPointer* i = pointer; !isEnd(i); i->head = i->head->next ) {
+		array[index] = atoi(i->head->item);
 		++index;
 	}
 
-	pointer->head = oldHead;
 	return array;
 }
 
@@ -89,7 +85,7 @@ int readFromFile(FILE* file, int** array) {
 		++size;
 	}
 
-	*array = convertingCharToInt(box, size);
+	*array = convertCharToInt(box, size);
 	deleteBox(box);
 	return size;
 }

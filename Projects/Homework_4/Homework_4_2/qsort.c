@@ -1,8 +1,6 @@
-#pragma once
-
-#include<stdbool.h>
+#include <stdbool.h>
 #include "qsort.h"
-#include<stdio.h>
+#include <stdio.h>
 
 void swapFunctionForArray(int array[], int numberOne, int numberTwo) {
 	const int swap = array[numberOne];
