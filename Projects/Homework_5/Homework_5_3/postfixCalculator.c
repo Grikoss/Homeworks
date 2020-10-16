@@ -113,7 +113,6 @@ void perfomOperation(Pointer* pointer, int sign) {
 	pointer->head = pointer->head->next;
 	--pointer->quantity;
 	free(oldHead);
-	return;
 }
 
 int postfixCalculator(char* string) {
