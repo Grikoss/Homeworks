@@ -115,7 +115,39 @@ void perfomOperation(Pointer* pointer, int sign) {
 	free(oldHead);
 }
 
-int postfixCalculator(char* string) {
+int postfixCalculator(char* string, bool isTestMod) {
+	if (isTestMod){
+		bool isTestFailed = false;
+		if (NULL == createNewStruct()) {
+			printf("Creation error\n");
+			isTestFailed = true;
+		}
+
+		Pointer* pointer = createNewStruct();
+		addNewItem(pointer, "5");
+		if (pointer->quantity != 1) {
+			printf("Add item error\n");
+			isTestFailed = true;
+		}
+
+		if (determineSign("+") != 1 || determineSign("f") != 0) {
+			printf("Determine sign error\n");
+			isTestFailed = true;
+		}
+
+		addNewItem(pointer, "5");
+		perfomOperation(pointer, 1);
+		if (pointer->quantity != 1 || pointer->head->item != 10) {
+			printf("Operation error\n");
+			isTestFailed = true;
+		}
+
+		deleteStruct(pointer);
+		if (isTestFailed) {
+			exit(0);
+		}
+	}
+
 	Pointer* pointer = createNewStruct();
 	char* subString = strtok(string, " ");
 	while (subString != NULL) {
