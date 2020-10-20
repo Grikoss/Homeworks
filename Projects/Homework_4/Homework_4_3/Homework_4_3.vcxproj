@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Homework_4_3.c" />
+    <ClCompile Include="main.c" />
     <ClCompile Include="telephoneDirectory.c" />
     <ClCompile Include="telephoneDirectory.h" />
   </ItemGroup>

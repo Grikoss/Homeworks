@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Homework_4_3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="telephoneDirectory.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="telephoneDirectory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
