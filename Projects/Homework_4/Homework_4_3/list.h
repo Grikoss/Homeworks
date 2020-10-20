@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 typedef char* dataType;
 
 typedef struct List List;

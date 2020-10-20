@@ -44,12 +44,7 @@ int deleteList(List** list) {
 		free(i->head);
 	}
 
-	if ((*list)->head != NULL) {
-		return 1;
-	}
-
-	free(*list);
-	return (*list == NULL) ? 0 : 1;
+	return 0;
 }
 
 int addNewElement(List* list, dataType name, dataType telephone) {

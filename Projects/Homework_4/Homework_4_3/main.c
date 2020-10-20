@@ -1,3 +1,5 @@
+#include "listTestModule.h"
+
 void main() {
-	return;
+	runListTest();
 }
