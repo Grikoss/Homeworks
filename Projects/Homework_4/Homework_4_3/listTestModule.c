@@ -1,42 +1,50 @@
-#include "listTestModule.h"
-#include "list.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include "list.h"
+#include "listTestModule.h"
 
-typedef char* dataType;
-
-void errorCodesAreIncorrect() {
-	printf("Error codes are incorrect");
-	exit(0);
-}
-
-void runListTest() {
-	List* list = NULL;
-	int array[3] = { 0 };
-	++array[createList(&list)];
-	bool isEmpty = true;
-	++array[checkEmpty(list, &isEmpty)];
-	if (2 != checkEmpty(NULL, &isEmpty)) {
-		errorCodesAreIncorrect();
+void runModuleTest() {
+	switchTestMod();
+	List* list = createNewList();
+	if (list == NULL) {
+		printf("createNewList test failed\n");
 	}
 
-	dataType testObjectOne = "A";
-	dataType testObjectTwo = "A";
-	++array[addNewElement(list, testObjectOne, testObjectTwo)];
-	if (2 != addNewElement(NULL, testObjectOne, testObjectTwo) || 2 != addNewElement(list, NULL, testObjectTwo) || 2 != addNewElement(list, testObjectOne, NULL)) {
-		errorCodesAreIncorrect();
+	char name[] = "Name";
+	char telephone[] = "Telephone";
+	if (0 != addNewElement(list, name, telephone) || 2 != addNewElement(NULL, NULL, NULL)) {
+		printf("addNewElement test failed\n");
 	}
 
-	++array[deleteList(&list)];
-	list = NULL;
-	if (2 != deleteList(&list)) {
-		errorCodesAreIncorrect();
+	if (isEnd(list) || !isEnd(NULL)) {
+		printf("isEnd test failed\n");
 	}
 
-	if (array[1] || array[2]) {
-		for (int i = 0; i < 3; ++i) {
-			printf("Number of error codes %i = %i\n", i, array[i]);
+	char* stringOne = NULL;
+	char* stringTwo = NULL;
+	if (getElement(NULL, &stringOne, &stringTwo) != 2 || getElement(list, &stringOne, &stringTwo) != 0) {
+		printf("getElement test failed\n");
+	}
+	else {
+		if (getElement(list, &stringOne, &stringTwo) != -1) {
+			printf("getElement test failed\n");
 		}
 	}
+
+	if (strcmp(searchElement(list, name, true), stringTwo) != 0) {
+		printf("searchElement test failed\n");
+	}
+	else {
+		if (strcmp(searchElement(list, stringTwo, false), name) != 0) {
+			printf("searchElement test failed\n");
+		}
+	}
+
+	if (0 != deleteList(list) || 2 != deleteList(NULL)) {
+		printf("deleteList test failed\n");
+	}
+
+	switchTestMod();
 }

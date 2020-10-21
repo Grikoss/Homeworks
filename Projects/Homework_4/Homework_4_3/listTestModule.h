@@ -1,4 +1,3 @@
 #pragma once
 
-// Запускает проверку структуры
-void runListTest();
+void runModuleTest(void);
