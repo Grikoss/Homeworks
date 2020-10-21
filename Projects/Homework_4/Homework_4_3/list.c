@@ -108,6 +108,10 @@ int addNewElement(List* list, char* name, char* telephone) {
 		}
 	}
 
+	if (list->quantity >= 100) {
+		return -1;
+	}
+
 	Element* element = malloc(sizeof(Element));
 	if (element == NULL) {
 		if (isTestModOn) {
