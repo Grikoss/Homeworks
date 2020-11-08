@@ -142,8 +142,6 @@
     <ClCompile Include="listTestModule.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="list.c" />
-    <ClCompile Include="telephoneDirectory.c" />
-    <ClCompile Include="telephoneDirectory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="list.h" />

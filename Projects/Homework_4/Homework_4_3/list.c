@@ -5,24 +5,6 @@
 #include "list.h"
 
 typedef char dataType;
-bool isTestModOn = false;
-void switchTestMod() {
-	isTestModOn = !isTestModOn;
-}
-
-void decodeError(int code) {
-	switch (code)
-	{
-	case(1):
-		printf("Memory allocation error\n");
-
-	case (2):
-		printf("NULL ptr input error\n");
-
-	default:
-		exit(0);
-	}
-}
 
 typedef struct Element {
 	dataType* name;
@@ -32,46 +14,29 @@ typedef struct Element {
 
 typedef struct List {
 	struct Element* head;
-	struct Element* point;
 	int quantity;
 } List;
 
 List* createNewList(void) {
 	Element* element = calloc(1, sizeof(Element));
 	if (element == NULL) {
-		if (isTestModOn) {
-			return NULL;
-		}
-		else {
-			decodeError(1);
-		}
+		return NULL;
 	}
 
 	List* list = calloc(1, sizeof(List));
 	if (list == NULL) {
-		if (isTestModOn) {
-			return NULL;
-		}
-		else {
-			decodeError(1);
-		}
+		return NULL;
 	}
 
 	element->next = NULL;
 	list->quantity = 0;
 	list->head = element;
-	list->point = list->head;
 	return list;
 }
 
 bool isEnd(List* list) {
 	if (list == NULL || list->head == NULL) {
-		if (isTestModOn) {
-			return true;
-		}
-		else {
-			decodeError(2);
-		}
+		return true;
 	}
 
 	return list->head->next == NULL;
@@ -79,12 +44,7 @@ bool isEnd(List* list) {
 
 int deleteList(List* list) {
 	if (list == NULL) {
-		if (isTestModOn) {
-			return 2;
-		}
-		else {
-			decodeError(2);
-		}
+		return 0;
 	}
 
 	while (!isEnd(list)) {
@@ -100,12 +60,7 @@ int deleteList(List* list) {
 
 int addNewElement(List* list, char* name, char* telephone) {
 	if (list == NULL || name == NULL || telephone == NULL) {
-		if (isTestModOn) {
-			return 2;
-		}
-		else {
-			decodeError(2);
-		}
+			return 0;
 	}
 
 	if (list->quantity >= 100) {
@@ -114,52 +69,28 @@ int addNewElement(List* list, char* name, char* telephone) {
 
 	Element* element = malloc(sizeof(Element));
 	if (element == NULL) {
-		if (isTestModOn) {
-			return 1;
-		}
-		else {
-			decodeError(1);
-		}
+		return 1;
 	}
 
 	element->name = name;
 	element->telephone = telephone;
 	element->next = list->head;
 	list->head = element;
-	list->point = list->head;
 	++list->quantity;
 	return 0;
 }
 
-int getElement(List* list, dataType** name, dataType** telephone) {
+int getElements(List* list, dataType** name, dataType** telephone) {
 	if (list == NULL) {
-		if (isTestModOn) {
-			return 2;
-		}
-		else {
-			decodeError(2);
-		}
+			return 0;
 	}
 
-	if (list->point->next != NULL) {
-		*name = list->point->name;
-		*telephone = list->point->telephone;
-		list->point = list->point->next;
-		return 0;
-	}
-
-	list->point = list->head;
-	return -1;
+	return 0;
 }
 
 dataType* searchElement(List* list, dataType* input, bool isSearchByName) {
 	if (list == NULL || input == NULL) {
-		if (isTestModOn) {
-			return NULL;
-		}
-		else {
-			decodeError(2);
-		}
+		return NULL;
 	}
 
 	if (isSearchByName) {
