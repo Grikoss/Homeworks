@@ -14,6 +14,6 @@ int deleteList(List* list);
 
 int addNewElement(List* list, char* name, char* telephone);
 
-int getElements(List* list, dataType** name, dataType** telephone);
+dataType** getElements(List* list);
 
 dataType* searchElement(List* list, dataType* input, bool isSearchByName);

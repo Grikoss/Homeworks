@@ -80,12 +80,21 @@ int addNewElement(List* list, char* name, char* telephone) {
 	return 0;
 }
 
-int getElements(List* list, dataType** name, dataType** telephone) {
+dataType** getElements(List* list) {
 	if (list == NULL) {
-			return 0;
+			return NULL;
 	}
 
-	return 0;
+	int counter = 0;
+	dataType** output = malloc(sizeof(dataType**) * 200);
+	for (List* i = list; !isEnd(i); i->head = i->head->next) {
+		output[counter] = (i->head->name);
+		++counter;
+		output[counter] = (i->head->telephone);
+		++counter;
+	}
+
+	return output;
 }
 
 dataType* searchElement(List* list, dataType* input, bool isSearchByName) {

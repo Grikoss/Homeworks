@@ -21,23 +21,21 @@ void runModuleTest() {
 		printf("isEnd test failed\n");
 	}
 
-	char* stringOne = NULL;
-	char* stringTwo = NULL;
-	if (getElements(NULL, &stringOne, &stringTwo) != 0) {
-		printf("getElement test failed\n");
-	}
-	else {
-		if (getElements(list, &stringOne, &stringTwo) != 0) {
-			printf("getElement test failed\n");
-		}
-	}
-
-	if (searchElement(list, stringTwo, false) != NULL) {
+	if (searchElement(list, NULL, false) != NULL) {
 		printf("searchElement test failed\n");
 	}
 	else {
 		if (searchElement(list, name, true) == NULL) {
 			printf("searchElement test failed\n");
+		}
+	}
+
+	if (getElements(NULL) != NULL) {
+		printf("getElements test failed\n");
+	}
+	else {
+		if (getElements(list) == NULL) {
+			printf("getElements test failed\n");
 		}
 	}
 
