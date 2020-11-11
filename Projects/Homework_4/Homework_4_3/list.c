@@ -34,12 +34,12 @@ List* createNewList(void) {
 	return list;
 }
 
-bool isEnd(List* list) {
-	if (list == NULL || list->head == NULL) {
+bool isEnd(Element* element) {
+	if (element == NULL) {
 		return true;
 	}
 
-	return list->head->next == NULL;
+	return element->next == NULL;
 }
 
 int deleteList(List* list) {
@@ -47,7 +47,7 @@ int deleteList(List* list) {
 		return 0;
 	}
 
-	while (!isEnd(list)) {
+	while (!isEnd(list->head)) {
 		Element* oldHead = list->head;
 		list->head = list->head->next;
 		free(oldHead);
@@ -60,16 +60,16 @@ int deleteList(List* list) {
 
 int addNewElement(List* list, char* name, char* telephone) {
 	if (list == NULL || name == NULL || telephone == NULL) {
-			return 0;
+			return -1;
 	}
 
 	if (list->quantity >= 100) {
-		return -1;
+		return -2;
 	}
 
 	Element* element = malloc(sizeof(Element));
 	if (element == NULL) {
-		return 1;
+		return -1;
 	}
 
 	element->name = name;
@@ -86,11 +86,15 @@ dataType** getElements(List* list) {
 	}
 
 	int counter = 0;
-	dataType** output = malloc(sizeof(dataType**) * 200);
-	for (List* i = list; !isEnd(i); i->head = i->head->next) {
-		output[counter] = (i->head->name);
+	dataType** output = (dataType**)malloc(sizeof(dataType*) * 200);
+	if (output == NULL) {
+		return NULL;
+	}
+
+	for (Element* i = list->head; !isEnd(i); i = i->next) {
+		output[counter] = i->name;
 		++counter;
-		output[counter] = (i->head->telephone);
+		output[counter] = i->telephone;
 		++counter;
 	}
 
@@ -103,19 +107,27 @@ dataType* searchElement(List* list, dataType* input, bool isSearchByName) {
 	}
 
 	if (isSearchByName) {
-		for (List* i = list; !isEnd(i); i->head = i->head->next) {
-			if (strcmp(i->head->name, input) == 0) {
-				return i->head->telephone;
+		for (Element* i = list->head; !isEnd(i); i = i->next) {
+			if (strcmp(i->name, input) == 0) {
+				return i->telephone;
 			}
 		}
 	}
 	else {
-		for (List* i = list; !isEnd(i); i->head = i->head->next) {
-			if (strcmp(i->head->telephone, input) == 0) {
-				return i->head->name;
+		for (Element* i = list->head; !isEnd(i); i = i->next) {
+			if (strcmp(i->telephone, input) == 0) {
+				return i->name;
 			}
 		}
 	}
 
 	return NULL;
+}
+
+int getQuantity(List* list) {
+	if (list == NULL) {
+		return 0;
+	}
+
+	return list->quantity;
 }
