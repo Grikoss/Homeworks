@@ -101,3 +101,15 @@ int getQuantity(int* quantity, List* list) {
 	*quantity = list->quantity;
 	return 0;
 }
+
+char* getLastItem(List* list) {
+	if (list == NULL || isEnd(list->head)) {
+		return NULL;
+	}
+
+	if (list->head->item == NULL) {
+		return NULL;
+	}
+
+	return list->head->item;
+}

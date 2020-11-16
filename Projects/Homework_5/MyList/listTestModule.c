@@ -34,6 +34,10 @@ void runListTestModule(void) {
 		}
 	}
 
+	if (getLastItem(list) == NULL) {
+		printf("getLastItem test one failed\n");
+	}
+
 	if (deleteElement(NULL) != 1) {
 		printf("deleteElement test failed");
 	}
@@ -51,6 +55,10 @@ void runListTestModule(void) {
 				}
 			}
 		}
+	}
+
+	if (getLastItem(list) != NULL) {
+		printf("getLastItem test two failed\n");
 	}
 
 	if (deleteList(NULL) != 1) {

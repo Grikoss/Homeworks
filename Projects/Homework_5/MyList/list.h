@@ -16,3 +16,6 @@ int deleteElement(List* list);
 
 //Записывает количество элементов
 int getQuantity(int* quantity, List* list);
+
+//Возвращает последний предмет, записанный в стек
+char* getLastItem(List* list);
