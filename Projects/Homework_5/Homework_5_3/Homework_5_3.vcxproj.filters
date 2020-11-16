@@ -21,9 +21,15 @@
     <ClCompile Include="postfixCalculator.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testModule.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="postfixCalculator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,31 +32,36 @@ Pointer* createNewStruct(void) {
 	return pointer;
 }
 
-bool isEnd(Pointer* pointer) {
-	return pointer->head->next == NULL;
+bool isEnd(Cell* cell) {
+	return cell->next == NULL;
 }
 
-void deleteStruct(Pointer* pointer) {
-	while (!isEnd(pointer)) {
-		Cell* oldHead = pointer->head;
-		pointer->head = pointer->head->next;
-		free(oldHead);
+int deleteStruct(Pointer** pointer) {
+	if (*pointer == NULL) {
+		return 1;
 	}
 
-	free(pointer->head);
-	free(pointer);
+	while (!isEnd((*pointer)->head)) {
+		Cell* oldHead = (*pointer)->head;
+		(*pointer)->head = (*pointer)->head->next;
+	}
+
+	free((*pointer)->head);
+	free((*pointer));
+	return 0;
 }
 
-void addNewItem(Pointer* pointer, char* inputItem) {
+int addNewItem(Pointer* pointer, char* inputItem) {
 	Cell* cell = malloc(sizeof(Cell));
 	if (cell == NULL) {
-		return;
+		return 1;
 	}
 	
 	cell->item = atoi(inputItem);
 	cell->next = pointer->head;
 	pointer->head = cell;
 	++pointer->quantity;
+	return 0;
 }
 
 int determineSign(char* subString) {
@@ -79,15 +84,13 @@ int determineSign(char* subString) {
 	return 0;
 }
 
-void perfomOperation(Pointer* pointer, int sign) {
+int perfomOperation(Pointer* pointer, int sign) {
 	if (pointer->head->next == NULL) {
-		printf("Invalid input");
-		exit(0);
+		return 1;
 	}
 
 	if (pointer->head->next->next == NULL) {
-		printf("Invalid input");
-		exit(0);
+		return 1;
 	}
 
 	int valueOne = pointer->head->item;
@@ -113,41 +116,10 @@ void perfomOperation(Pointer* pointer, int sign) {
 	pointer->head = pointer->head->next;
 	--pointer->quantity;
 	free(oldHead);
+	return 0;
 }
 
-int postfixCalculator(char* string, bool isTestMod) {
-	if (isTestMod){
-		bool isTestFailed = false;
-		if (NULL == createNewStruct()) {
-			printf("Creation error\n");
-			isTestFailed = true;
-		}
-
-		Pointer* pointer = createNewStruct();
-		addNewItem(pointer, "5");
-		if (pointer->quantity != 1) {
-			printf("Add item error\n");
-			isTestFailed = true;
-		}
-
-		if (determineSign("+") != 1 || determineSign("f") != 0) {
-			printf("Determine sign error\n");
-			isTestFailed = true;
-		}
-
-		addNewItem(pointer, "5");
-		perfomOperation(pointer, 1);
-		if (pointer->quantity != 1 || pointer->head->item != 10) {
-			printf("Operation error\n");
-			isTestFailed = true;
-		}
-
-		deleteStruct(pointer);
-		if (isTestFailed) {
-			exit(0);
-		}
-	}
-
+int postfixCalculator(int* result, char* string) {
 	Pointer* pointer = createNewStruct();
 	char* subString = strtok(string, " ");
 	while (subString != NULL) {
@@ -156,18 +128,19 @@ int postfixCalculator(char* string, bool isTestMod) {
 			addNewItem(pointer, subString);
 		}
 		else {
-			perfomOperation(pointer, sign);
+			if (perfomOperation(pointer, sign) == 1) {
+				return 1;
+			}
 		}
 
 		subString = strtok(NULL, " ");
 	}
 
 	if (pointer->quantity != 1) {
-		printf("Invalid input");
-		exit(0);
+		return 1;
 	}
 
-	int result = pointer->head->item;
-	deleteStruct(pointer);
-	return result;
+	*result = pointer->head->item;
+	deleteStruct(&pointer);
+	return 0;
 }

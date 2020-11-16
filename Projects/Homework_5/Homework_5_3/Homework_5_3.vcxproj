@@ -141,9 +141,11 @@
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="postfixCalculator.c" />
+    <ClCompile Include="testModule.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="postfixCalculator.h" />
+    <ClInclude Include="testModule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
