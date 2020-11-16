@@ -4,66 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct Cell {
-	int item; 
-	struct Cell* next;
-} Cell;
-
-typedef struct Pointer {
-	struct Cell* head;
-	int quantity;
-} Pointer;
-
-Pointer* createNewStruct(void) {
-	Cell* cell = malloc(sizeof(Cell));
-	if (cell == NULL) {
-		return NULL;
-	}
-
-	Pointer* pointer = malloc(sizeof(Pointer));
-	if (pointer == NULL) {
-		return NULL;
-	}
-
-	cell->item = 0;
-	cell->next = NULL;
-	pointer->quantity = 0;
-	pointer->head = cell;
-	return pointer;
-}
-
-bool isEnd(Cell* cell) {
-	return cell->next == NULL;
-}
-
-int deleteStruct(Pointer** pointer) {
-	if (*pointer == NULL) {
-		return 1;
-	}
-
-	while (!isEnd((*pointer)->head)) {
-		Cell* oldHead = (*pointer)->head;
-		(*pointer)->head = (*pointer)->head->next;
-	}
-
-	free((*pointer)->head);
-	free((*pointer));
-	return 0;
-}
-
-int addNewItem(Pointer* pointer, char* inputItem) {
-	Cell* cell = malloc(sizeof(Cell));
-	if (cell == NULL) {
-		return 1;
-	}
-	
-	cell->item = atoi(inputItem);
-	cell->next = pointer->head;
-	pointer->head = cell;
-	++pointer->quantity;
-	return 0;
-}
-
 int determineSign(char* subString) {
 	if (strcmp(subString, "+") == 0 || strcmp(subString, "+\n") == 0) {
 		return 1;
