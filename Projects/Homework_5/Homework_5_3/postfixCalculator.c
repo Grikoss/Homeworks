@@ -1,8 +1,9 @@
-#include "postfixCalculator.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "../MyList/list.h"
+#include "postfixCalculator.h"
 
 int determineSign(char* subString) {
 	if (strcmp(subString, "+") == 0 || strcmp(subString, "+\n") == 0) {
@@ -24,7 +25,7 @@ int determineSign(char* subString) {
 	return 0;
 }
 
-int perfomOperation(Pointer* pointer, int sign) {
+int perfomOperation(List* pointer, int sign) {
 	if (pointer->head->next == NULL) {
 		return 1;
 	}
@@ -60,12 +61,12 @@ int perfomOperation(Pointer* pointer, int sign) {
 }
 
 int postfixCalculator(int* result, char* string) {
-	Pointer* pointer = createNewStruct();
+	List* list = createNewList();
 	char* subString = strtok(string, " ");
 	while (subString != NULL) {
 		int sign = determineSign(subString);
 		if (sign == 0) {
-			addNewItem(pointer, subString);
+			addElement(list, subString);
 		}
 		else {
 			if (perfomOperation(pointer, sign) == 1) {
