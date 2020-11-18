@@ -2,7 +2,7 @@
 #include "postfixCalculator.h"
 
 void runTestModule(void) {
-	char string[] = "-558 67655 - 10 * 10 /";
+	char string[] = "-558 67655 - -10 * 10 /";
 	char wrongStringOne[] = "f g s d";
 	char wrongStringTwo[] = "5 +";
 	char wrongStringThree[] = "5 5 / /";
