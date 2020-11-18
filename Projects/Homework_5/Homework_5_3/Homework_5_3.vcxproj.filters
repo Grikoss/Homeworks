@@ -24,6 +24,9 @@
     <ClCompile Include="testModule.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\MyList\list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="postfixCalculator.h">

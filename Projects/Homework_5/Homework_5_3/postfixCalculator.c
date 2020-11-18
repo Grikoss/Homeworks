@@ -1,87 +1,187 @@
 #include <stdlib.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
 #include "../MyList/list.h"
 #include "postfixCalculator.h"
 
+void doABarrelRoll(char* input, int begin, int end) {
+	int step = (end - begin + 1) / 2;
+	for (int i = 0; i < step; ++i) {
+		input[begin + i] += input[end - i];
+		input[end - i] = input[begin + i] - input[end - i];
+		input[begin + i] -= input[end - i];
+	}
+}
+
+char* convertIntToString(int value) {
+	char* tmp = NULL;
+	char* buffer = (char*)malloc(sizeof(char) * 2);
+	int size = 2;
+	if (buffer == NULL) {
+		return NULL;
+	}
+
+	int count = 0;
+	if (value == 0) {
+		buffer[count] = '0';
+		++count;
+	}
+
+	if (value < 0) {
+		buffer[count] = '-';
+		++count;
+	}
+
+	while (abs(value) > 0) {
+		if (count <= size - 1) {
+			size *= 2;
+			tmp = (char*)realloc(buffer, sizeof(char) * size);
+			if (tmp == NULL) {
+				free(buffer);
+				return NULL;
+			}
+			else {
+				buffer = tmp;
+			}
+		}
+
+		buffer[count] = abs(value % 10) + 48;
+		count++;
+
+		value /= 10;
+	}
+
+	buffer[count] = '\0';
+	if (count > 1) {
+		int begin = 0;
+		if (buffer[0] == '-') {
+			begin = 1;
+		}
+
+		doABarrelRoll(buffer, begin, count - 1);
+	}
+
+	return buffer;
+}
+
 int determineSign(char* subString) {
-	if (strcmp(subString, "+") == 0 || strcmp(subString, "+\n") == 0) {
+	if (subString[0] == '+') {
 		return 1;
 	}
 
-	if (strcmp(subString, "-") == 0 || strcmp(subString, "-\n") == 0) {
+	if (subString[0] == '-' && subString[1] == '\0') {
 		return 2;
 	}
 
-	if (strcmp(subString, "*") == 0 || strcmp(subString, "*\n") == 0) {
+	if (subString[0] == '*') {
 		return 3;
 	}
 
-	if (strcmp(subString, "/") == 0 || strcmp(subString, "/\n") == 0) {
+	if (subString[0] == '/') {
 		return 4;
 	}
 
 	return 0;
 }
 
-int perfomOperation(List* pointer, int sign) {
-	if (pointer->head->next == NULL) {
+int perfomOperation(List* list, int sign) {
+	if (getLastItem(list) == NULL) {
 		return 1;
 	}
 
-	if (pointer->head->next->next == NULL) {
+	int valueOne = atoi(getLastItem(list));
+	deleteElement(list);
+
+	if (getLastItem(list) == NULL) {
 		return 1;
 	}
-
-	int valueOne = pointer->head->item;
-	int valueTwo = pointer->head->next->item;
-
+	
+	int valueTwo = atoi(getLastItem(list));
+	deleteElement(list);
+	int result = 1;
 	if (sign == 1) {
-		pointer->head->next->item = valueTwo + valueOne;
+		result = valueTwo + valueOne;
 	}
 
 	if (sign == 2) {
-		pointer->head->next->item = valueTwo - valueOne;
+		result = valueTwo - valueOne;
 	}
 
 	if (sign == 3) {
-		pointer->head->next->item = valueTwo * valueOne;
+		result = valueTwo * valueOne;
 	}
 
 	if (sign == 4) {
-		pointer->head->next->item = valueTwo / valueOne;
+		result = valueTwo / valueOne;
 	}
 
-	Cell* oldHead = pointer->head;
-	pointer->head = pointer->head->next;
-	--pointer->quantity;
-	free(oldHead);
+	char* string = convertIntToString(result);
+	addElement(list, string);
 	return 0;
 }
 
-int postfixCalculator(int* result, char* string) {
+int postfixCalculator(int* result, char* input) {
 	List* list = createNewList();
-	char* subString = strtok(string, " ");
-	while (subString != NULL) {
-		int sign = determineSign(subString);
-		if (sign == 0) {
-			addElement(list, subString);
+	int intputCount = 0;
+	char currentCharacter = input[intputCount];
+	++intputCount;
+	while (currentCharacter != '\n' && currentCharacter != '\0') {
+		int count = 0;
+		int size = 1;
+		char* tmp = NULL;
+		char* buffer = (char*)malloc(sizeof(char));
+		if (buffer == NULL) {
+			deleteList(&list);
+			return 1;
+		}
+
+		while ((currentCharacter >= '0' && currentCharacter <= '9') || currentCharacter == '+' || currentCharacter == '-' || currentCharacter == '*' || currentCharacter == '/') {
+			if (count <= size - 1) {
+				size *= 2;
+				tmp = (char*)realloc(buffer, sizeof(char) * size);
+				if (tmp == NULL) {
+					free(buffer);
+					deleteList(&list);
+					return 1;
+				}
+				else {
+					buffer = tmp;
+				}
+			}
+
+			buffer[count] = currentCharacter;
+			++count;
+			currentCharacter = input[intputCount];
+			++intputCount;
+		}
+
+		buffer[count] = '\0';
+		if (count <= 0) {
+			free(buffer);
 		}
 		else {
-			if (perfomOperation(pointer, sign) == 1) {
-				return 1;
+			int sign = determineSign(buffer);
+			if (sign == 0) {
+				addElement(list, buffer);
+			}
+			else {
+				free(buffer);
+				if (perfomOperation(list, sign) == 1) {
+					deleteList(&list);
+					return 1;
+				}
 			}
 		}
 
-		subString = strtok(NULL, " ");
+		currentCharacter = input[intputCount];
+		++intputCount;
 	}
 
-	if (pointer->quantity != 1) {
+	int quantity = 0;
+	if (getQuantity(&quantity, list), quantity != 1) {
+		deleteList(&list);
 		return 1;
 	}
 
-	*result = pointer->head->item;
-	deleteStruct(&pointer);
+	*result = atoi(getLastItem(list));
+	deleteList(&list);
 	return 0;
 }

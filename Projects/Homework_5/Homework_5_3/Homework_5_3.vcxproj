@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\MyList\list.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="postfixCalculator.c" />
     <ClCompile Include="testModule.c" />
