@@ -39,7 +39,7 @@ char* putToString(char* output, char* input, int* size, int* count) {
 
 	int inputCount = 0;
 	while (input[inputCount] != '\0') {
-		if (*count <= *size - 1) {
+		if ((*count) >= (*size - 1)) {
 			*size *= 2;
 			tmp = (char*)realloc(output, sizeof(char) * *size);
 			if (tmp == NULL) {
@@ -126,7 +126,6 @@ char* marshallingYard(char* input) {
 		return NULL;
 	}
 
-	int previousMod = 5;
 	int outputCount = 0;
 	int outputSize = 1;
 	int intputCount = 0;
@@ -143,14 +142,14 @@ char* marshallingYard(char* input) {
 			return NULL;
 		}
 
-		if (currentCharacter == '+' || currentCharacter == '-' || currentCharacter == '*' || currentCharacter == '/' || currentCharacter == '(' || currentCharacter == ')') {
+		if (currentCharacter == '+' || currentCharacter == '*' || currentCharacter == '/' || currentCharacter == '(' || currentCharacter == ')') {
 			buffer[count] = currentCharacter;
 			++count;
 			currentCharacter = input[intputCount];
 			++intputCount;
 		}
 		else {
-			while ((currentCharacter >= '0' && currentCharacter <= '9')) {
+			while ((currentCharacter >= '0' && currentCharacter <= '9') || currentCharacter == '-') {
 				if (count <= size - 1) {
 					size *= 2;
 					tmp = (char*)realloc(buffer, sizeof(char) * size);
@@ -178,35 +177,6 @@ char* marshallingYard(char* input) {
 		}
 		else {
 			int mod = determineMod(buffer);
-			if ((mod == 0) && (previousMod == 3 || previousMod == 0)) {
-				free(buffer);
-				free(output);
-				deleteList(&list);
-				return NULL;
-			}
-
-			if ((mod == 1 || mod == 2) && (previousMod == 1 || previousMod == 2 || previousMod == 4)) {
-				free(buffer);
-				free(output);
-				deleteList(&list);
-				return NULL;
-			}
-
-			if ((mod == 3) && (previousMod == 1 || previousMod == 2)) {
-				free(buffer);
-				free(output);
-				deleteList(&list);
-				return NULL;
-			}
-
-			if ((mod == 4) && (previousMod == 0 || previousMod == 3)) {
-				free(buffer);
-				free(output);
-				deleteList(&list);
-				return NULL;
-			}
-
-			previousMod = mod;
 			if (mod == 0) {
 				output = putToString(output, buffer, &outputSize, &outputCount);
 				free(buffer);
@@ -224,10 +194,25 @@ char* marshallingYard(char* input) {
 			}
 		}
 
-		if (currentCharacter != '+' && currentCharacter != '-' && currentCharacter != '*' && currentCharacter != '/' && currentCharacter != '(' && currentCharacter != ')') {
+		if (currentCharacter == '\0' || currentCharacter == '\n') {
+			break;
+		}
+
+		if ((currentCharacter < '0' || currentCharacter > '9') && currentCharacter != '+' && currentCharacter != '-' && currentCharacter != '*' && currentCharacter != '/' && currentCharacter != '(' && currentCharacter != ')') {
 			currentCharacter = input[intputCount];
 			++intputCount;
 		}
+	}
+
+	while (getLastItem(list) != NULL) {
+		if (determineMod(getLastItem(list)) == 3) {
+			free(output);
+			deleteList(&list);
+			return NULL;
+		}
+
+		output = putToString(output, getLastItem(list), &outputSize, &outputCount);
+		deleteElement(list);
 	}
 
 	int quantity = 1;
