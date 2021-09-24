@@ -4,16 +4,15 @@
 #include <stdio.h>
 #include "list.h"
 
-typedef char dataType;
-
 typedef struct Element {
-	dataType* name;
-	dataType* telephone;
+	char* name;
+	char* telephone;
 	struct Element* next;
 } Element;
 
 typedef struct List {
-	struct Element* head;
+	Element* head;
+	Element* pointer;
 	int quantity;
 } List;
 
@@ -29,8 +28,11 @@ List* createNewList(void) {
 	}
 
 	element->next = NULL;
+	element->name = NULL;
+	element->telephone = NULL;
 	list->quantity = 0;
 	list->head = element;
+	list->pointer = NULL;
 	return list;
 }
 
@@ -44,7 +46,7 @@ bool isEnd(Element* element) {
 
 int deleteList(List* list) {
 	if (list == NULL) {
-		return 0;
+		return 1;
 	}
 
 	while (!isEnd(list->head)) {
@@ -60,16 +62,16 @@ int deleteList(List* list) {
 
 int addNewElement(List* list, char* name, char* telephone) {
 	if (list == NULL || name == NULL || telephone == NULL) {
-			return -1;
+			return 1;
 	}
 
 	if (list->quantity >= 100) {
-		return -2;
+		return 2;
 	}
 
 	Element* element = malloc(sizeof(Element));
 	if (element == NULL) {
-		return -1;
+		return 3;
 	}
 
 	element->name = name;
@@ -80,29 +82,23 @@ int addNewElement(List* list, char* name, char* telephone) {
 	return 0;
 }
 
-dataType** getElements(List* list) {
-	if (list == NULL) {
-			return NULL;
+int getElements(List* list, char** name, char** telephne) {
+	if (list == NULL || list->head == NULL || list->quantity == 0) {
+		return 1;
 	}
 
-	int counter = 0;
-	dataType** output = (dataType**)malloc(sizeof(dataType*) * 200);
-	if (output == NULL) {
-		return NULL;
+	if (list->pointer == NULL) {
+		resetPointer(list);
 	}
-
-	for (Element* i = list->head; !isEnd(i); i = i->next) {
-		output[counter] = i->name;
-		++counter;
-		output[counter] = i->telephone;
-		++counter;
-	}
-
-	return output;
+	
+	*name = list->pointer->name;
+	*telephne = list->pointer->telephone;
+	list->pointer = list->pointer->next;
+	return 0;
 }
 
-dataType* searchElement(List* list, dataType* input, bool isSearchByName) {
-	if (list == NULL || input == NULL) {
+char* searchElement(List* list, char* input, bool isSearchByName) {
+	if (list == NULL || input == NULL || list->head == NULL || list->quantity == 0) {
 		return NULL;
 	}
 
@@ -130,4 +126,13 @@ int getQuantity(List* list) {
 	}
 
 	return list->quantity;
+}
+
+int resetPointer(List* list) {
+	if (list == NULL) {
+		return 1;
+	}
+
+	list->pointer = list->head;
+	return 0;
 }

@@ -1,4 +1,8 @@
 #pragma once
 
+#include <stdbool.h>
+
+
+
 //Запускает тест
-void runModuleTest(void);
+bool runModuleTest(void);

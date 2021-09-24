@@ -28,8 +28,8 @@ int getString(char* input, int size, FILE* file) {
 	return 0;
 }
 
-void main() {
-	runModuleTest();
+int main() {
+	/*runModuleTest();
 	List* list = createNewList();
 	FILE* fileRead = fopen("telephoneDirectory.txt", "r");
 	if (fileRead != NULL) {
@@ -176,5 +176,9 @@ void main() {
 	deleteList(list);
 	if (arrayOfString != NULL) {
 		free(arrayOfString);
+	}*/
+if (!runModuleTest()) {
+	printf("List test failed");
+	return 1;
 	}
 }

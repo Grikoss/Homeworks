@@ -5,50 +5,79 @@
 #include "list.h"
 #include "listTestModule.h"
 
-typedef char datatype;
-
-void runModuleTest() {
+bool runModuleTest() {
 	List* list = createNewList();
 	if (list == NULL) {
-		printf("createNewList test failed\n");
+		return false;
 	}
+
 
 	char name[] = "Name";
 	char telephone[] = "Telephone";
-	if (0 != addNewElement(list, name, telephone) || -1 != addNewElement(NULL, NULL, NULL)) {
-		printf("addNewElement test failed\n");
+	if (addNewElement(NULL, NULL, NULL) != 1 || addNewElement(list, name, telephone) != 0) {
+		return false;
 	}
 
-	if (!isEnd(NULL)) {
-		printf("isEnd test failed\n");
+	char nameTest[] = "NameTest";
+	char telephoneTest[] = "TelephoneTest";
+	for (int i = 0; i < 98; ++i) {
+		addNewElement(list, nameTest, telephoneTest);
 	}
 
-	if (getElements(NULL) != NULL) {
-		printf("getElements test failed\n");
-	}
-	else {
-		datatype** testArray = getElements(list);
-		if (testArray == NULL) {
-			printf("getElements test failed\n");
-		}
+	addNewElement(list, name, telephone);
 
-		free(testArray);
+	if (addNewElement(list, nameTest, telephoneTest) != 2) {
+		return false;
 	}
 
-	if (searchElement(list, NULL, false) != NULL) {
-		printf("searchElement test failed\n");
-	}
-	else {
-		if (searchElement(list, name, true) == NULL) {
-			printf("searchElement test failed\n");
-		}
+	List* testList = createNewList();
+	char* outName = NULL;
+	char* outTelephone = NULL;
+	if (getElements(NULL, NULL, NULL) != 1 || getElements(testList, &outName, &outTelephone) != 1) {
+		return false;
 	}
 
-	if (getQuantity(NULL) != 0 || getQuantity(list) != 1) {
-		printf("getQuantity test failed\n");
+	if (getElements(list, &outName, &outTelephone) != 0) {
+		return false;
 	}
 
-	if (0 != deleteList(list) || 0 != deleteList(NULL)) {
-		printf("deleteList test failed\n");
+	if (outName != name || outTelephone != telephone) {
+		return false;
 	}
+
+	getElements(list, &outName, &outTelephone);
+
+	if (outName != nameTest || outTelephone != telephoneTest) {
+		return false;
+	}
+
+	if (resetPointer(NULL) != 1 || resetPointer(list) != 0) {
+		return false;
+	}
+
+	getElements(list, &outName, &outTelephone);
+
+	if (outName != name || outTelephone != telephone) {
+		return false;
+	}
+
+	if (getQuantity(list) != 100 || getQuantity(NULL) != 0 || getQuantity(testList) != 0) {
+		return false;
+	}
+
+	char trap[] = "trap";
+	if (searchElement(NULL, NULL, true) != NULL || searchElement(testList, NULL, true) != NULL ||
+		searchElement(testList, trap, true) != NULL) {
+		return false;
+	}
+
+	if (searchElement(list, nameTest, true) != telephoneTest || searchElement(list, telephoneTest, false) != nameTest) {
+		return false;
+	}
+
+	if (deleteList(NULL) != 1 || deleteList(list) != 0 || deleteList(testList) != 0) {
+		return false;
+	}
+
+	return true;
 }
