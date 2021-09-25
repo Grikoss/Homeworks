@@ -33,7 +33,8 @@ bool runModuleTest() {
 	List* testList = createNewList();
 	char* outName = NULL;
 	char* outTelephone = NULL;
-	if (getElements(NULL, NULL, NULL) != 1 || getElements(testList, &outName, &outTelephone) != 1) {
+	if (getElements(NULL, NULL, NULL) != 1 || getElements(testList, &outName, &outTelephone) != 1 || getElements(list, &outName, NULL) != 1
+	|| getElements(list, NULL, &outTelephone) != 1) {
 		return false;
 	}
 
@@ -45,9 +46,22 @@ bool runModuleTest() {
 		return false;
 	}
 
+	for (int i = 0; i < 98; ++i) {
+		getElements(list, &outName, &outTelephone);
+		if (outName != nameTest || outTelephone != telephoneTest) {
+			return false;
+		}
+	}
+
 	getElements(list, &outName, &outTelephone);
 
-	if (outName != nameTest || outTelephone != telephoneTest) {
+	if (outName != name || outTelephone != telephone) {
+		return false;
+	}
+
+	getElements(list, &outName, &outTelephone);
+
+	if (outName != name || outTelephone != telephone) {
 		return false;
 	}
 

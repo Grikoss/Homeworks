@@ -82,17 +82,17 @@ int addNewElement(List* list, char* name, char* telephone) {
 	return 0;
 }
 
-int getElements(List* list, char** name, char** telephne) {
-	if (list == NULL || list->head == NULL || list->quantity == 0) {
+int getElements(List* list, char** name, char** telephone) {
+	if (list == NULL || list->head == NULL || list->quantity == 0 || name == NULL || telephone == NULL) {
 		return 1;
 	}
 
-	if (list->pointer == NULL) {
+	if (list->pointer == NULL || list->pointer->next == NULL) {
 		resetPointer(list);
 	}
 	
 	*name = list->pointer->name;
-	*telephne = list->pointer->telephone;
+	*telephone = list->pointer->telephone;
 	list->pointer = list->pointer->next;
 	return 0;
 }
