@@ -5,6 +5,8 @@
 #include "list.h"
 #include "listTestModule.h"
 
+const int sizeBookTest = 100;
+
 bool runModuleTest() {
 	List* list = createNewList();
 	if (list == NULL) {
@@ -20,7 +22,7 @@ bool runModuleTest() {
 
 	char nameTest[] = "NameTest";
 	char telephoneTest[] = "TelephoneTest";
-	for (int i = 0; i < 98; ++i) {
+	for (int i = 0; i < (sizeBookTest - 2); ++i) {
 		addNewElement(list, nameTest, telephoneTest);
 	}
 
@@ -46,7 +48,7 @@ bool runModuleTest() {
 		return false;
 	}
 
-	for (int i = 0; i < 98; ++i) {
+	for (int i = 0; i < (sizeBookTest - 2); ++i) {
 		getElements(list, &outName, &outTelephone);
 		if (outName != nameTest || outTelephone != telephoneTest) {
 			return false;
@@ -75,7 +77,7 @@ bool runModuleTest() {
 		return false;
 	}
 
-	if (getQuantity(list) != 100 || getQuantity(NULL) != 0 || getQuantity(testList) != 0) {
+	if (getQuantity(list) != sizeBookTest || getQuantity(NULL) != 0 || getQuantity(testList) != 0) {
 		return false;
 	}
 

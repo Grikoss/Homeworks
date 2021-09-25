@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "list.h"
 
+const int sizeBook = 100;
+
 typedef struct Element {
 	char* name;
 	char* telephone;
@@ -65,7 +67,7 @@ int addNewElement(List* list, char* name, char* telephone) {
 			return 1;
 	}
 
-	if (list->quantity >= 100) {
+	if (list->quantity >= sizeBook) {
 		return 2;
 	}
 
