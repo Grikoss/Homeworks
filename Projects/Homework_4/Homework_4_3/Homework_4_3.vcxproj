@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="file.c" />
+    <ClCompile Include="fileModuleTest.c" />
+    <ClCompile Include="fileModuleTest.h" />
     <ClCompile Include="listTestModule.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="list.c" />
@@ -148,6 +150,10 @@
     <ClInclude Include="file.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="listTestModule.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="telephone.txt" />
+    <Text Include="telephoneTest.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

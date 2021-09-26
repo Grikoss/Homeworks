@@ -6,21 +6,7 @@
 
 const int sizeBuffer = 31;
 
-char* readFromFile() {
-	FILE* file = fopen("telephone.txt", "r");
-	if (file == NULL) {
-		FILE* file = fopen("telephone.txt", "w");
-		if (file == NULL) {
-			return NULL;
-		}
-
-		fclose(file);
-		file = fopen("telephone.txt", "r");
-		if (file == NULL) {
-			return NULL;
-		}
-	}
-
+char* readFromFile(FILE* file) {
 	if (file == NULL) {
 		return NULL;
 	}
@@ -44,14 +30,29 @@ char* readFromFile() {
 	}
 
 	int counter = 0;
-	while (cursor != ' ' && cursor !='\n' && cursor != EOF && cursor != '\0' && counter < (sizeBuffer - 1)) {
+	while (cursor != ' ' && cursor !='\n' && cursor != EOF && cursor != '\0') {
 		buffer[counter] = cursor;
 		cursor = fgetc(file);
 		++counter;
 		if (counter == (sizeBuffer -1)) {
-			buffer[sizeBuffer - 1] = '\0';
+			while (cursor != ' ' && cursor != '\n' && cursor != EOF && cursor != '\0') {
+				cursor = fgetc(file);
+			}
 		}
 	}
 
+	buffer[counter] = '\0';
 	return buffer;
+}
+
+int writeToFile(FILE* file, char* input, char literal) {
+	if (file == NULL || input == NULL) {
+		return 1;
+	}
+
+	fprintf(file, input);
+	literal == '\n' ? fprintf(file, "\n") : 0;
+	literal == ' ' ? fprintf(file, " ") : 0;
+
+	return 0;
 }

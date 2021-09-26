@@ -4,5 +4,5 @@
 
 
 
-//Запускает тест
-bool runModuleTest(void);
+//Запускает теста листов
+bool runListModuleTest(void);

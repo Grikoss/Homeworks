@@ -5,6 +5,7 @@
 #include "list.h"
 #include "listTestModule.h"
 #include "file.h"
+#include "fileModuleTest.h"
 
 int getString(char* input, int size, FILE* file) {
 	while (!feof(file)) {
@@ -178,12 +179,13 @@ int main() {
 	if (arrayOfString != NULL) {
 		free(arrayOfString);
 	}*/
-	if (!runModuleTest()) {
+	if (!runListModuleTest()) {
 		printf("List test failed");
 		return 1;
-		}
+	}
 
-	if (readFromFile() == NULL) {
+	if (!runFileModuleTest()) {
+		printf("File test failed");
 		return 2;
 	}
 }

@@ -7,7 +7,7 @@
 
 const int sizeBookTest = 100;
 
-bool runModuleTest() {
+bool runListModuleTest() {
 	List* list = createNewList();
 	if (list == NULL) {
 		return false;

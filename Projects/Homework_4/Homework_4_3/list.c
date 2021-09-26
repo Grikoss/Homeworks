@@ -90,7 +90,7 @@ int getElements(List* list, char** name, char** telephone) {
 	}
 
 	if (list->pointer == NULL || list->pointer->next == NULL) {
-		resetPointer(list);
+		resetPointer(list);		
 	}
 	
 	*name = list->pointer->name;
