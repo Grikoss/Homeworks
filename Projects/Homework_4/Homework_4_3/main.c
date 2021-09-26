@@ -8,6 +8,7 @@
 #include "fileModuleTest.h"
 
 const int sizeOfInput = 31;
+const int size = 100;
 
 void cleanConsole() {
 	while (getchar() != '\n');
@@ -79,7 +80,7 @@ int main() {
 
 	printf("Welcome to telephone book\n");
 	printf("Current number of phones is %d\n", getQuantity(list));
-	printf("Max current number of phones is 100\n");
+	printf("Max current number of phones is %i\n", size);
 	printf("Available options:\n");
 	printf("0 - exit\n1 - add a record (name and phone number)\n2 - print all available records\n");
 	printf("3 - find a phone by name\n4 - find a name by phone\n5 - save the current data to a file\n");
@@ -170,9 +171,8 @@ int main() {
 				currentMod = '0';
 			}
 			else {
+				currentMod = 'a';
 				printf("Choose option:\n");
-				currentMod = getchar();
-				cleanConsole();
 			}
 		}
 	}
