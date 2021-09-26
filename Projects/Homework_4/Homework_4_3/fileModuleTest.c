@@ -5,6 +5,7 @@
 #include "file.h"
 #include "fileModuleTest.h"
 
+const int sizeOfArray = 10;
 
 bool runFileModuleTest() {
 	FILE* file = fopen("telephoneTest.txt", "w");

@@ -54,6 +54,8 @@ int deleteList(List* list) {
 	while (!isEnd(list->head)) {
 		Element* oldHead = list->head;
 		list->head = list->head->next;
+		free(oldHead->name);
+		free(oldHead->telephone);
 		free(oldHead);
 	}
 

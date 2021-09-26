@@ -6,6 +6,7 @@
 #include "listTestModule.h"
 
 const int sizeBookTest = 100;
+const int sizeArray = 20;
 
 bool runListModuleTest() {
 	List* list = createNewList();
@@ -13,19 +14,56 @@ bool runListModuleTest() {
 		return false;
 	}
 
+	char* name = calloc(sizeArray, sizeof(char));
+	if (name == NULL) {
+		return false;
+	}
 
-	char name[] = "Name";
-	char telephone[] = "Telephone";
+	strcpy(name, "Name");
+	char* telephone = calloc(sizeArray, sizeof(char));
+	if (telephone == NULL) {
+		return false;
+	}
+
+	strcpy(telephone, "Telephone");
 	if (addNewElement(NULL, NULL, NULL) != 1 || addNewElement(list, name, telephone) != 0) {
 		return false;
 	}
 
-	char nameTest[] = "NameTest";
-	char telephoneTest[] = "TelephoneTest";
+	char* nameTest = NULL;
+	char* telephoneTest = NULL;
 	for (int i = 0; i < (sizeBookTest - 2); ++i) {
+		nameTest = calloc(sizeArray, sizeof(char));
+		if (nameTest == NULL) {
+			return false;
+		}
+
+		strcpy(nameTest, "NameTest");
+		telephoneTest = calloc(sizeArray, sizeof(char));
+		if (telephoneTest == NULL) {
+			return false;
+		}
+
+		strcpy(telephoneTest, "TelephoneTest");
 		addNewElement(list, nameTest, telephoneTest);
 	}
 
+	if (nameTest == NULL || telephoneTest == NULL) {
+		return false;
+	}
+
+	name = calloc(sizeArray, sizeof(char));
+	if (name == NULL) {
+		return false;
+	}
+
+	strcpy(name, "Name");
+	telephone = calloc(sizeArray, sizeof(char));
+	if (telephone == NULL) {
+		return false;
+	}
+
+	strcpy(telephone, "Telephone");
 	addNewElement(list, name, telephone);
 
 	if (addNewElement(list, nameTest, telephoneTest) != 2) {
@@ -44,26 +82,26 @@ bool runListModuleTest() {
 		return false;
 	}
 
-	if (outName != name || outTelephone != telephone) {
+	if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) {
 		return false;
 	}
 
 	for (int i = 0; i < (sizeBookTest - 2); ++i) {
 		getElements(list, &outName, &outTelephone);
-		if (outName != nameTest || outTelephone != telephoneTest) {
+		if (strcmp(outName, nameTest) != 0 || strcmp(outTelephone, telephoneTest) != 0) {
 			return false;
 		}
 	}
 
 	getElements(list, &outName, &outTelephone);
 
-	if (outName != name || outTelephone != telephone) {
+	if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) {
 		return false;
 	}
 
 	getElements(list, &outName, &outTelephone);
 
-	if (outName != name || outTelephone != telephone) {
+	if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) { //второй раз для проверки pointer
 		return false;
 	}
 
@@ -73,7 +111,7 @@ bool runListModuleTest() {
 
 	getElements(list, &outName, &outTelephone);
 
-	if (outName != name || outTelephone != telephone) {
+	if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) {  //ещё одна проверка pointer
 		return false;
 	}
 
