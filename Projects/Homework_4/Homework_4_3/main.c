@@ -124,13 +124,14 @@ int main() {
 			if (getQuantity(list) == 0) {
 				printf("There are not records!\n");
 			}
-
-			for (int i = 0; i < getQuantity(list); ++i) {
-				getElements(list, &outName, &outTelephone);
-				printf("%i) Name: ", i + 1);
-				fputs(outName, stdout);
-				printf(" Telephone: ");
-				puts(outTelephone);
+			else {
+				for (int i = 0; i < getQuantity(list); ++i) {
+					getElements(list, &outName, &outTelephone);
+					printf("%i) Name: ", i + 1);
+					fputs(outName, stdout);
+					printf(" Telephone: ");
+					puts(outTelephone);
+				}
 			}
 		}
 
