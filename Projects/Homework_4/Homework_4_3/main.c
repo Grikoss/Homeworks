@@ -78,7 +78,12 @@ int main()
 	printf("Available options:\n");
 	printf("0 - exit\n1 - add a record (name and phone number)\n2 - print all available records\n");
 	printf("3 - find a phone by name\n4 - find a name by phone\n5 - save the current data to a file\n");
-	char currentMod[] = { 'a' };
+	char* currentMod = calloc(2, sizeof(char));
+	if (currentMod == NULL)
+	{
+		return 1;
+	}
+
 	scanf_s("%s", currentMod, 2);
 	bool isAnyNewRecords = false;
 	while (currentMod[0] != '0')
@@ -178,7 +183,7 @@ int main()
 		if (currentMod[0] == '0' && isAnyNewRecords)
 		{
 			printf("You haven't saved the latest changes. Confirm to continue(yes): \n");
-			scanf_s("%s", currentMod, 1);
+			scanf_s("%s", currentMod, 2);
 			if (currentMod[0] == 'y')
 			{
 				currentMod[0] = '0';
@@ -192,5 +197,6 @@ int main()
 	}
 	
 	deleteList(list);
+	free(currentMod);
 	return 0;
 }

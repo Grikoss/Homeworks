@@ -31,6 +31,7 @@ List* createNewList(void)
 	List* list = calloc(1, sizeof(List));
 	if (list == NULL)
 	{
+		free(element);
 		return NULL;
 	}
 

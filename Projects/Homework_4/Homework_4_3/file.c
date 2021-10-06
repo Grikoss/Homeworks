@@ -25,7 +25,7 @@ char* readFromFile(FILE* file)
 		return NULL;
 	}
 
-	if ((fscanf_s(file, "%s", buffer, sizeBuffer) > 0))
+	if (fscanf_s(file, "%s", buffer, sizeBuffer) > 0)
 	{
 		return buffer;
 	}
