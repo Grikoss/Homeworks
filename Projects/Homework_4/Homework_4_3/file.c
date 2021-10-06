@@ -6,36 +6,44 @@
 
 const int sizeBuffer = 31;
 
-char* readFromFile(FILE* file) {
-	if (file == NULL) {
+char* readFromFile(FILE* file)
+{
+	if (file == NULL)
+	{
 		return NULL;
 	}
 
-	if (feof(file)) {
+	if (feof(file))
+	{
 		fclose(file);
 		return NULL;
 	}
 
 	char cursor = 'a';
 	while ((cursor = fgetc(file)) == ' ' || cursor == '\n');
-	if (cursor == EOF || cursor == '\0') {
+	if (cursor == EOF || cursor == '\0')
+	{
 		fclose(file);
 		return NULL;
 
 	}
 
 	char* buffer = calloc(sizeBuffer, sizeof(char));
-	if (buffer == NULL) {
+	if (buffer == NULL)
+	{
 		return NULL;
 	}
 
 	int counter = 0;
-	while (cursor != ' ' && cursor !='\n' && cursor != EOF && cursor != '\0') {
+	while (cursor != ' ' && cursor !='\n' && cursor != EOF && cursor != '\0')
+	{
 		buffer[counter] = cursor;
 		cursor = fgetc(file);
 		++counter;
-		if (counter == (sizeBuffer -1)) {
-			while (cursor != ' ' && cursor != '\n' && cursor != EOF && cursor != '\0') {
+		if (counter == sizeBuffer - 1)
+		{
+			while (cursor != ' ' && cursor != '\n' && cursor != EOF && cursor != '\0')
+			{
 				cursor = fgetc(file);
 			}
 		}
@@ -45,8 +53,10 @@ char* readFromFile(FILE* file) {
 	return buffer;
 }
 
-int writeToFile(FILE* file, char* input, char literal) {
-	if (file == NULL || input == NULL) {
+int writeToFile(FILE* file, char* input, char literal)
+{
+	if (file == NULL || input == NULL)
+	{
 		return 1;
 	}
 

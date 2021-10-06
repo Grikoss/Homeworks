@@ -10,31 +10,37 @@
 const int sizeOfInput = 31;
 const int size = 100;
 
-void cleanConsole() {
+void cleanConsole()
+{
 	while (getchar() != '\n');
 }
 
-char* inputString(int size) {
+char* inputString(int size)
+{
 	char cursor = 'a';
 	while ((cursor = getchar()) == ' ');
-	if (cursor == '\n') {
+	if (cursor == '\n')
+	{
 		return NULL;
 	}
 
 	char* buffer = calloc(size, sizeof(char));
-	if (buffer == NULL) {
+	if (buffer == NULL)
+	{
 		return NULL;
 	}
 
 	int counter = 0;
-	while (cursor != ' ' && cursor != '\n' && counter < (size - 1)) {
+	while (cursor != ' ' && cursor != '\n' && counter < (size - 1))
+	{
 		buffer[counter] = cursor;
 		cursor = getchar();
 		++counter;
 	}
 
 	buffer[counter] = '\0';
-	if (cursor != '\n') {
+	if (cursor != '\n')
+	{
 		cleanConsole();
 	}
 
@@ -42,21 +48,26 @@ char* inputString(int size) {
 }
 
 
-int main() {
-	if (!runListModuleTest()) {
+int main()
+{
+	if (!runListModuleTest())
+	{
 		printf("List test failed");
 		return 1;
 	}
 
-	if (!runFileModuleTest()) {
+	if (!runFileModuleTest())
+	{
 		printf("File test failed");
 		return 2;
 	}
 
 	FILE* file = fopen("telephone.txt", "r");
-	if (file == NULL) {
+	if (file == NULL)
+	{
 		file = fopen("telephone.txt", "w");
-		if (file == NULL) {
+		if (file == NULL)
+		{
 			return 3;
 		}
 
@@ -67,7 +78,8 @@ int main() {
 	List* list = createNewList();
 	char* inputName = readFromFile(file);
 	char* inputTelephone = readFromFile(file);
-	while (inputName != NULL && inputTelephone != NULL) {
+	while (inputName != NULL && inputTelephone != NULL)
+	{
 		addNewElement(list, inputName, inputTelephone);
 		inputName = readFromFile(file);
 		inputTelephone = readFromFile(file);
@@ -88,26 +100,33 @@ int main() {
 	currentMod = getchar();
 	cleanConsole();
 	bool isAnyNewRecords = false;
-	while (currentMod != '0') {
-		while (currentMod != '1' && currentMod != '2' && currentMod != '3' && currentMod != '4' && currentMod != '5' && currentMod != '0') {
+	while (currentMod != '0')
+	{
+		while (currentMod != '1' && currentMod != '2' && currentMod != '3' && currentMod != '4' && currentMod != '5' && currentMod != '0')
+		{
 			currentMod = getchar();
 			cleanConsole();
 		}
 
-		if (currentMod == '1') {
-			if (getQuantity(list) == 100) {
+		if (currentMod == '1')
+		{
+			if (getQuantity(list) == 100)
+			{
 				printf("More than 100 records are not available\n");
 			}
-			else {
+			else
+			{
 				printf("Enter name:\n");
 				char* name = NULL;
-				while (name == NULL) {
+				while (name == NULL)
+				{
 					name = inputString(sizeOfInput);
 				}
 
 				printf("Enter telephone:\n");
 				char* telephone = NULL;
-				while (telephone == NULL) {
+				while (telephone == NULL)
+				{
 					telephone = inputString(sizeOfInput);
 				}
 
@@ -116,16 +135,20 @@ int main() {
 			}
 		}
 
-		if (currentMod == '2') {
+		if (currentMod == '2')
+		{
 			printf("Records:\n");
 			resetPointer(list);
 			char* outName = NULL;
 			char* outTelephone = NULL;
-			if (getQuantity(list) == 0) {
+			if (getQuantity(list) == 0)
+			{
 				printf("There are not records!\n");
 			}
-			else {
-				for (int i = 0; i < getQuantity(list); ++i) {
+			else
+			{
+				for (int i = 0; i < getQuantity(list); ++i)
+				{
 					getElements(list, &outName, &outTelephone);
 					printf("%i) Name: ", i + 1);
 					fputs(outName, stdout);
@@ -135,26 +158,31 @@ int main() {
 			}
 		}
 
-		if (currentMod == '3' || currentMod == '4') {
+		if (currentMod == '3' || currentMod == '4')
+		{
 			currentMod == '3' ? printf("Enter the name: ") : printf("Enter the telephone: ");
 			char* key = inputString(sizeOfInput);
 			char* search = searchElement(list, key, currentMod == '3');
 			free(key);
 
-			if (search == NULL) {
+			if (search == NULL)
+			{
 				printf("Not found\n");
 			}
-			else {
+			else
+			{
 				currentMod == '3' ? printf("The telephone: ") : printf("The name: ");
 				puts(search);
 			}
 		}
 
-		if (currentMod == '5') {
+		if (currentMod == '5')
+		{
 			file = fopen("telephone.txt", "w");
 			char* writeName = NULL;
 			char* writeTelehone = NULL;
-			for (int i = 0; i < getQuantity(list); ++i) {
+			for (int i = 0; i < getQuantity(list); ++i)
+			{
 				getElements(list, &writeName, &writeTelehone);
 				writeToFile(file, writeName, ' ');
 				writeToFile(file, writeTelehone, '\n');
@@ -168,14 +196,17 @@ int main() {
 		printf("Choose option:\n");
 		currentMod = getchar();
 		cleanConsole();
-		if (currentMod == '0' && isAnyNewRecords) {
+		if (currentMod == '0' && isAnyNewRecords)
+		{
 			printf("You haven't saved the latest changes. Confirm to continue(yes): \n");
 			currentMod = getchar();
 			cleanConsole();
-			if (currentMod == 'y') {
+			if (currentMod == 'y')
+			{
 				currentMod = '0';
 			}
-			else {
+			else
+			{
 				currentMod = 'a';
 				printf("Choose option:\n");
 			}

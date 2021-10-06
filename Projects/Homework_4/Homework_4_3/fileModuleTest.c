@@ -7,11 +7,13 @@
 
 const int sizeOfArray = 10;
 
-bool runFileModuleTest() {
+bool runFileModuleTest()
+{
 	FILE* file = fopen("telephoneTest.txt", "w");
 	char name[] = "name";
 	char telephone[] = "telephone";
-	if (writeToFile(NULL, name, ' ') != 1 || writeToFile(file, NULL, ' ') != 1) {
+	if (writeToFile(NULL, name, ' ') != 1 || writeToFile(file, NULL, ' ') != 1)
+	{
 		fclose(file);
 		return false;
 	}
@@ -20,7 +22,8 @@ bool runFileModuleTest() {
 	writeToFile(file, telephone, '\n');
 	fclose(file);
 
-	if (readFromFile(NULL) != NULL) {
+	if (readFromFile(NULL) != NULL)
+	{
 		fclose(file);
 		return false;
 	}
@@ -30,7 +33,8 @@ bool runFileModuleTest() {
 	char* outTelephone = NULL;
 	outName = readFromFile(file);
 	outTelephone = readFromFile(file);
-	if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) {
+	if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0)
+	{
 		fclose(file);
 		return false;
 	}
@@ -38,7 +42,8 @@ bool runFileModuleTest() {
 	free(outName);
 	free(outTelephone);
 	
-	if (readFromFile(file) != NULL) {
+	if (readFromFile(file) != NULL)
+	{
 		fclose(file);
 		return false;
 	}
