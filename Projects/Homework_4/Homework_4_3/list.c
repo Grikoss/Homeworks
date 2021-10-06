@@ -34,12 +34,7 @@ List* createNewList(void)
 		return NULL;
 	}
 
-	element->next = NULL;
-	element->name = NULL;
-	element->telephone = NULL;
-	list->quantity = 0;
 	list->head = element;
-	list->pointer = NULL;
 	return list;
 }
 

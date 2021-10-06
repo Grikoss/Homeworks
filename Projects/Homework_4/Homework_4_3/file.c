@@ -19,38 +19,21 @@ char* readFromFile(FILE* file)
 		return NULL;
 	}
 
-	char cursor = 'a';
-	while ((cursor = fgetc(file)) == ' ' || cursor == '\n');
-	if (cursor == EOF || cursor == '\0')
-	{
-		fclose(file);
-		return NULL;
-
-	}
-
 	char* buffer = calloc(sizeBuffer, sizeof(char));
 	if (buffer == NULL)
 	{
 		return NULL;
 	}
 
-	int counter = 0;
-	while (cursor != ' ' && cursor !='\n' && cursor != EOF && cursor != '\0')
+	if ((fscanf_s(file, "%s", buffer, sizeBuffer) > 0))
 	{
-		buffer[counter] = cursor;
-		cursor = fgetc(file);
-		++counter;
-		if (counter == sizeBuffer - 1)
-		{
-			while (cursor != ' ' && cursor != '\n' && cursor != EOF && cursor != '\0')
-			{
-				cursor = fgetc(file);
-			}
-		}
+		return buffer;
 	}
-
-	buffer[counter] = '\0';
-	return buffer;
+	else
+	{
+		free(buffer);
+		return NULL;
+	}
 }
 
 int writeToFile(FILE* file, char* input, char literal)

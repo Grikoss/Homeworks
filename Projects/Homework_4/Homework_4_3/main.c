@@ -10,41 +10,23 @@
 const int sizeOfInput = 31;
 const int size = 100;
 
-void cleanConsole()
-{
-	while (getchar() != '\n');
-}
-
 char* inputString(int size)
 {
-	char cursor = 'a';
-	while ((cursor = getchar()) == ' ');
-	if (cursor == '\n')
-	{
-		return NULL;
-	}
-
 	char* buffer = calloc(size, sizeof(char));
 	if (buffer == NULL)
 	{
 		return NULL;
 	}
 
-	int counter = 0;
-	while (cursor != ' ' && cursor != '\n' && counter < (size - 1))
+	if (scanf_s("%s", buffer, size) > 0)
 	{
-		buffer[counter] = cursor;
-		cursor = getchar();
-		++counter;
+		return buffer;
 	}
-
-	buffer[counter] = '\0';
-	if (cursor != '\n')
+	else
 	{
-		cleanConsole();
+		free(buffer);
+		return NULL;
 	}
-
-	return buffer;
 }
 
 
@@ -96,19 +78,17 @@ int main()
 	printf("Available options:\n");
 	printf("0 - exit\n1 - add a record (name and phone number)\n2 - print all available records\n");
 	printf("3 - find a phone by name\n4 - find a name by phone\n5 - save the current data to a file\n");
-	char currentMod = 'a';
-	currentMod = getchar();
-	cleanConsole();
+	char currentMod[] = { 'a' };
+	scanf_s("%s", currentMod, 2);
 	bool isAnyNewRecords = false;
-	while (currentMod != '0')
+	while (currentMod[0] != '0')
 	{
-		while (currentMod != '1' && currentMod != '2' && currentMod != '3' && currentMod != '4' && currentMod != '5' && currentMod != '0')
+		while (currentMod[0] != '1' && currentMod[0] != '2' && currentMod[0] != '3' && currentMod[0] != '4' && currentMod[0] != '5' && currentMod[0] != '0')
 		{
-			currentMod = getchar();
-			cleanConsole();
+			scanf_s("%s", currentMod, 2);
 		}
 
-		if (currentMod == '1')
+		if (currentMod[0] == '1')
 		{
 			if (getQuantity(list) == 100)
 			{
@@ -135,7 +115,7 @@ int main()
 			}
 		}
 
-		if (currentMod == '2')
+		if (currentMod[0] == '2')
 		{
 			printf("Records:\n");
 			resetPointer(list);
@@ -158,11 +138,11 @@ int main()
 			}
 		}
 
-		if (currentMod == '3' || currentMod == '4')
+		if (currentMod[0] == '3' || currentMod[0] == '4')
 		{
-			currentMod == '3' ? printf("Enter the name: ") : printf("Enter the telephone: ");
+			currentMod[0] == '3' ? printf("Enter the name: ") : printf("Enter the telephone: ");
 			char* key = inputString(sizeOfInput);
-			char* search = searchElement(list, key, currentMod == '3');
+			char* search = searchElement(list, key, currentMod[0] == '3');
 			free(key);
 
 			if (search == NULL)
@@ -171,12 +151,12 @@ int main()
 			}
 			else
 			{
-				currentMod == '3' ? printf("The telephone: ") : printf("The name: ");
+				currentMod[0] == '3' ? printf("The telephone: ") : printf("The name: ");
 				puts(search);
 			}
 		}
 
-		if (currentMod == '5')
+		if (currentMod[0] == '5')
 		{
 			file = fopen("telephone.txt", "w");
 			char* writeName = NULL;
@@ -194,20 +174,18 @@ int main()
 		}
 
 		printf("Choose option:\n");
-		currentMod = getchar();
-		cleanConsole();
-		if (currentMod == '0' && isAnyNewRecords)
+		scanf_s("%s", currentMod, 2);
+		if (currentMod[0] == '0' && isAnyNewRecords)
 		{
 			printf("You haven't saved the latest changes. Confirm to continue(yes): \n");
-			currentMod = getchar();
-			cleanConsole();
-			if (currentMod == 'y')
+			scanf_s("%s", currentMod, 1);
+			if (currentMod[0] == 'y')
 			{
-				currentMod = '0';
+				currentMod[0] = '0';
 			}
 			else
 			{
-				currentMod = 'a';
+				currentMod[0] = 'a';
 				printf("Choose option:\n");
 			}
 		}
