@@ -1,7 +1,7 @@
 #pragma once
 
-//чтение из файла, не забудьте открыть файл в нужном режиме
+// Reading from a file, do not forget to open the file in the desired mode
 char* readFromFile(FILE* file);
 
-//запись в файл, открытый в нужном режиме, так же нужно указать литерал после строчки(пробел или переход на след строку)
+// Writing to a file opened in the desired mode, you also need to specify a literal after the line (a space or a transition to the next line)
 int writeToFile(FILE* file, char* input, char literal);

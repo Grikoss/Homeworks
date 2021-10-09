@@ -71,11 +71,6 @@ bool addNewElementTest(List* list)
         addNewElement(list, nameTest, telephoneTest);
     }
 
-    /*if (nameTest == NULL || telephoneTest == NULL)
-    {
-        return false;
-    }*/
-
     name = calloc(sizeArray, sizeof(char));
     if (name == NULL)
     {
@@ -173,7 +168,7 @@ bool getElementsTest(List* list, List* testList)
 
     getElements(list, &outName, &outTelephone);
 
-    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) //второй раз для проверки pointer
+    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) // The second time to check the pointer
     {
         return false;
     }
@@ -185,7 +180,7 @@ bool getElementsTest(List* list, List* testList)
 
     getElements(list, &outName, &outTelephone);
 
-    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) //ещё одна проверка pointer
+    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) // Another pointer check
     {
         return false;
     }

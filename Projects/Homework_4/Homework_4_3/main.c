@@ -172,7 +172,6 @@ int main()
     printf("Available options:\n");
     printf("0 - exit\n1 - add a record (name and phone number)\n2 - print all available records\n");
     printf("3 - find a phone by name\n4 - find a name by phone\n5 - save the current data to a file\n");
-    //char* currentMod = calloc(2, sizeof(char));
     int currentMod = 10;
     scanf_s("%d", &currentMod);
     cleanConsole();

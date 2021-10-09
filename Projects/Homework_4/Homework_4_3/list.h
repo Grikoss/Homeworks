@@ -4,24 +4,24 @@
 
 typedef struct List List;
 
-//Создаёт лист
+// Creates a sheet
 List* createNewList(void);
 
-//Удаляет лист
+// Deletes a sheet
 int deleteList(List* list);
 
-//Добавляет элемент
+// Adds an element
 int addNewElement(List* list, char* name, char* telephone);
 
-//Возвращает номер и телефон, после чего переходит к след.элементу, если след.елемента не существует,
-//возвращается к началу листа
+// Returns the number and phone number, then goes to the next element, if the next element does not exist,
+// returns to the beginning of the sheet
 int getElements(List* list, char** name, char** telephone);
 
-//Поиск элемента по другому элементу
+// Searching for an element by another element
 char* searchElement(List* list, char* input, bool isSearchByName);
 
-//Количество элементов
+// Number of elements
 int getQuantity(List* list);
 
-//сброс указателя на начало(getElements)
+// Reset the pointer to the beginning(getElements)
 int resetPointer(List* list);

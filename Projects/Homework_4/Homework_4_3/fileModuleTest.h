@@ -2,5 +2,5 @@
 
 #include <stdbool.h>
 
-//запуск проверки работы с файлами
+// Starting file test
 bool runFileModuleTest();
