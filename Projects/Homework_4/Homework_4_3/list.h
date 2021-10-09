@@ -15,7 +15,6 @@ int deleteList(List* list);
 //Добавляет элемент
 int addNewElement(List* list, char* name, char* telephone);
 
-
 //Возвращает номер и телефон, после чего переходит к след.элементу, если след.елемента не существует,
 //возвращается к началу листа
 int getElements(List* list, char** name, char** telephone);

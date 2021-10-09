@@ -1,6 +1,5 @@
 #pragma once
 
-
 //чтение из файла, не забудьте открыть файл в нужном режиме
 char* readFromFile(FILE* file);
 

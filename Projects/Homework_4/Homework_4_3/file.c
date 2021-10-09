@@ -15,7 +15,6 @@ char* readFromFile(FILE* file)
 
 	if (feof(file))
 	{
-		fclose(file);
 		return NULL;
 	}
 

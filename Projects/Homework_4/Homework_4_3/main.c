@@ -10,6 +10,14 @@
 const int sizeOfInput = 31;
 const int size = 100;
 
+void cleanConsole(void) {
+	char buffer = 'a';
+	while (buffer != '\n')
+	{
+		scanf_s("%c", &buffer, 1);
+	}
+}
+
 char* inputString(int size)
 {
 	char* buffer = calloc(size, sizeof(char));
@@ -112,10 +120,8 @@ void saveRecords(List* list, bool* isAnyNewRecords)
 
 	fclose(file);
 	*isAnyNewRecords = false;
-	printf("Records saved succesful\n");
+	printf("Records saved succesfully\n");
 }
-
-
 
 int main()
 {
@@ -155,7 +161,8 @@ int main()
 	}
 
 	fclose(file);
-	if (inputName != NULL){
+	if (inputName != NULL)
+	{
 		free(inputName);
 	}
 
@@ -165,60 +172,71 @@ int main()
 	printf("Available options:\n");
 	printf("0 - exit\n1 - add a record (name and phone number)\n2 - print all available records\n");
 	printf("3 - find a phone by name\n4 - find a name by phone\n5 - save the current data to a file\n");
-	char* currentMod = calloc(2, sizeof(char));
-	if (currentMod == NULL)
-	{
-		return 1;
-	}
-
-	scanf_s("%s", currentMod, 2);
+	//char* currentMod = calloc(2, sizeof(char));
+	int currentMod = 10;
+	scanf_s("%d", &currentMod);
+	cleanConsole();
 	bool isAnyNewRecords = false;
-	while (currentMod[0] != '0')
+	while (currentMod != 0)
 	{
-		while (currentMod[0] != '1' && currentMod[0] != '2' && currentMod[0] != '3' && currentMod[0] != '4' && currentMod[0] != '5' && currentMod[0] != '0')
+		while (currentMod != 1 && currentMod != 2 && currentMod != 3 && currentMod != 4 && currentMod != 5 && currentMod != 0)
 		{
-			scanf_s("%s", currentMod, 2);
+			if (scanf_s("%d", &currentMod) == 0)
+			{
+				currentMod = 10;
+			}
+
+			cleanConsole();
 		}
 
-		if (currentMod[0] == '1')
+		if (currentMod == 1)
 		{
 			addARecord(list, &isAnyNewRecords);
 		}
 
-		if (currentMod[0] == '2')
+		if (currentMod == 2)
 		{
 			printAllAvailableRecords(list);
 		}
 
-		if (currentMod[0] == '3' || currentMod[0] == '4')
+		if (currentMod == 3 || currentMod == 4)
 		{
-			findRecord(list, currentMod[0] == '3');
+			findRecord(list, currentMod == 3);
 		}
 
-		if (currentMod[0] == '5')
+		if (currentMod == 5)
 		{
 			saveRecords(list, &isAnyNewRecords);
 		}
 
-		printf("Choose option:\n");
-		scanf_s("%s", currentMod, 2);
-		if (currentMod[0] == '0' && isAnyNewRecords)
+		if (currentMod != 0)
 		{
-			printf("You haven't saved the latest changes. Confirm to continue(Enter: y): \n");
-			scanf_s("%s", currentMod, 2);
-			if (currentMod[0] == 'y')
+			printf("Choose option:\n");
+			if (scanf_s("%d", &currentMod) == 0)
 			{
-				currentMod[0] = '0';
+				currentMod = 10;
 			}
-			else
+
+			cleanConsole();
+		}
+
+		if (currentMod == 0 && isAnyNewRecords)
+		{
+			printf("You haven't saved the latest changes. Confirm to continue(Enter 0 if yes): \n");
+			if (scanf_s("%d", &currentMod) == 0)
 			{
-				currentMod[0] = 'a';
+				currentMod = 10;
+			}
+
+			cleanConsole();
+			if (currentMod != 0)
+			{
+				currentMod = 10;
 				printf("Choose option:\n");
 			}
 		}
 	}
 	
 	deleteList(list);
-	free(currentMod);
 	return 0;
 }

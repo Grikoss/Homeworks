@@ -7,7 +7,8 @@
 
 const int sizeOfArray = 10;
 
-bool writeToFileTest(FILE* file) {
+bool writeToFileTest(FILE* file)
+{
 	char name[] = "name";
 	char telephone[] = "telephone";
 	if (writeToFile(NULL, name, ' ') != 1 || writeToFile(file, NULL, ' ') != 1)
@@ -21,7 +22,8 @@ bool writeToFileTest(FILE* file) {
 	return true;
 }
 
-bool readFromFileTest(FILE* file) {
+bool readFromFileTest(FILE* file)
+{
 	if (readFromFile(NULL) != NULL)
 	{
 		return false;
@@ -29,15 +31,13 @@ bool readFromFileTest(FILE* file) {
 
 	char name[] = "name";
 	char telephone[] = "telephone";
-	char* outName = NULL;
-	char* outTelephone = NULL;
-	outName = readFromFile(file);
+	char* outName = readFromFile(file);
 	if (outName == NULL)
 	{
 		return false;
 	}
 
-	outTelephone = readFromFile(file);
+	char* outTelephone = readFromFile(file);
 	if (outTelephone == NULL)
 	{
 		free(outName);
@@ -54,12 +54,7 @@ bool readFromFileTest(FILE* file) {
 	free(outName);
 	free(outTelephone);
 
-	if (readFromFile(file) != NULL)
-	{
-		return false;
-	}
-
-	return true;
+	return readFromFile(file) == NULL;
 }
 
 bool runFileModuleTest()

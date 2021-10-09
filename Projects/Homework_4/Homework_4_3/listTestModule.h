@@ -2,7 +2,5 @@
 
 #include <stdbool.h>
 
-
-
 //Запускает теста листов
 bool runListModuleTest(void);

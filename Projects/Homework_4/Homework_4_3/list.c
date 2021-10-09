@@ -74,7 +74,7 @@ int addNewElement(List* list, char* name, char* telephone)
 {
 	if (list == NULL || name == NULL || telephone == NULL)
 	{
-			return 1;
+		return 1;
 	}
 
 	if (list->quantity >= sizeBook)
