@@ -4,8 +4,6 @@
 
 typedef struct List List;
 
-typedef struct Element Element;
-
 //Создаёт лист
 List* createNewList(void);
 
