@@ -49,8 +49,5 @@
     <Text Include="telephone.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="telephoneTest.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

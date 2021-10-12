@@ -10,12 +10,9 @@
 const int sizeOfInput = 31;
 const int size = 100;
 
-void cleanConsole(void) {
-    char buffer = 'a';
-    while (buffer != '\n')
-    {
-        scanf_s("%c", &buffer, 1);
-    }
+void subtractStream(void)
+{
+    while (scanf_s("%*c") != 0);
 }
 
 char* inputString(int size)
@@ -42,49 +39,47 @@ void addARecord(List* list, bool* isAnyNewRecords)
     if (getQuantity(list) == 100)
     {
         printf("More than 100 records are not available\n");
+        return;
     }
-    else
+    
+    printf("Enter name:\n");
+    char* name = NULL;
+    while (name == NULL)
     {
-        printf("Enter name:\n");
-        char* name = NULL;
-        while (name == NULL)
-        {
-            name = inputString(sizeOfInput);
-        }
-
-        printf("Enter telephone:\n");
-        char* telephone = NULL;
-        while (telephone == NULL)
-        {
-            telephone = inputString(sizeOfInput);
-        }
-
-        addNewElement(list, name, telephone);
-        *isAnyNewRecords = true;
-        printf("Current number of phones is %d\n", getQuantity(list));
+        name = inputString(sizeOfInput);
     }
+
+    printf("Enter telephone:\n");
+    char* telephone = NULL;
+    while (telephone == NULL)
+    {
+        telephone = inputString(sizeOfInput);
+    }
+
+    addNewElement(list, name, telephone);
+    *isAnyNewRecords = true;
+    printf("Current number of phones is %d\n", getQuantity(list));
 }
 
 void printAllAvailableRecords(List* list)
 {
     printf("Records:\n");
     resetPointer(list);
-    char* outName = NULL;
-    char* outTelephone = NULL;
     if (getQuantity(list) == 0)
     {
-        printf("There are not records!\n");
+        printf("There are no records!\n");
+        return;
     }
-    else
+
+    for (int i = 0; i < getQuantity(list); ++i)
     {
-        for (int i = 0; i < getQuantity(list); ++i)
-        {
-            getElements(list, &outName, &outTelephone);
-            printf("%i) Name: ", i + 1);
-            fputs(outName, stdout);
-            printf(" Telephone: ");
-            puts(outTelephone);
-        }
+        char* outName = NULL;
+        char* outTelephone = NULL;
+        getElements(list, &outName, &outTelephone);
+        printf("%i) Name: ", i + 1);
+        fputs(outName, stdout);
+        printf(" Telephone: ");
+        puts(outTelephone);
     }
 }
 
@@ -123,6 +118,22 @@ void saveRecords(List* list, bool* isAnyNewRecords)
     printf("Records saved succesfully\n");
 }
 
+void startReadingFromFile(List* list, FILE* file)
+{
+    char* inputName = readFromFile(file);
+    char* inputTelephone = readFromFile(file);
+    while (inputName != NULL && inputTelephone != NULL)
+    {
+        addNewElement(list, inputName, inputTelephone);
+        inputName = readFromFile(file);
+        inputTelephone = readFromFile(file);
+    }
+
+    fclose(file);
+    free(inputName);
+    free(inputTelephone);
+}
+
 int main()
 {
     if (!runListModuleTest())
@@ -151,20 +162,7 @@ int main()
     }
 
     List* list = createNewList();
-    char* inputName = readFromFile(file);
-    char* inputTelephone = readFromFile(file);
-    while (inputName != NULL && inputTelephone != NULL)
-    {
-        addNewElement(list, inputName, inputTelephone);
-        inputName = readFromFile(file);
-        inputTelephone = readFromFile(file);
-    }
-
-    fclose(file);
-    if (inputName != NULL)
-    {
-        free(inputName);
-    }
+    startReadingFromFile(list, file);
 
     printf("Welcome to telephone book\n");
     printf("Current number of phones is %d\n", getQuantity(list));
@@ -174,7 +172,7 @@ int main()
     printf("3 - find a phone by name\n4 - find a name by phone\n5 - save the current data to a file\n");
     int currentMod = 10;
     scanf_s("%d", &currentMod);
-    cleanConsole();
+    subtractStream();
     bool isAnyNewRecords = false;
     while (currentMod != 0)
     {
@@ -185,27 +183,26 @@ int main()
                 currentMod = 10;
             }
 
-            cleanConsole();
+            subtractStream();
         }
 
-        if (currentMod == 1)
-        {
-            addARecord(list, &isAnyNewRecords);
-        }
-
-        if (currentMod == 2)
-        {
-            printAllAvailableRecords(list);
-        }
-
-        if (currentMod == 3 || currentMod == 4)
-        {
-            findRecord(list, currentMod == 3);
-        }
-
-        if (currentMod == 5)
-        {
-            saveRecords(list, &isAnyNewRecords);
+        switch (currentMod)
+        {   
+            case 1:
+                addARecord(list, &isAnyNewRecords);
+                break;
+            case 2:
+                printAllAvailableRecords(list);
+                break;
+            case 3:
+            case 4:
+                findRecord(list, currentMod == 3);
+                break;
+            case 5:
+                saveRecords(list, &isAnyNewRecords);
+                break;
+            default:
+                break;
         }
 
         if (currentMod != 0)
@@ -216,7 +213,7 @@ int main()
                 currentMod = 10;
             }
 
-            cleanConsole();
+            subtractStream();
         }
 
         if (currentMod == 0 && isAnyNewRecords)
@@ -227,7 +224,7 @@ int main()
                 currentMod = 10;
             }
 
-            cleanConsole();
+            subtractStream();
             if (currentMod != 0)
             {
                 currentMod = 10;

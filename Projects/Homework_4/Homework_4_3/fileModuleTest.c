@@ -59,12 +59,12 @@ bool readFromFileTest(FILE* file)
 
 bool runFileModuleTest()
 {
-    bool result = true;
     FILE* file = fopen("telephoneTest.txt", "w");
-    result = result && writeToFileTest(file);
+    bool result = writeToFileTest(file);
     fclose(file);
     file = fopen("telephoneTest.txt", "r");
     result = result && readFromFileTest(file);
     fclose(file);
-    return true;
+    remove("telephoneTest.txt");
+    return result;
 }

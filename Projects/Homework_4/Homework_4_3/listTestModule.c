@@ -10,12 +10,7 @@ const int sizeArray = 20;
 
 bool createListTest(List* list)
 {
-    if (list == NULL)
-    {
-        return false;
-    }
-
-    return true;
+    return list != NULL;
 }
 
 bool addNewElementTest(List* list)
@@ -44,8 +39,6 @@ bool addNewElementTest(List* list)
 
     if (addNewElement(NULL, NULL, NULL) != 1)
     {
-        free(name);
-        free(telephone);
         return false;
     }
 
@@ -87,51 +80,11 @@ bool addNewElementTest(List* list)
 
     strcpy(telephone, "Telephone");
     addNewElement(list, name, telephone);
-
-    if (addNewElement(list, nameTest, telephoneTest) != 2)
-    {
-        return false;
-    }
-
-    return true;
+    return addNewElement(list, nameTest, telephoneTest) == 2;
 }
 
 bool getElementsTest(List* list, List* testList)
 {
-    char* name = calloc(sizeArray, sizeof(char));
-    if (name == NULL)
-    {
-        return false;
-    }
-
-    strcpy(name, "Name");
-    char* telephone = calloc(sizeArray, sizeof(char));
-    if (telephone == NULL)
-    {
-        free(name);
-        return false;
-    }
-
-    strcpy(telephone, "Telephone");
-    char* nameTest = calloc(sizeArray, sizeof(char));
-    if (nameTest == NULL)
-    {
-        free(name);
-        free(telephone);
-        return false;
-    }
-
-    strcpy(nameTest, "NameTest");
-    char* telephoneTest = calloc(sizeArray, sizeof(char));
-    if (telephoneTest == NULL)
-    {
-        free(name);
-        free(telephone);
-        free(nameTest);
-        return false;
-    }
-
-    strcpy(telephoneTest, "TelephoneTest");
     char* outName = NULL;
     char* outTelephone = NULL;
     if (getElements(NULL, NULL, NULL) != 1 || getElements(testList, &outName, &outTelephone) != 1 || getElements(list, &outName, NULL) != 1
@@ -145,7 +98,7 @@ bool getElementsTest(List* list, List* testList)
         return false;
     }
 
-    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0)
+    if (strcmp(outName, "Name") != 0 || strcmp(outTelephone, "Telephone") != 0)
     {
         return false;
     }
@@ -153,7 +106,7 @@ bool getElementsTest(List* list, List* testList)
     for (int i = 0; i < (sizeBookTest - 2); ++i)
     {
         getElements(list, &outName, &outTelephone);
-        if (strcmp(outName, nameTest) != 0 || strcmp(outTelephone, telephoneTest) != 0)
+        if (strcmp(outName, "NameTest") != 0 || strcmp(outTelephone, "TelephoneTest") != 0)
         {
             return false;
         }
@@ -161,14 +114,14 @@ bool getElementsTest(List* list, List* testList)
 
     getElements(list, &outName, &outTelephone);
 
-    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0)
+    if (strcmp(outName, "Name") != 0 || strcmp(outTelephone, "Telephone") != 0)
     {
         return false;
     }
 
     getElements(list, &outName, &outTelephone);
 
-    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) // The second time to check the pointer
+    if (strcmp(outName, "Name") != 0 || strcmp(outTelephone, "Telephone") != 0) // The second time to check the pointer
     {
         return false;
     }
@@ -180,26 +133,17 @@ bool getElementsTest(List* list, List* testList)
 
     getElements(list, &outName, &outTelephone);
 
-    if (strcmp(outName, name) != 0 || strcmp(outTelephone, telephone) != 0) // Another pointer check
+    if (strcmp(outName, "Name") != 0 || strcmp(outTelephone, "Telephone") != 0) // Another pointer check
     {
         return false;
     }
 
-    free(name);
-    free(telephone);
-    free(nameTest);
-    free(telephoneTest);
     return true;
 }
 
 bool getQuantityTest(List* list, List* testList)
 {
-    if (getQuantity(list) != sizeBookTest || getQuantity(NULL) != 0 || getQuantity(testList) != 0)
-    {
-        return false;
-    }
-
-    return true;
+    return !(getQuantity(list) != sizeBookTest || getQuantity(NULL) != 0 || getQuantity(testList) != 0);
 }
 
 bool searchElementTest(List* list, List* testList)
@@ -240,26 +184,16 @@ bool searchElementTest(List* list, List* testList)
     return true;
 }
 
-bool deleteListTest(List* list, List* testList)
-{
-    if (deleteList(NULL) != 1 || deleteList(list) != 0 || deleteList(testList) != 0)
-    {
-        return false;
-    }
-
-    return true;
-}
-
 bool runListModuleTest()
 {
-    bool result = true;
     List* list = createNewList();
-    result = result && createListTest(list);
+    bool result = createListTest(list);
     result = result && addNewElementTest(list);
     List* testList = createNewList();
     result = result && getElementsTest(list, testList);
     result = result && getQuantityTest(list, testList);
     result = result && searchElementTest(list, testList);
-    result = result && deleteListTest(list, testList);
+    deleteList(list);
+    deleteList(testList);
     return result;
 }

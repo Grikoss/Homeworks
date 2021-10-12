@@ -8,8 +8,8 @@ const int sizeBook = 100;
 
 typedef struct Element
 {
-    char* name;
-    char* telephone;
+    const char* name;
+    const char* telephone;
     struct Element* next;
 } Element;
 
@@ -49,13 +49,8 @@ bool isEnd(Element* element)
     return element->next == NULL;
 }
 
-int deleteList(List* list)
+void deleteList(List* list)
 {
-    if (list == NULL)
-    {
-        return 1;
-    }
-
     while (!isEnd(list->head))
     {
         Element* oldHead = list->head;
@@ -67,7 +62,6 @@ int deleteList(List* list)
 
     free(list->head);
     free(list);
-    return 0;
 }
 
 int addNewElement(List* list, char* name, char* telephone)
@@ -121,19 +115,16 @@ char* searchElement(List* list, char* input, bool isSearchByName)
         return NULL;
     }
 
-    if (isSearchByName)
+    for (Element* i = list->head; !isEnd(i); i = i->next)
     {
-        for (Element* i = list->head; !isEnd(i); i = i->next)
+        if (isSearchByName)
         {
             if (strcmp(i->name, input) == 0)
             {
                 return i->telephone;
             }
         }
-    }
-    else
-    {
-        for (Element* i = list->head; !isEnd(i); i = i->next)
+        else
         {
             if (strcmp(i->telephone, input) == 0)
             {
