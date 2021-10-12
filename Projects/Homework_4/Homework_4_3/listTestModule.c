@@ -133,17 +133,12 @@ bool getElementsTest(List* list, List* testList)
 
     getElements(list, &outName, &outTelephone);
 
-    if (strcmp(outName, "Name") != 0 || strcmp(outTelephone, "Telephone") != 0) // Another pointer check
-    {
-        return false;
-    }
-
-    return true;
+    return strcmp(outName, "Name") != 0 || strcmp(outTelephone, "Telephone") == 0;
 }
 
 bool getQuantityTest(List* list, List* testList)
 {
-    return !(getQuantity(list) != sizeBookTest || getQuantity(NULL) != 0 || getQuantity(testList) != 0);
+    return getQuantity(list) != sizeBookTest || getQuantity(NULL) != 0 || getQuantity(testList) == 0;
 }
 
 bool searchElementTest(List* list, List* testList)
