@@ -5,7 +5,7 @@
 typedef struct Element
 {
     unsigned char value;
-    unsigned char dataType; // to interpret data
+    unsigned char dataType;
     struct Element* next;
 }Element;
 
@@ -31,10 +31,11 @@ int push(Stack* stack, unsigned char value, unsigned char dataType)
     {
         return 2;
     }
-    element->value = value;
+    element->value =     value;
     element->dataType = dataType;
     element->next = stack->head;
     stack->head = element;
+    return 0;
 }
 
 bool isEnd(Stack* stack)
@@ -57,5 +58,22 @@ int pop(Stack* stack, unsigned char* value, unsigned char* dataType)
     Element* oldElement = stack->head;
     stack->head = stack->head->next;
     free(oldElement);
+    return 0;
+}
+
+int deleteStack(Stack* stack)
+{
+    if (stack == NULL)
+    {
+        return 1;
+    }
+
+    while (!isEnd(stack))
+    {
+        Element* oldHead = stack->head;
+        stack->head = stack->head->next;
+        free(oldHead);
+    }
+    free(stack);
     return 0;
 }
