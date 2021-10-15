@@ -139,7 +139,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\stack\stack.c" />
+    <ClCompile Include="..\stack\stackTest.c" />
+    <ClCompile Include="ABBalanceCheck.c" />
+    <ClCompile Include="ABBalanceCheckTest.c" />
     <ClCompile Include="main.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\stack\stack.h" />
+    <ClInclude Include="..\stack\stackTest.h" />
+    <ClInclude Include="ABBalanceCheck.h" />
+    <ClInclude Include="ABBalanceCheckTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
