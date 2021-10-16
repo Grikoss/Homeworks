@@ -18,7 +18,7 @@ bool bracketCheck(char openBracket, char closeBracket)
     }
 }
 
-bool AABalanceCheck(const char* string, int length)
+bool aABalanceCheck(const char* string, int length)
 {
     Stack* stack = createStack();
     for (int i = 0; i < length; ++i)

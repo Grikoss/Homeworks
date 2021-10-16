@@ -13,14 +13,14 @@ int main()
         return 1;
     }
 
-    if (AABalanceCheckTest())
+    if (aABalanceCheckTest())
     {
         return 2;
     }
 
     char string[SIZE] = { 0 };
     printf("Enter string:\n");
-    scanf_s("%s", string, SIZE);
-    printf(AABalanceCheck(string, SIZE) ? "The balance of brackets is observed\n" : "The balance of brackets is not observed\n");
+    scanf_s("%[^\n]", string, SIZE);
+    printf(aABalanceCheck(string, SIZE) ? "The balance of brackets is observed\n" : "The balance of brackets is not observed\n");
     return 0;
 }

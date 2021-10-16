@@ -3,4 +3,4 @@
 #include <stdbool.h>
 
 // AABalanceCheck Test (false if ok)
-bool AABalanceCheckTest();
+bool aABalanceCheckTest();
