@@ -33,9 +33,13 @@ int postCalculator(const char* string, const int length, int* result)
     Stack* stack = createStack();
     for (int i = 0; i < length; ++i)
     {
-        while (i < length && (string[i] == ' ' || string[i] == '\n'))
+        while (i < length && (string[i] == ' ' || string[i] == '\n' || string[i] == '\0'))
         {
             ++i;
+        }
+        if (i >= length || string[i] == '\0')
+        {
+            break;
         }
         char* buffer = calloc(length, sizeof(char));
         if (buffer == NULL)
@@ -44,13 +48,13 @@ int postCalculator(const char* string, const int length, int* result)
             return 1;
         }
         int index = 0;
-        while (i < length && string[i] != ' ' && string[i] != '\n')
+        while (i < length && string[i] != ' ' && string[i] != '\n' && string[i] != '\0')
         {
             buffer[index] = string[i];
             ++i;
             ++index;
         }
-        if (checkSign(buffer[0]))
+        if (checkSign(buffer[0]) && index <= 1)
         {
             int valueOne = 0;
             int valueTwo = 0;
@@ -61,6 +65,7 @@ int postCalculator(const char* string, const int length, int* result)
                 return 2;
             }
             push(stack, binaryCalculator(valueOne, valueTwo, buffer[0]));
+            free(buffer);
         }
         else
         {
@@ -75,5 +80,6 @@ int postCalculator(const char* string, const int length, int* result)
         executionCode = 3;
     }
 
+    deleteStack(stack);
     return executionCode;
 }
