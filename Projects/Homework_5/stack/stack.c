@@ -4,23 +4,21 @@
 
 typedef struct Element
 {
-    unsigned char value;
-    unsigned char dataType;
+    int value;
     struct Element* next;
-}Element;
+} Element;
 
 typedef struct Stack
 {
     Element* head;
-}Stack;
+} Stack;
 
 Stack* createStack()
 {
-    Stack* stack = calloc(1, sizeof(Stack));
-    return stack;
+    return calloc(1, sizeof(Stack));
 }
 
-int push(Stack* stack, unsigned char value, unsigned char dataType)
+int push(Stack* stack, const int value)
 {
     if (stack == NULL)
     {
@@ -31,30 +29,24 @@ int push(Stack* stack, unsigned char value, unsigned char dataType)
     {
         return 2;
     }
-    element->value =     value;
-    element->dataType = dataType;
+    element->value = value;
     element->next = stack->head;
     stack->head = element;
     return 0;
 }
 
-bool isEnd(Stack* stack)
+bool isEmpty(Stack* stack)
 {
-    return stack->head == NULL;
+    return stack == NULL ? true : stack->head == NULL;
 }
 
-int pop(Stack* stack, unsigned char* value, unsigned char* dataType)
+int pop(Stack* stack, int* value)
 {
-    if (stack == NULL)
+    if (isEmpty(stack))
     {
         return 1;
     }
-    if (isEnd(stack))
-    {
-        return 2;
-    }
     *value = stack->head->value;
-    *dataType = stack->head->dataType;
     Element* oldElement = stack->head;
     stack->head = stack->head->next;
     free(oldElement);
@@ -68,7 +60,7 @@ int deleteStack(Stack* stack)
         return 1;
     }
 
-    while (!isEnd(stack))
+    while (!isEmpty(stack))
     {
         Element* oldHead = stack->head;
         stack->head = stack->head->next;
