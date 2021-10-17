@@ -23,19 +23,18 @@ bool aABalanceCheck(const char* string, int length)
     Stack* stack = createStack();
     for (int i = 0; i < length; ++i)
     {
-        char bracket = 'a';
-        int datatype = 0;
+        int bracket = 'a';
         switch (string[i])
         {
         case '[':
         case '{':
         case '(':
-            push(stack, string[i], 0);
+            push(stack, string[i]);
             break;
         case ']':
         case '}':
         case ')':
-            pop(stack, &bracket, &datatype);
+            pop(stack, &bracket);
             if (!bracketCheck(bracket, string[i]))
             {
                 deleteStack(stack);
@@ -48,8 +47,7 @@ bool aABalanceCheck(const char* string, int length)
     }
 
     int bufferOne = 1;
-    int bufferTwo = 1;
-    bool result = pop(stack, &bufferOne, &bufferTwo) != 0;
+    bool result = pop(stack, &bufferOne) != 0;
     deleteStack(stack);
     return result;
 }

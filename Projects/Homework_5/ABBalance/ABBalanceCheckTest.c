@@ -4,18 +4,18 @@
 
 bool aABalanceCheckTest()
 {
-    bool result = aABalanceCheck("()", 2) != true;
-    result = result || aABalanceCheck("sf", 2) != true;
-    result = result || aABalanceCheck("(gfgf)", 6) != true;
-    result = result || aABalanceCheck("([)]", 4) != false;
-    result = result || aABalanceCheck("{]", 2) != false;
-    result = result || aABalanceCheck("[(){}[fgfgfggf{}{(dd4545)}][][dfdfd]{}{}(){}[2]]", 48) != true;
-    result = result || aABalanceCheck("[(){}[{}}()}][][]{}{}(){}[]]", 28) != false;
-    result = result || aABalanceCheck("(", 1) != false;
-    result = result || aABalanceCheck("}", 1) != false;
-    result = result || aABalanceCheck("{}(", 3) != false;
-    result = result || aABalanceCheck("()]", 3) != false;
-    result = result || aABalanceCheck("()]", 0) != true;
-    result = result || aABalanceCheck("( )", 3) != true;
+    bool result = !aABalanceCheck("()", 2);
+    result = result || !aABalanceCheck("sf", 2);
+    result = result || !aABalanceCheck("(gfgf)", 6);
+    result = result || aABalanceCheck("([)]", 4);
+    result = result || aABalanceCheck("{]", 2);
+    result = result || !aABalanceCheck("[(){}[fgfgfggf{}{(dd4545)}][][dfdfd]{}{}(){}[2]]", 48);
+    result = result || aABalanceCheck("[(){}[{}}()}][][]{}{}(){}[]]", 28);
+    result = result || aABalanceCheck("(", 1);
+    result = result || aABalanceCheck("}", 1);
+    result = result || aABalanceCheck("{}(", 3);
+    result = result || aABalanceCheck("()]", 3);
+    result = result || !aABalanceCheck("()]", 0);
+    result = result || !aABalanceCheck("( )", 3);
     return result;
 }
