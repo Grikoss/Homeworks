@@ -33,7 +33,7 @@ int postCalculator(const char* string, const int length, int* result)
     Stack* stack = createStack();
     for (int i = 0; i < length; ++i)
     {
-        while (i < length && (string[i] == ' ' || string[i] == '\n' || string[i] == '\0'))
+        while (i < length && (string[i] == ' ' || string[i] == '\n' || string[i] == '\0' || string[i] == 'þ'))
         {
             ++i;
         }
@@ -48,7 +48,7 @@ int postCalculator(const char* string, const int length, int* result)
             return 1;
         }
         int index = 0;
-        while (i < length && string[i] != ' ' && string[i] != '\n' && string[i] != '\0')
+        while (i < length && string[i] != ' ' && string[i] != '\n' && string[i] != '\0' && string[i] != 'þ')
         {
             buffer[index] = string[i];
             ++i;
