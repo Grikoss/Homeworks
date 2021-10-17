@@ -10,17 +10,16 @@ bool createStackTest(Stack* stack)
 
 bool pushTest(Stack* stack)
 {
-    return push(NULL, 'a', 'b') != 1 || push(stack, 'a', 'b') != 0;
+    return push(NULL, 0) != 1 || push(stack, '+') != 0;
 }
 
 bool popTest(Stack* stack)
 {
-    char outputOne = 'c';
-    char outputTwo = 'c';
-    bool result = pop(stack, &outputOne, &outputTwo) != 0;
-    result = result || outputOne != 'a' || outputTwo != 'b';
-    result = result || pop(NULL, &outputOne, &outputTwo) != 1;
-    return result || pop(stack, &outputOne, &outputTwo) != 2;
+    int output = 1;
+    bool result = pop(stack, &output) != 0;
+    result = result || output != '+';
+    result = result || pop(NULL, &output) != 1;
+    return result || pop(stack, &output) != 1;
 }
 
 bool deleteStackTest(Stack* stack)

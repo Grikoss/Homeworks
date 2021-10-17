@@ -2,5 +2,5 @@
 
 #include <stdbool.h>
 
-// StackTest, nothing more
+// StackTest (false if ok)
 bool stackTest();
