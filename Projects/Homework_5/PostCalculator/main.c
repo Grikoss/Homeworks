@@ -2,10 +2,9 @@
 
 int main()
 {
-	if (stackTest())
-	{
-		return 1;
-	}
-	
-	return 0;
+    if (stackTest())
+    {
+        return 1;
+    }
+    return 0;
 }
