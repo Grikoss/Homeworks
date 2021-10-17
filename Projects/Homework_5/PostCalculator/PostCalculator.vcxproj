@@ -113,7 +113,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
@@ -143,10 +143,13 @@
     <ClCompile Include="..\stack\stackTest.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="postCalculator.c" />
+    <ClCompile Include="postCalculatorTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stack\stack.h" />
     <ClInclude Include="..\stack\stackTest.h" />
+    <ClInclude Include="postCalculator.h" />
+    <ClInclude Include="postCalculatorTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
