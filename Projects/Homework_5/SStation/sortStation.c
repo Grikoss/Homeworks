@@ -16,9 +16,8 @@ int checkSign(const char sign)
     case '/':
         return 3;
     case '+':
-        return 4;
     case '-':
-        return 5;
+        return 4;
     case '0':
     case '1':
     case '2':
@@ -29,19 +28,32 @@ int checkSign(const char sign)
     case '7':
     case '8':
     case '9':
-        return 6;
+        return 5;
     default:
         return 0;
     }
 }
 
-int sortStation(char* string, const int length)
+int watchStack(Stack* stack, int* sign)
+{
+    int number = 0;
+    if (pop(stack, &number) == 0)
+    {
+        push(stack, number);
+        *sign = number;
+        return 0;
+    }
+    return 1;
+}
+
+int sortStation(char* string)
 {
     if (string == NULL)
     {
         return 1;
     }
     int index = 0;
+    const int length = strlen(string);
     char* outString = calloc(length, sizeof(char));
     if (outString == NULL)
     {
@@ -55,31 +67,62 @@ int sortStation(char* string, const int length)
     }
     for (int i = 0; i < length; i)
     {
-        while (checkSign(string[i]) == 0 && i < length && string[i] != '\0')
+        while (checkSign(string[i]) == 0 && i < length)
         {
             ++i;
         }
-        if (i >= length || string[i] == '\0')
+        if (i >= length)
         {
             break;
         }
         switch (checkSign(string[i]))
         {
-        case 5: // minus
-            if (i + 1 == length || checkSign(string[i+1]) != 6) // minus as sign
+        case 1:
+            push(stack, string[i]);
+            ++i;
+            break;
+        case 2:
+        {
+            int sign = 0;
+            while (watchStack(stack, &sign) == 0 && checkSign(sign) != 1)
             {
-                char sign = 'a'
-                while (pop))
+                pop(stack, &sign);
+                outString[index] = sign;
+                ++index;
+                outString[index] = ' ';
+                ++index;
+            }
+            if (watchStack(stack, &sign) == 1)
+            {
+                free(outString);
+                deleteStack(stack);
+                return 4;
+            }
+            pop(stack, &sign);
+            break;
+        }
+        case 3: // division and multiplication
+        case 4: // minus and plus
+            if (i + 1 == length || string[i] != '-' || checkSign(string[i + 1]) != 5) // as sign
+            {
+                int sign = 0;
+                while (watchStack(stack, &sign) == 0 && (checkSign(string[i]) == 3 ? checkSign(sign) == 3 : (checkSign(sign) == 4 || checkSign(sign) == 3)))
                 {
-
+                    pop(stack, &sign);
+                    outString[index] = sign;
+                    ++index;
+                    outString[index] = ' ';
+                    ++index;
                 }
+                push(stack, string[i]);
+                ++i;
                 break;
             }
             outString[index] = string[i]; // minus as part of number
             ++i;
             ++index;
         default:  // record numbers
-            while (checkSign(string[i]) == 6 && i < length)
+            while (checkSign(string[i]) == 5 && i < length)
             {
                 outString[index] = string[i];
                 ++i;
@@ -90,4 +133,22 @@ int sortStation(char* string, const int length)
             break;
         }
     }
+    int sign = 0;
+    while (pop(stack, &sign) == 0)
+    {
+        if (checkSign(sign) == 1)
+        {
+            free(outString);
+            deleteStack(stack);
+            return 4;
+        }
+        outString[index] = sign;
+        ++index;
+        outString[index] = ' ';
+        ++index;
+    }
+    strcpy_s(string, length, outString);
+    free(outString);
+    deleteStack(stack);
+    return 0;
 }
