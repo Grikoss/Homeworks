@@ -46,7 +46,7 @@ int watchStack(Stack* stack, int* sign)
     return 1;
 }
 
-int sortStation(char* string)
+int sortStation(const char* string, char** output)
 {
     if (string == NULL)
     {
@@ -54,7 +54,7 @@ int sortStation(char* string)
     }
     int index = 0;
     const int length = strlen(string);
-    char* outString = calloc(length, sizeof(char));
+    char* outString = calloc(length * 2 + 1, sizeof(char));
     if (outString == NULL)
     {
         return 2;
@@ -99,6 +99,7 @@ int sortStation(char* string)
                 return 4;
             }
             pop(stack, &sign);
+            ++i;
             break;
         }
         case 3: // division and multiplication
@@ -147,8 +148,8 @@ int sortStation(char* string)
         outString[index] = ' ';
         ++index;
     }
-    strcpy_s(string, length, outString);
-    free(outString);
+    outString[index] = '\0';
     deleteStack(stack);
+    *output = outString;
     return 0;
 }

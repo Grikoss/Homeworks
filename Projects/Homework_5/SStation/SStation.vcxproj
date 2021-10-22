@@ -143,11 +143,13 @@
     <ClCompile Include="..\stack\stackTest.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="sortStation.c" />
+    <ClCompile Include="sortStationTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stack\stack.h" />
     <ClInclude Include="..\stack\stackTest.h" />
     <ClInclude Include="sortStation.h" />
+    <ClInclude Include="sortStationTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
