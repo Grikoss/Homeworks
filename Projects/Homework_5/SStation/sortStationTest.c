@@ -8,7 +8,7 @@ bool isSortStationTestFalse()
 {
     char* output = NULL;
     bool result = ((sortStation("5)+5", &output) != 4) || output != NULL);
-    result = result || ((sortStation("(5+5", &output) != 4) || output != NULL);
+    result = result || ((sortStation("(5+5", &output) != 5) || output != NULL);
     sortStation("5+5", &output);
     result = result || (strcmp("5 5 + ", output) != 0);
     free(output);
@@ -26,6 +26,12 @@ bool isSortStationTestFalse()
     free(output);
     sortStation("(2+2)*2", &output);
     result = result || (strcmp("2 2 + 2 * ", output) != 0);
+    free(output);
+    sortStation("5 5", &output);
+    result = result || (strcmp("5 5 ", output) != 0);
+    free(output);
+    sortStation("5 + 5 +", &output);
+    result = result || (strcmp("5 5 + + ", output) != 0);
     free(output);
     return  result || sortStation(NULL, &output) != 1;
 }

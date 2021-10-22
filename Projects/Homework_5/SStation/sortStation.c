@@ -141,7 +141,7 @@ int sortStation(const char* string, char** output)
         {
             free(outString);
             deleteStack(stack);
-            return 4;
+            return 5;
         }
         outString[index] = sign;
         ++index;
