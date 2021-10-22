@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 #include "postCalculator.h"
 #include "../stack/stack.h"
@@ -11,7 +12,7 @@ bool checkSign(char sign)
 }
 
 // Return result (valueOne 'sign' valueTwo)
-int binaryCalculator(int valueOne, int valueTwo, char sign)
+int binaryCalculate(int valueOne, int valueTwo, char sign)
 {
     switch (sign)
     {
@@ -28,16 +29,17 @@ int binaryCalculator(int valueOne, int valueTwo, char sign)
     }
 }
 
-int postCalculator(const char* string, const int length, int* result)
+int postCalculate(const char* string, int* result)
 {
     Stack* stack = createStack();
+    const int length = strlen(string);
     for (int i = 0; i < length; ++i)
     {
-        while (i < length && (string[i] == ' ' || string[i] == '\n' || string[i] == '\0' || string[i] == 'þ'))
+        while (i < length && (string[i] == ' ' || string[i] == '\n' || string[i] == 'þ'))
         {
             ++i;
         }
-        if (i >= length || string[i] == '\0')
+        if (i >= length)
         {
             break;
         }
@@ -48,7 +50,7 @@ int postCalculator(const char* string, const int length, int* result)
             return 1;
         }
         int index = 0;
-        while (i < length && string[i] != ' ' && string[i] != '\n' && string[i] != '\0' && string[i] != 'þ')
+        while (i < length && string[i] != ' ' && string[i] != '\n' && string[i] != 'þ')
         {
             buffer[index] = string[i];
             ++i;
@@ -60,11 +62,12 @@ int postCalculator(const char* string, const int length, int* result)
             int valueTwo = 0;
             if (pop(stack, &valueTwo) != 0 || pop(stack, &valueOne) != 0 || (buffer[0] == '/' && valueTwo == 0))
             {
+                int executionCode = (buffer[0] == '/' && valueTwo == 0) ? 2 : 3;
                 free(buffer);
                 deleteStack(stack);
-                return 2;
+                return executionCode;
             }
-            push(stack, binaryCalculator(valueOne, valueTwo, buffer[0]));
+            push(stack, binaryCalculate(valueOne, valueTwo, buffer[0]));
             free(buffer);
         }
         else
@@ -73,13 +76,15 @@ int postCalculator(const char* string, const int length, int* result)
             free(buffer);
         }
     }
-
     int executionCode = 0;
-    if (pop(stack, result) != 0 || pop(stack, result) == 0)
+    if (pop(stack, result) != 0)
     {
-        executionCode = 3;
+        executionCode = 4;
     }
-
+    if (pop(stack, result) == 0)
+    {
+        executionCode = 5;
+    }
     deleteStack(stack);
     return executionCode;
 }

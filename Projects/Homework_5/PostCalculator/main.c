@@ -11,27 +11,31 @@ int main()
     {
         return 1;
     }
-    if (postCalculatorTest())
+    if (isPostCalculateTestFalse())
     {
         return 2;
     }
-
     char string[SIZE] = { '\0' };
     printf("Enter string:\n");
     scanf_s("%[^\n]", string, SIZE);
-    int executionCode = 0;
     int value = 0;
-    executionCode = postCalculator(string, SIZE, &value);
+    int executionCode = postCalculate(string, &value);
     switch (executionCode)
     {
     case 1:
         printf("Failed to initialize memory\n");
         break;
     case 2:
-        printf("Too many operators or division by zero\n");
+        printf("Division by zero\n");
         break;
     case 3:
-        printf("Too many numbers or string is empty\n");
+        printf("Too many operators\n");
+        break;
+    case 4:
+        printf("String is empty\n");
+        break;
+    case 5:
+        printf("Too many numbers\n");
         break;
     default:
         printf("Result = %d\n", value);
