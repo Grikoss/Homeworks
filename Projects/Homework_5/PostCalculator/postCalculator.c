@@ -58,11 +58,19 @@ int postCalculate(const char* string, int* result)
         }
         if (checkSign(buffer[0]) && index <= 1)
         {
-            int valueOne = 0;
-            int valueTwo = 0;
-            if (pop(stack, &valueTwo) != 0 || pop(stack, &valueOne) != 0 || (buffer[0] == '/' && valueTwo == 0))
+            int valueOne = 1;
+            int valueTwo = 1;
+            int executionCode = 0;
+            if (pop(stack, &valueTwo) != 0 || pop(stack, &valueOne) != 0)
             {
-                int executionCode = (buffer[0] == '/' && valueTwo == 0) ? 2 : 3;
+                executionCode = 3;
+            }
+            if ((buffer[0] == '/' && valueTwo == 0))
+            {
+                executionCode = 2;
+            }
+            if (executionCode != 0)
+            {
                 free(buffer);
                 deleteStack(stack);
                 return executionCode;

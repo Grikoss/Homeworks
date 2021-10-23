@@ -2,7 +2,7 @@
 #include "postCalculator.h"
 #include "postCalculatorTest.h"
 
-bool isPostCalculateTestFalse()
+bool isPostCalculateBehavesIncorrectly()
 {
     int output = 0;
     bool result = postCalculate("5\n5 +", &output) != 0 || output != 10;

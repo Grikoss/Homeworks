@@ -11,7 +11,7 @@ int main()
     {
         return 1;
     }
-    if (isPostCalculateTestFalse())
+    if (isPostCalculateBehavesIncorrectly())
     {
         return 2;
     }

@@ -2,5 +2,5 @@
 
 #include <stdbool.h>
 
-// isPostCalculateTestFalse (false if ok)
-bool isPostCalculateTestFalse();
+// isPostCalculateBehavesIncorrectly (false if ok)
+bool isPostCalculateBehavesIncorrectly();
