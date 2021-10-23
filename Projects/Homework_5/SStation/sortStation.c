@@ -6,6 +6,10 @@
 
 int checkSign(const char sign)
 {
+    if ('0' <= sign && sign <= '9')
+    {
+        return 5;
+    }
     switch (sign)
     {
     case '(':
@@ -18,32 +22,39 @@ int checkSign(const char sign)
     case '+':
     case '-':
         return 4;
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-        return 5;
     default:
         return 0;
     }
 }
 
-int watchStack(Stack* stack, int* sign)
+void writeCharacter(char* string, char sign, int* index)
 {
-    int number = 0;
-    if (pop(stack, &number) == 0)
+    string[*index] = sign;
+    ++*index;
+    string[*index] = ' ';
+    ++*index;
+}
+
+void writeSign(Stack* stack, char* outString, char inputSing, int* index, int priority)
+{
+    int sign = 0;
+    if (priority == 0)
     {
-        push(stack, number);
-        *sign = number;
-        return 0;
+        while (top(stack, &sign) == 0 && checkSign(sign) == 3)
+        {
+            pop(stack, &sign);
+            writeCharacter(outString, sign, index);
+        }
     }
-    return 1;
+    else
+    {
+        while (top(stack, &sign) == 0 && (checkSign(sign) == 4 || checkSign(sign) == 3))
+        {
+            pop(stack, &sign);
+            writeCharacter(outString, sign, index);
+        }
+    }
+    push(stack, inputSing);
 }
 
 int sortStation(const char* string, char** output)
@@ -84,15 +95,12 @@ int sortStation(const char* string, char** output)
         case 2:
         {
             int sign = 0;
-            while (watchStack(stack, &sign) == 0 && checkSign(sign) != 1)
+            while (top(stack, &sign) == 0 && checkSign(sign) != 1)
             {
                 pop(stack, &sign);
-                outString[index] = sign;
-                ++index;
-                outString[index] = ' ';
-                ++index;
+                writeCharacter(outString, sign, &index);
             }
-            if (watchStack(stack, &sign) == 1)
+            if (top(stack, &sign) == 1)
             {
                 free(outString);
                 deleteStack(stack);
@@ -103,19 +111,13 @@ int sortStation(const char* string, char** output)
             break;
         }
         case 3: // division and multiplication
+            writeSign(stack, outString, string[i], &index, 0);
+            ++i;
+            break;
         case 4: // minus and plus
             if (i + 1 == length || string[i] != '-' || checkSign(string[i + 1]) != 5) // as sign
             {
-                int sign = 0;
-                while (watchStack(stack, &sign) == 0 && (checkSign(string[i]) == 3 ? checkSign(sign) == 3 : (checkSign(sign) == 4 || checkSign(sign) == 3)))
-                {
-                    pop(stack, &sign);
-                    outString[index] = sign;
-                    ++index;
-                    outString[index] = ' ';
-                    ++index;
-                }
-                push(stack, string[i]);
+                writeSign(stack, outString, string[i], &index, 1);
                 ++i;
                 break;
             }
@@ -143,10 +145,7 @@ int sortStation(const char* string, char** output)
             deleteStack(stack);
             return 5;
         }
-        outString[index] = sign;
-        ++index;
-        outString[index] = ' ';
-        ++index;
+        writeCharacter(outString, sign, &index);
     }
     outString[index] = '\0';
     deleteStack(stack);

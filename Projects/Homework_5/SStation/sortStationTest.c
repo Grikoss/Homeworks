@@ -4,7 +4,7 @@
 #include "sortStation.h"
 #include "sortStationTest.h"
 
-bool isSortStationTestFalse()
+bool isSortStationTestBehavesIncorrectly()
 {
     char* output = NULL;
     bool result = ((sortStation("5)+5", &output) != 4) || output != NULL);

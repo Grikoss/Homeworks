@@ -3,4 +3,4 @@
 #include <stdbool.h>
 
 // false is ok
-bool isSortStationTestFalse();
+bool isSortStationTestBehavesIncorrectly();

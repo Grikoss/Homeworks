@@ -12,7 +12,7 @@ int main()
     {
         return 1;
     }
-    if (isSortStationTestFalse())
+    if (isSortStationTestBehavesIncorrectly())
     {
         return 2;
     }
@@ -25,6 +25,7 @@ int main()
     {
     case 0:
         printf_s("%s\n", output);
+        free(output);
         break;
     case 4:
         printf("Opening parenthesis is missing\n");
