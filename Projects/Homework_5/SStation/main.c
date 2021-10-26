@@ -20,7 +20,7 @@ int main()
     printf("Enter string:\n");
     scanf_s("%[^\n]", string, SIZE);
     char* output = NULL;
-    int executionCode = sortStation(string, &output);
+    const int executionCode = sortStation(string, &output);
     switch (executionCode)
     {
     case 0:
