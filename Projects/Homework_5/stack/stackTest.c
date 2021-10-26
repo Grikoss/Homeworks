@@ -28,11 +28,20 @@ bool deleteStackTest(Stack* stack)
     return result || deleteStack(stack) != 0;
 }
 
+bool topTest(Stack* stack)
+{
+    int output = 1;
+    bool result = top(stack, &output) != 0;
+    result = result || output != '+';
+    return result = result || top(NULL, &output) != 1;
+}
+
 bool stackTest()
 {
     Stack* stack = createStack();
     bool result = createStackTest(stack);
     result = result || pushTest(stack);
+    result = result || topTest(stack);
     result = result || popTest(stack);
     return result || deleteStackTest(stack);
 }

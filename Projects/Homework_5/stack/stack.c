@@ -69,3 +69,13 @@ int deleteStack(Stack* stack)
     free(stack);
     return 0;
 }
+
+int top(Stack* stack, int* value)
+{
+    if (isEmpty(stack))
+    {
+        return 1;
+    }
+    *value = stack->head->value;
+    return 0;
+}
