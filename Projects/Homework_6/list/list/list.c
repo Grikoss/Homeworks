@@ -30,6 +30,16 @@ Position* createPosition()
     return calloc(1, sizeof(Position));
 }
 
+int getValueFromListElement(Position* position, int* outputValue)
+{
+    if (position == NULL || position->currentPosition == NULL)
+    {
+        return 1;
+    }
+    *outputValue = position->currentPosition->value;
+    return 0;
+}
+
 int addListElementIntoHead(List* list, Position* position, const int value)
 {
     if (list == NULL || position == NULL || position->currentPosition == NULL)
@@ -139,3 +149,77 @@ int addListElement(List* list, Position* position, const int value, bool addAfte
     position->currentPosition = element;
     return 0;
 }
+
+int removeLastListElement(List* list, Position* position)
+{
+    if (list == NULL || position == NULL)
+    {
+        return 1;
+    }
+    free(position->currentPosition);
+    position->currentPosition = NULL;
+    list->head = NULL;
+    list->tail = NULL;
+    return 0;
+}
+
+int removeListElementFromHead(List* list, Position* position, bool movePositionToNext)
+{
+    if (list == NULL || position == NULL || position->currentPosition == NULL)
+    {
+        return 1;
+    }
+    position->currentPosition->next->previous = NULL;
+    list->head = position->currentPosition->next;
+    free(position->currentPosition);
+    position->currentPosition = movePositionToNext ? list->head : NULL;
+    return 0;
+}
+
+int removeListElementFromTail(List* list, Position* position, bool movePositionToNext)
+{
+    if (list == NULL || position == NULL || position->currentPosition == NULL)
+    {
+        return 1;
+    }
+    position->currentPosition->previous->next = NULL;
+    list->tail = position->currentPosition->previous;
+    free(position->currentPosition);
+    position->currentPosition = movePositionToNext ? NULL : list->tail;
+    return 0;
+}
+
+int removeListElement(List* list, Position* position, bool movePositionToNext)
+{
+    if (list == NULL || position == NULL)
+    {
+        return 1;
+    }
+    if (list->head == NULL && list->tail == NULL)
+    {
+        return 2;
+    }
+    if (position->currentPosition == NULL)
+    {
+        return 3;
+    }
+    if (position->currentPosition->next == NULL && position->currentPosition->previous == NULL)
+    {
+        return (removeLastListElement(list, position) != 0) ? 4 : 0;
+    }
+    if (position->currentPosition->next == NULL)
+    {
+        return (removeListElementFromTail(list, position, movePositionToNext) != 0) ? 5 : 0;
+    }
+    if (position->currentPosition->previous == NULL)
+    {
+        return (removeListElementFromHead(list, position, movePositionToNext) != 0) ? 6 : 0;
+    }
+    position->currentPosition->next->previous = position->currentPosition->previous;
+    position->currentPosition->previous->next = position->currentPosition->next;
+    ListElement* oldCurrentPosition = position->currentPosition;
+    position->currentPosition = movePositionToNext ? position->currentPosition->next : position->currentPosition->previous;
+    free(oldCurrentPosition);
+    return 0;
+}
+
