@@ -32,3 +32,32 @@ int addListElement(List* list, Position* position, const int value, bool addAfte
 // 0 - ok; 1 - list or position is NULL; 2 - list is empty; 3 - position is pointing on NULL when list isn't empty;
 // 4 - removing last list element is failde; 5 - removing list element from tail is failed; 6 - removing list element from head is failed;
 int removeListElement(List* list, Position* position, bool movePositionToNext);
+
+// Deletes position, doesn't touch list
+void deletePosition(Position* position);
+
+// Delets list
+// Returns execution code:
+// 0 - ok; 1 - list is NULL;
+int deleteList(List* list);
+
+// Moves position to list head
+// Returns execution code:
+// 0 - ok; 1 - list or position is NULL;
+int movePositionToHead(List* list, Position* position);
+
+// Moves position to list tail
+// Returns execution code:
+// 0 - ok; 1 - list or position is NULL;
+int movePositionToTail(List* list, Position* position);
+
+// Moves position to next position
+// Returns execution code:
+// 0 - ok; 1 - position is NULL or position is pointing on NULL;
+int movePositionToNext(Position* position);
+
+// Moves position to previous position
+// Returns execution code:
+// 0 - ok; 1 - position is NULL or position is pointing on NULL;
+int movePositionToPrevious(Position* position);
+

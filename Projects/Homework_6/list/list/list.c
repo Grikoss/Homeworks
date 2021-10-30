@@ -102,7 +102,7 @@ int addListElement(List* list, Position* position, const int value, bool addAfte
     {
         return 1;
     }
-    if (list->head == NULL && list->tail == NULL)
+    if (list->head == NULL || list->tail == NULL)
     {
         return (addListElementIntoEmptyList(list, position, value) != 0) ? 2 : 0;
     }
@@ -195,7 +195,7 @@ int removeListElement(List* list, Position* position, bool movePositionToNext)
     {
         return 1;
     }
-    if (list->head == NULL && list->tail == NULL)
+    if (list->head == NULL || list->tail == NULL)
     {
         return 2;
     }
@@ -223,3 +223,63 @@ int removeListElement(List* list, Position* position, bool movePositionToNext)
     return 0;
 }
 
+void deletePosition(Position* position)
+{
+    free(position);
+}
+
+int deleteList(List* list)
+{
+    if (list == NULL)
+    {
+        return 1;
+    }
+    while (list->head != NULL)
+    {
+        ListElement* oldHead = list->head;
+        list->head = list->head->next;
+        free(oldHead);
+    }
+    free(list);
+    return 0;
+}
+
+int movePositionToHead(List* list, Position* position)
+{
+    if (list == NULL || position == NULL)
+    {
+        return 1;
+    }
+    position->currentPosition = list->head;
+    return 0;
+}
+
+int movePositionToTail(List* list, Position* position)
+{
+    if (list == NULL || position == NULL)
+    {
+        return 1;
+    }
+    position->currentPosition = list->tail;
+    return 0;
+}
+
+int movePositionToNext(Position* position)
+{
+    if (position == NULL || position->currentPosition == NULL)
+    {
+        return 1;
+    }
+    position->currentPosition = position->currentPosition->next;
+    return 0;
+}
+
+int movePositionToPrevious(Position* position)
+{
+    if (position == NULL || position->currentPosition == NULL)
+    {
+        return 1;
+    }
+    position->currentPosition = position->currentPosition->previous;
+    return 0;
+}
