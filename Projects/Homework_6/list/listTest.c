@@ -92,6 +92,57 @@ bool isGetValueFromElementBehavesIncorrect(List* list, Position* position)
     return result || getValueFromListElement(position, &value) != 1;
 }
 
+bool isMovePositionToNextOrPreviousBehavesIncorrect(List* list, Position* position)
+{
+    movePositionToHead(list, position);
+    bool result = movePositionToNext(position) != 0;
+    result = result || movePositionToPrevious(position) != 0;
+    result = result || movePositionToNext(NULL) != 1 || movePositionToPrevious(NULL) != 1;
+    movePositionToHead(list, position);
+    result = result || movePositionToPrevious(position) != 0;
+    return result || movePositionToNext(position) != 1 || movePositionToPrevious(position) != 1;
+}
+
+bool isFunctionisPositionNullBehavesIncorrect(List* list, Position* position)
+{
+    bool result = !isPositionNull(position);
+    result = result || !isPositionNull(NULL);
+    movePositionToHead(list, position);
+    return result || isPositionNull(position);
+}
+
+bool isRemoveListElementBehavesIncorrect(List* list, Position* position)
+{
+    movePositionToHead(list, position);
+    bool result = removeListElement(list, position, false) != 0;
+    result = result || !isPositionNull(position);
+    movePositionToHead(list, position);
+    result = result || removeListElement(list, position, true) != 0;
+    result = result || isPositionNull(position);
+    movePositionToTail(list, position);
+    result = result || removeListElement(list, position, true) != 0;
+    result = result || !isPositionNull(position);
+    movePositionToTail(list, position);
+    result = result || removeListElement(list, position, false) != 0;
+    result = result || isPositionNull(position);
+    result = result || removeListElement(list, position, false) != 0;
+    movePositionToNext(position);
+    result = result || removeListElement(list, position, true) != 3;
+    movePositionToHead(list, position);
+    result = result || removeListElement(list, position, true) != 0;
+    movePositionToHead(list, position);
+    result = result || !isPositionNull(position);
+    movePositionToTail(list, position);
+    result = result || !isPositionNull(position);
+    result = result || removeListElement(list, position, true) != 2;
+    return result || removeListElement(NULL, position, true) != 1 || removeListElement(list, NULL, true) != 1;
+}
+
+bool isDeleteListBehavesIncorrect(List* list)
+{
+    return deleteList(NULL) != 1 || deleteList(list) != 0;
+}
+
 bool isListBehavesIncorrect()
 {
     List* list = NULL;
@@ -102,5 +153,9 @@ bool isListBehavesIncorrect()
     result = result || isMovePositionToTailBehavesIncorrect(list, position);
     result = result || isAddListElementBehavesIncorrect(list, position);
     result = result || isGetValueFromElementBehavesIncorrect(list, position);
-    return result;
+    result = result || isMovePositionToNextOrPreviousBehavesIncorrect(list, position);
+    result = result || isFunctionisPositionNullBehavesIncorrect(list, position);
+    result = result || isRemoveListElementBehavesIncorrect(list, position);
+    deletePosition(position);
+    return result || isDeleteListBehavesIncorrect(list);
 }
