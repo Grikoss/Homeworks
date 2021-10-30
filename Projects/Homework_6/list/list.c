@@ -283,3 +283,8 @@ int movePositionToPrevious(Position* position)
     position->currentPosition = position->currentPosition->previous;
     return 0;
 }
+
+bool isPositionNull(Position* position)
+{
+    return position == NULL || position->currentPosition == NULL;
+}
