@@ -143,11 +143,13 @@
     <ClCompile Include="..\list\listTest.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="sortedList.c" />
+    <ClCompile Include="sortedListTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\list\list.h" />
     <ClInclude Include="..\list\listTest.h" />
     <ClInclude Include="sortedList.h" />
+    <ClInclude Include="sortedLustTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

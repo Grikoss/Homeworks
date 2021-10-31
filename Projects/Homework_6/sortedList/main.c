@@ -1,9 +1,9 @@
 #include "sortedList.h"
-#include "../list/listTest.h"
+#include "sortedLustTest.h"
 
 int main()
 {
-	if (isListBehavesIncorrect())
+	if (isSortedListBeahavesIncorrect())
 	{
 		return 1;
 	}

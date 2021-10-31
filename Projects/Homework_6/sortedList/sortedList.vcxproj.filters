@@ -27,6 +27,9 @@
     <ClCompile Include="..\list\listTest.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sortedListTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sortedList.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\list\listTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sortedLustTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
