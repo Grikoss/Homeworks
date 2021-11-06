@@ -61,5 +61,8 @@ int movePositionToNext(Position* position);
 // 0 - ok; 1 - position is NULL or position is pointing on NULL;
 int movePositionToPrevious(Position* position);
 
-// Return true if position is pointing on NULL or position is NULL
+// Returns true if position is pointing on NULL or position is NULL
 bool isPositionNull(Position* position);
+
+// Returns true if position is pointing on last element or false if position is pointing on NULL or position is NULL
+bool isPositionPointOnLastElement(Position* position);

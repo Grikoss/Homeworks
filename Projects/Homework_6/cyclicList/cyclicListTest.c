@@ -145,6 +145,14 @@ bool isCyclicListIsNotOkey(CyclicList* list, Position* position)
     return 15 != value;
 }
 
+bool isPositionPointOnLastElementBehavesIncorrectly(CyclicList* list, Position* position)
+{
+    removeListElement(list, position, true);
+    bool result = !isPositionPointOnLastElement(position) || isPositionPointOnLastElement(NULL);
+    removeListElement(list, position, true);
+    return result || isPositionPointOnLastElement(position);
+}
+
 bool isListBehavesIncorrect()
 {
     CyclicList* list = NULL;
@@ -159,6 +167,7 @@ bool isListBehavesIncorrect()
     result = result || isFunctionisPositionNullBehavesIncorrect(list, position);
     result = result || isRemoveListElementBehavesIncorrect(list, position);
     result = result || isCyclicListIsNotOkey(list, position);
+    result = result || isPositionPointOnLastElementBehavesIncorrectly(list, position);
     deletePosition(position);
     return result || isDeleteListBehavesIncorrect(list);
 }

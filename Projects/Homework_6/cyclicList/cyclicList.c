@@ -297,3 +297,12 @@ bool isPositionNull(Position* position)
 {
     return position == NULL || position->currentPosition == NULL;
 }
+
+bool isPositionPointOnLastElement(Position* position)
+{
+    if (position == NULL || position->currentPosition == NULL)
+    {
+        return false;
+    }
+    return position->currentPosition == position->currentPosition->next;
+}

@@ -24,12 +24,24 @@
     <ClCompile Include="cyclicListTest.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="counting.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="countingTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cyclicList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cyclicListTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="counting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="countingTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -139,11 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="counting.c" />
+    <ClCompile Include="countingTest.c" />
     <ClCompile Include="cyclicList.c" />
     <ClCompile Include="cyclicListTest.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="counting.h" />
+    <ClInclude Include="countingTest.h" />
     <ClInclude Include="cyclicList.h" />
     <ClInclude Include="cyclicListTest.h" />
   </ItemGroup>
