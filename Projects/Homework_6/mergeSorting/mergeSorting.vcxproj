@@ -140,12 +140,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="list.c" />
+    <ClCompile Include="stackOfList.c" />
     <ClCompile Include="listTest.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="stackOfListTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="list.h" />
+    <ClInclude Include="stackOfList.h" />
     <ClInclude Include="listTest.h" />
+    <ClInclude Include="stackOfListTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
