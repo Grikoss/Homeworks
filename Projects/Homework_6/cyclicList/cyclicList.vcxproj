@@ -140,9 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cyclicList.c" />
+    <ClCompile Include="cyclicListTest.c" />
+    <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cyclicList.h" />
+    <ClInclude Include="cyclicListTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

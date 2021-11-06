@@ -18,9 +18,18 @@
     <ClCompile Include="cyclicList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cyclicListTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cyclicList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cyclicListTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
