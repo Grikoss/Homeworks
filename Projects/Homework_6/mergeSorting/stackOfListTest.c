@@ -37,7 +37,7 @@ bool topTest(Stack* stack)
     return result = result || top(NULL, &output) != 1;
 }
 
-bool isStackBehavesIncorrectly()
+bool isStackBehavesIncorrectly(void)
 {
     Stack* stack = createStack();
     bool result = createStackTest(stack);

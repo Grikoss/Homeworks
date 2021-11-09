@@ -30,6 +30,9 @@
     <ClCompile Include="stackOfListTest.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mergeSorting.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="list.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stackOfListTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mergeSorting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

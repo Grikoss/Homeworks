@@ -14,7 +14,7 @@ typedef struct Stack
     Element* head;
 } Stack;
 
-Stack* createStack()
+Stack* createStack(void)
 {
     return calloc(1, sizeof(Stack));
 }

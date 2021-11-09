@@ -5,7 +5,7 @@
 typedef struct Stack Stack;
 
 // Creates stack, returns pointer to stack
-Stack* createStack();
+Stack* createStack(void);
 
 // Creates new element, adds element into stack with value, returns execution code, return execution code:
 // 0 - ok, 1 - stack is empty, 2 - memory error

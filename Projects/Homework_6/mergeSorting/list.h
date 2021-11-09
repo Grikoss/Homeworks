@@ -8,16 +8,16 @@ typedef struct Position Position;
 
 // Creates empty list
 // Returns NULL if creation is failed
-List* createList();
+List* createList(void);
 
 // Creates empty position
 // Returns NULL if creation is failed
-Position* createPosition();
+Position* createPosition(void);
 
 // Gives value from element, doesn't remove it and move pointer
 // Returns execution code:
 // 0 - ok; 1 - position or position's pointer is NULL;
-int getValueFromListElement(Position* position, char* outputName, char* outputTelephone);
+int getValueFromListElement(Position* position, char* outputName, const int sizeOfOutputName, char* outputTelephone, const int sizeOfOutputTelephone);
 
 // Adds element into list
 // If list is empty then creates element and moves position, head and tail on element
@@ -26,7 +26,7 @@ int getValueFromListElement(Position* position, char* outputName, char* outputTe
 // 0 - ok; 1 - list or position is NULL; 2 - adding list element into empty list is failed; 3 - position is pointing on NULL when list isn't empty;
 // 4 - adding list element into tail is failed; 5 - adding list element into head is failed; 6 - failed to allocate memory;
 // Copyes strings, so you can use const strings
-int addListElement(List* list, Position* position, char* inputName, char* inputTelephone, bool addAfterPosition);
+int addListElement(List* list, Position* position, const char* inputName, const char* inputTelephone, bool addAfterPosition);
 
 // Removes element from list
 // Returns execution code:

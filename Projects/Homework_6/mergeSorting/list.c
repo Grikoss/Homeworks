@@ -22,44 +22,46 @@ typedef struct Position
     ListElement* currentPosition;
 } Position;
 
-List* createList()
+List* createList(void)
 {
     return calloc(1, sizeof(List));
 }
 
-Position* createPosition()
+Position* createPosition(void)
 {
     return calloc(1, sizeof(Position));
 }
 
-int getValueFromListElement(Position* position, char* outputName, char* outputTelephone)
+int getValueFromListElement(Position* position, char* outputName, const int sizeOfOutputName, char* outputTelephone, const int sizeOfOutputTelephone)
 {
     if (position == NULL || position->currentPosition == NULL)
     {
         return 1;
     }
-    strcpy_s(outputName, sizeof(outputName), position->currentPosition->name);
-    strcpy_s(outputTelephone, sizeof(outputTelephone), position->currentPosition->telephone);
+    strcpy_s(outputName, sizeOfOutputName, position->currentPosition->name);
+    strcpy_s(outputTelephone, sizeOfOutputTelephone, position->currentPosition->telephone);
     return 0;
 }
 
-void addStrings(ListElement* element, char* inputName, char* inputTelephone)
+void addStrings(ListElement* element, const char* inputName, const char* inputTelephone)
 {
-    char* name = calloc(strlen(inputName) + 1, sizeof(char));
+    const int  nameLength = strlen(inputName) + 1;
+    const int telephoneLength = strlen(inputTelephone) + 1;
+    char* name = calloc(nameLength, sizeof(char));
     if (name != NULL)
     {
-        strcpy_s(name, sizeof(name), inputName);
+        strcpy_s(name, nameLength, inputName);
     }
     element->name = name;
-    char* telephone = calloc(strlen(inputTelephone) + 1, sizeof(char));
+    char* telephone = calloc(telephoneLength, sizeof(char));
     if (telephone != NULL)
     {
-        strcpy_s(telephone, sizeof(telephone), inputTelephone);
+        strcpy_s(telephone, telephoneLength, inputTelephone);
     }
     element->telephone = telephone;
 }
 
-int addListElementIntoHead(List* list, Position* position, char* inputName, char* inputTelephone)
+int addListElementIntoHead(List* list, Position* position, const char* inputName, const char* inputTelephone)
 {
     if (list == NULL || position == NULL || position->currentPosition == NULL)
     {
@@ -78,7 +80,7 @@ int addListElementIntoHead(List* list, Position* position, char* inputName, char
     return 0;
 }
 
-int addListElementIntoTail(List* list, Position* position, char* inputName, char* inputTelephone)
+int addListElementIntoTail(List* list, Position* position, const char* inputName, const char* inputTelephone)
 {
     if (list == NULL || position == NULL || position->currentPosition == NULL)
     {
@@ -97,7 +99,7 @@ int addListElementIntoTail(List* list, Position* position, char* inputName, char
     return 0;
 }
 
-int addListElementIntoEmptyList(List* list, Position* position, char* inputName, char* inputTelephone)
+int addListElementIntoEmptyList(List* list, Position* position, const char* inputName, const char* inputTelephone)
 {
     if (list == NULL || position == NULL)
     {
@@ -115,7 +117,7 @@ int addListElementIntoEmptyList(List* list, Position* position, char* inputName,
     return 0;
 }
 
-int addListElement(List* list, Position* position, char* inputName, char* inputTelephone, bool addAfterPosition)
+int addListElement(List* list, Position* position, const char* inputName, const char* inputTelephone, bool addAfterPosition)
 {
     if (list == NULL || position == NULL)
     {

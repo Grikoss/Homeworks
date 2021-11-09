@@ -3,4 +3,4 @@
 #include <stdbool.h>
 
 // StackTest (false if ok)
-bool isStackBehavesIncorrectly();
+bool isStackBehavesIncorrectly(void);

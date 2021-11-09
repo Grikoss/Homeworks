@@ -32,8 +32,8 @@ bool isMovePositionToTailBehavesIncorrect(List * list, Position * position)
 
 bool isAddListElementBehavesIncorrect(List* list, Position* position)
 {
-    char stringOne[] = "one";
-    char stringTwo[] = "two";
+    char stringOne[] = "oneOne";
+    char stringTwo[] = "twoTwo";
     bool result = addListElement(NULL, position, stringOne, stringTwo, true) != 1 || addListElement(list, NULL, stringOne, stringTwo, true) != 1;
     result = result || addListElement(list, position, stringOne, stringTwo, true) != 0;
     movePositionToNext(position);
@@ -47,16 +47,16 @@ bool isGetValueFromElementBehavesIncorrect(List* list, Position* position)
     movePositionToHead(list, position);
     char bufferOne[10] = { 0 };
     char bufferTwo[10] = { 0 };
-    bool result = getValueFromListElement(position, bufferOne, bufferTwo) != 0;
+    bool result = getValueFromListElement(position, bufferOne, 10, bufferTwo, 10) != 0;
     movePositionToTail(list, position);
     char bufferThree[10] = { 0 };
     char bufferFour[10] = { 0 };
-    result = result || getValueFromListElement(position, bufferThree, bufferFour) != 0;
+    result = result || getValueFromListElement(position, bufferThree, 10, bufferFour, 10) != 0;
     result = result || strcmp(bufferOne, bufferThree) != 0;
     result = result || strcmp(bufferTwo, bufferFour) != 0;
     movePositionToHead(list, position);
     movePositionToPrevious(position);
-    return result || getValueFromListElement(position, bufferFour, bufferThree) != 1;
+    return result || getValueFromListElement(position, bufferFour, 10, bufferThree, 10) != 1;
 }
 
 bool isMovePositionToNextOrPreviousBehavesIncorrect(List* list, Position* position)
@@ -94,7 +94,7 @@ bool isDeleteListBehavesIncorrect(List* list)
     return deleteList(NULL) != 1 || deleteList(list) != 0;
 }
 
-bool isListBehavesIncorrect()
+bool isListBehavesIncorrect(void)
 {
     List* list = NULL;
     bool result = isCreateListBehavesIncorrectly(&list);
