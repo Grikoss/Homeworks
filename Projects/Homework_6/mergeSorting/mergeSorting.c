@@ -25,7 +25,15 @@ List* merge(List* firtsList, List* secondList, bool isSortingByName)
         getValueFromListElement(firstPosition, firstName, SIZE_OF_BUFFER, firstTelephone, SIZE_OF_BUFFER);
         getValueFromListElement(secondPosition, secondName, SIZE_OF_BUFFER, secondTelephone, SIZE_OF_BUFFER);
         int difference = isSortingByName ? strcmp(firstName, secondName) : strcmp(firstTelephone, secondTelephone);
-        if (difference >= 0 && !isPositionNull(secondPosition))
+        if (isPositionNull(firstPosition))
+        {
+            difference = 1;
+        }
+        if (isPositionNull(secondPosition))
+        {
+            difference = -1;
+        }
+        if (difference >= 0)
         {
             addListElement(list, position, secondName, secondTelephone, true);
             movePositionToNext(secondPosition);
@@ -85,7 +93,7 @@ List* sortByMergeSorting(List* list, bool isSortingByName)
             push(newStack, merge(firstList, secondList, isSortingByName));
         }
         deleteStack(stack);
-        if (count == 1)
+        if (count <= 1)
         {
             List* outList = NULL;
             pop(newStack, &outList);
