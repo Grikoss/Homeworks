@@ -212,3 +212,76 @@ int getStringFromParceTree(ParceTree* tree, char* buffer, const int sizeOfBuffer
     buffer[index] = '\0';
     return 0;
 }
+
+int checkSign(char sign)
+{
+    switch (sign)
+    {
+    case '-':
+        return 1;
+    case '+':
+        return 2;
+    case '*':
+        return 3;
+    case '/':
+        return 4;
+    }
+    return -1;
+}
+
+int getResultFromParceTreeRecursive(Node* node, int* result)
+{
+    if (node->leftSon == NULL || node->rigthSon == NULL)
+    {
+        *result = node->value;
+        return 0;
+    }
+    int resultOne = 0;
+    int resultTwo = 0;
+    if (getResultFromParceTreeRecursive(node->leftSon, &resultOne) != 0 || getResultFromParceTreeRecursive(node->rigthSon, &resultTwo) != 0)
+    {
+        return 1;
+    }
+    switch (node->value)
+    {
+    case '-':
+        *result = resultOne - resultTwo;
+        return 0;
+    case '+':
+        *result = resultOne + resultTwo;
+        return 0;
+    case '*':
+        *result = resultOne * resultTwo;
+        return 0;
+    case '/':
+        if (resultTwo == 0)
+        {
+            return 1;
+        }
+        *result = resultOne / resultTwo;
+        return 0;
+    default:
+        return 2;
+    }
+}
+
+int getResultFromParceTree(ParceTree* tree, int* result)
+{
+    return getResultFromParceTreeRecursive(tree->root, result);
+}
+
+void deleteParceTreeRecursive(Node* node)
+{
+    if (node->leftSon != NULL && node->rigthSon != NULL)
+    {
+        deleteParceTreeRecursive(node->leftSon);
+        deleteParceTreeRecursive(node->rigthSon);
+    }
+    free(node);
+}
+
+void  deleteParceTree(ParceTree* tree)
+{
+    deleteParceTreeRecursive(tree->root);
+    free(tree);
+}
