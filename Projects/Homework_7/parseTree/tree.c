@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include "tree.h"
 
 int getNumber(const char* string, int* index)
 {
@@ -68,26 +69,53 @@ typedef struct ParceTree
     Node* root;
 } ParceTree;
 
-Node* createNode(int* inputValue)
+Node* createNode(const int inputValue)
 {
     Node* node = calloc(1, sizeof(Node));
     if (node != NULL)
     {
-        node->value = *inputValue;
+        node->value = inputValue;
     }
     return node;
 }
 
-Node* fillTree(Node* node, const char* string, int* index)
+Node* fillTree(const char* string, int* index)
 {
     int value = 0;
-    switch (readString(string, index, &value))
+    const int mode = readString(string, index, &value);
+    switch (mode)
     {
-    case 1:
+    case 3:
         return NULL;
     case 2:
-    case 3:
-    default:
-        break;
+    case 1:
+    {
+        Node* node = createNode(value);
+        if (node == NULL)
+        {
+            return NULL;
+        }
+        if (mode == 2)
+        {
+            return node;
+        }
+        node->leftSon = fillTree(string, index);
+        node->rigthSon = fillTree(string, index);
+        return node;
     }
+    default:
+        return NULL;
+    }
+}
+
+ParceTree* createParceTree(const char* string)
+{
+    ParceTree* tree = calloc(1, sizeof(ParceTree));
+    if (tree == NULL)
+    {
+        return NULL;
+    }
+    int index = 0;
+    tree->root = fillTree(string, &index);
+    return tree;
 }
