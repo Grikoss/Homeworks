@@ -119,3 +119,96 @@ ParceTree* createParceTree(const char* string)
     tree->root = fillTree(string, &index);
     return tree;
 }
+
+void printNumber(int value, int* index, char* buffer, const int sizeOfBuffer)
+{
+    if (*index < sizeOfBuffer - 1 && value == 0)
+    {
+        buffer[*index] = '0';
+        ++*index;
+        return;
+    }
+    while (*index < sizeOfBuffer - 1 && value != 0)
+    {
+        if (value < 0)
+        {
+            buffer[*index] = '-';
+            ++*index;
+            value = abs(value);
+            continue;
+        }
+        if (value <= 9 && value >= 1)
+        {
+            buffer[*index] = value + 48;
+            ++*index;
+            value = 0;
+            continue;
+        }
+        buffer[*index] = value % 10 + 48;
+        ++*index;
+        value /= 10;
+    }
+}
+
+void printSpace(int* index, char* buffer, const int sizeOfBuffer)
+{
+    if (*index < sizeOfBuffer - 1)
+    {
+        buffer[*index] = ' ';
+        ++*index;
+    }
+}
+
+void printOpenBracket(int* index, char* buffer, const int sizeOfBuffer)
+{
+    if (*index < sizeOfBuffer - 1)
+    {
+        buffer[*index] = '(';
+        ++* index;
+    }
+}
+
+void printCloseBracket(int* index, char* buffer, const int sizeOfBuffer)
+{
+    if (*index < sizeOfBuffer - 1)
+    {
+        buffer[*index] = ')';
+        ++* index;
+    }
+}
+
+void getStringFromParceTreeRecursive(Node* node, int* index, char* buffer, const int sizeOfBuffer)
+{
+    if (*index < sizeOfBuffer - 1)
+    {
+        if (node->leftSon == NULL || node->rigthSon == NULL)
+        {
+            printNumber(node->value, index, buffer, sizeOfBuffer);
+            printSpace(index, buffer, sizeOfBuffer);
+        }
+        else
+        {
+            printOpenBracket(index, buffer, sizeOfBuffer);
+            printSpace(index, buffer, sizeOfBuffer);
+            buffer[*index] = node->value;
+            ++*index;
+            printSpace(index, buffer, sizeOfBuffer);
+            getStringFromParceTreeRecursive(node->leftSon, index, buffer, sizeOfBuffer);
+            getStringFromParceTreeRecursive(node->rigthSon, index, buffer, sizeOfBuffer);
+            printCloseBracket(index, buffer, sizeOfBuffer);
+            printSpace(index, buffer, sizeOfBuffer);
+        }
+    }
+}
+
+int getStringFromParceTree(ParceTree* tree, char* buffer, const int sizeOfBuffer)
+{
+    if (tree == NULL || tree->root == NULL || buffer == NULL)
+    {
+        return 1;
+    }
+    int index = 0;
+    getStringFromParceTreeRecursive(tree->root, &index, buffer, sizeOfBuffer);
+    buffer[index] = '\0';
+    return 0;
+}

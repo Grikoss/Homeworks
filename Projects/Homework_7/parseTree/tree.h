@@ -3,3 +3,5 @@
 typedef struct ParceTree ParceTree;
 
 ParceTree* createParceTree(const char* string);
+
+int getStringFromParceTree(ParceTree* tree, char* buffer, const int sizeOfBuffer);
