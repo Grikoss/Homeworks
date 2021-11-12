@@ -2,4 +2,5 @@
 
 #include <stdbool.h>
 
+//Test - false if ok
 bool isParceTreeBehavesIncorrectly();

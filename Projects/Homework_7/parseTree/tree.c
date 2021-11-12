@@ -128,7 +128,13 @@ void printNumber(int value, int* index, char* buffer, const int sizeOfBuffer)
         ++*index;
         return;
     }
-    while (*index < sizeOfBuffer - 1 && value != 0)
+    int dev = 1;
+    while (dev <= abs(value))
+    {
+        dev *= 10;
+    }
+    dev /= 10;
+    while (*index < sizeOfBuffer - 1 && dev != 0)
     {
         if (value < 0)
         {
@@ -141,12 +147,13 @@ void printNumber(int value, int* index, char* buffer, const int sizeOfBuffer)
         {
             buffer[*index] = value + 48;
             ++*index;
-            value = 0;
+            dev /= 10;
             continue;
         }
-        buffer[*index] = value % 10 + 48;
+        buffer[*index] = value / dev + 48;
         ++*index;
-        value /= 10;
+        value %= dev;
+        dev /= 10;
     }
 }
 
@@ -267,6 +274,10 @@ int getResultFromParceTreeRecursive(Node* node, int* result)
 
 int getResultFromParceTree(ParceTree* tree, int* result)
 {
+    if (tree == NULL || tree->root == NULL)
+    {
+        return 2;
+    }
     return getResultFromParceTreeRecursive(tree->root, result);
 }
 
@@ -280,8 +291,13 @@ void deleteParceTreeRecursive(Node* node)
     free(node);
 }
 
-void  deleteParceTree(ParceTree* tree)
+int  deleteParceTree(ParceTree* tree)
 {
+    if (tree == NULL || tree->root == NULL)
+    {
+        return 1;
+    }
     deleteParceTreeRecursive(tree->root);
     free(tree);
+    return 0;
 }
