@@ -68,7 +68,13 @@ bool isDeleteDataFromSearchTreeBehavesIncorrectly(SearchTree* tree)
     result = result || deleteDataFromSearchTree(tree, 5) != 0;
     result = result || deleteDataFromSearchTree(tree, -1) != 0;
     result = result || deleteDataFromSearchTree(tree, 4) != 0;
+    result = result || deleteDataFromSearchTree(tree, 6) != 0;
+    result = result || deleteDataFromSearchTree(tree, 7) != 0;
+    result = result || deleteDataFromSearchTree(tree, 1) != 0;
+    result = result || deleteDataFromSearchTree(tree, 0) != 0;
     result = result || deleteDataFromSearchTree(tree, 10) != 2;
+    result = result || deleteDataFromSearchTree(tree, 2) != 0;
+    result = result || deleteDataFromSearchTree(tree, 2) != 1;
     return result;
 }
 
