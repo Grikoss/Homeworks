@@ -11,8 +11,7 @@ typedef struct CyclicListElement
 
 typedef struct CyclicList
 {
-    CyclicListElement* head;
-    CyclicListElement* tail;
+    CyclicListElement* firstElement;
 } CyclicList;
 
 typedef struct Position
@@ -40,48 +39,6 @@ int getValueFromListElement(Position* position, int* outputValue)
     return 0;
 }
 
-int addListElementIntoHead(CyclicList* list, Position* position, const int value)
-{
-    if (list == NULL || position == NULL || position->currentPosition == NULL)
-    {
-        return 1;
-    }
-    CyclicListElement* element = calloc(1, sizeof(CyclicListElement));
-    if (element == NULL)
-    {
-        return 2;
-    }
-    element->value = value;
-    element->next = position->currentPosition;
-    element->previous = list->tail;
-    list->tail->next = element;
-    position->currentPosition->previous = element;
-    list->head = element;
-    position->currentPosition = element;
-    return 0;
-}
-
-int addListElementIntoTail(CyclicList* list, Position* position, const int value)
-{
-    if (list == NULL || position == NULL || position->currentPosition == NULL)
-    {
-        return 1;
-    }
-    CyclicListElement* element = calloc(1, sizeof(CyclicListElement));
-    if (element == NULL)
-    {
-        return 2;
-    }
-    element->value = value;
-    element->previous = position->currentPosition;
-    element->next = list->head;
-    list->head->previous = element;
-    position->currentPosition->next = element;
-    list->tail = element;
-    position->currentPosition = element;
-    return 0;
-}
-
 int addListElementIntoEmptyList(CyclicList* list, Position* position, const int value)
 {
     if (list == NULL || position == NULL)
@@ -96,62 +53,35 @@ int addListElementIntoEmptyList(CyclicList* list, Position* position, const int 
     element->value = value;
     element->next = element;
     element->previous = element;
-    list->head = element;
-    list->tail = element;
+    list->firstElement = element;
     position->currentPosition = element;
     return 0;
 }
 
-int addListElement(CyclicList* list, Position* position, const int value, bool addAfterPosition)
+int addListElement(CyclicList* list, Position* position, const int value)
 {
     if (list == NULL || position == NULL)
     {
         return 1;
     }
-    if (list->head == NULL || list->tail == NULL)
+    if (list->firstElement == NULL)
     {
-        return (addListElementIntoEmptyList(list, position, value) != 0) ? 2 : 0;
+        return addListElementIntoEmptyList(list, position, value);
     }
     if (position->currentPosition == NULL)
     {
         return 3;
     }
-    if (position->currentPosition->next == position->currentPosition)
-    {
-        if (addAfterPosition)
-        {
-            return (addListElementIntoTail(list, position, value) != 0) ? 4 : 0;
-        }
-    return (addListElementIntoHead(list, position, value) != 0) ? 5 : 0;
-    }
-    if (position->currentPosition->next == list->head && addAfterPosition)
-    {
-        return (addListElementIntoTail(list, position, value) != 0) ? 4 : 0;
-    }
-    if (position->currentPosition->previous == list->tail && !addAfterPosition)
-    {
-        return (addListElementIntoHead(list, position, value) != 0) ? 5 : 0;
-    }
     CyclicListElement* element = calloc(1, sizeof(CyclicListElement));
     if (element == NULL)
     {
-        return 6;
+        return 4;
     }
     element->value = value;
-    if (addAfterPosition)
-    {
-        element->next = position->currentPosition->next;
-        element->previous = position->currentPosition;
-        position->currentPosition->next->previous = element;
-        position->currentPosition->next = element;
-    }
-    else
-    {
-        element->previous = position->currentPosition->previous;
-        element->next = position->currentPosition;
-        position->currentPosition->previous->next = element;
-        position->currentPosition->previous = element;
-    }
+    element->next = position->currentPosition->next;
+    element->previous = position->currentPosition;
+    position->currentPosition->next->previous = element;
+    position->currentPosition->next = element;
     position->currentPosition = element;
     return 0;
 }
@@ -164,46 +94,18 @@ int removeLastListElement(CyclicList* list, Position* position)
     }
     free(position->currentPosition);
     position->currentPosition = NULL;
-    list->head = NULL;
-    list->tail = NULL;
+    list->firstElement = NULL;
     return 0;
 }
 
-int removeListElementFromHead(CyclicList* list, Position* position, bool movePositionToNext)
-{
-    if (list == NULL || position == NULL || position->currentPosition == NULL)
-    {
-        return 1;
-    }
-    position->currentPosition->next->previous = list->tail;
-    list->head = position->currentPosition->next;
-    list->tail->next = list->head;
-    free(position->currentPosition);
-    position->currentPosition = movePositionToNext ? list->head : list->tail;
-    return 0;
-}
 
-int removeListElementFromTail(CyclicList* list, Position* position, bool movePositionToNext)
-{
-    if (list == NULL || position == NULL || position->currentPosition == NULL)
-    {
-        return 1;
-    }
-    position->currentPosition->previous->next = list->head;
-    list->tail = position->currentPosition->previous;
-    list->head->previous = list->tail;
-    free(position->currentPosition);
-    position->currentPosition = movePositionToNext ? list->head : list->tail;
-    return 0;
-}
-
-int removeListElement(CyclicList* list, Position* position, bool movePositionToNext)
+int removeListElement(CyclicList* list, Position* position)
 {
     if (list == NULL || position == NULL)
     {
         return 1;
     }
-    if (list->head == NULL || list->tail == NULL)
+    if (list->firstElement == NULL)
     {
         return 2;
     }
@@ -211,22 +113,18 @@ int removeListElement(CyclicList* list, Position* position, bool movePositionToN
     {
         return 3;
     }
-    if (position->currentPosition->next == position->currentPosition)
+    if (isPositionPointOnLastElement(position))
     {
-        return (removeLastListElement(list, position) != 0) ? 4 : 0;
+        return removeLastListElement(list, position);
     }
-    if (position->currentPosition->next == list->head)
+    if (position->currentPosition == list->firstElement)
     {
-        return (removeListElementFromTail(list, position, movePositionToNext) != 0) ? 5 : 0;
-    }
-    if (position->currentPosition->previous == list->tail)
-    {
-        return (removeListElementFromHead(list, position, movePositionToNext) != 0) ? 6 : 0;
+        list->firstElement = position->currentPosition->next;
     }
     position->currentPosition->next->previous = position->currentPosition->previous;
     position->currentPosition->previous->next = position->currentPosition->next;
     CyclicListElement* oldCurrentPosition = position->currentPosition;
-    position->currentPosition = movePositionToNext ? position->currentPosition->next : position->currentPosition->previous;
+    position->currentPosition = position->currentPosition->next;
     free(oldCurrentPosition);
     return 0;
 }
@@ -243,33 +141,23 @@ int deleteList(CyclicList* list)
         return 1;
     }
     Position* position = createPosition();
-    movePositionToHead(list, position);
-    while (list->head != NULL)
+    movePositionToFirstElement(list, position);
+    while (!isPositionNull(position))
     {
-        removeListElement(list, position, true);
+        removeListElement(list, position);
     }
     free(list);
     deletePosition(position);
     return 0;
 }
 
-int movePositionToHead(CyclicList* list, Position* position)
+int movePositionToFirstElement(CyclicList* list, Position* position)
 {
     if (list == NULL || position == NULL)
     {
         return 1;
     }
-    position->currentPosition = list->head;
-    return 0;
-}
-
-int movePositionToTail(CyclicList* list, Position* position)
-{
-    if (list == NULL || position == NULL)
-    {
-        return 1;
-    }
-    position->currentPosition = list->tail;
+    position->currentPosition = list->firstElement;
     return 0;
 }
 

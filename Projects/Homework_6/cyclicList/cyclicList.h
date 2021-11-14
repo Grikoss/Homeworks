@@ -24,14 +24,14 @@ int getValueFromListElement(Position* position, int* outputValue);
 // Alaways moves position on added element
 // Returns execution code:
 // 0 - ok; 1 - list or position is NULL; 2 - adding list element into empty list is failed; 3 - position is pointing on NULL when list isn't empty;
-// 4 - adding list element into tail is failed; 5 - adding list element into head is failed; 6 - failed to allocate memory;
-int addListElement(CyclicList* list, Position* position, const int value, bool addAfterPosition);
+// 4 - failed to allocate memory;
+int addListElement(CyclicList* list, Position* position, const int value);
 
 // Removes element from list
 // Returns execution code:
 // 0 - ok; 1 - list or position is NULL; 2 - list is empty; 3 - position is pointing on NULL when list isn't empty;
-// 4 - removing last list element is failde; 5 - removing list element from tail is failed; 6 - removing list element from head is failed;
-int removeListElement(CyclicList* list, Position* position, bool movePositionToNext);
+// 4 - removing last list element is failde;
+int removeListElement(CyclicList* list, Position* position);
 
 // Deletes position, doesn't touch list
 void deletePosition(Position* position);
@@ -41,15 +41,10 @@ void deletePosition(Position* position);
 // 0 - ok; 1 - list is NULL;
 int deleteList(CyclicList* list);
 
-// Moves position to list head
+// Moves position to firstElement
 // Returns execution code:
 // 0 - ok; 1 - list or position is NULL;
-int movePositionToHead(CyclicList* list, Position* position);
-
-// Moves position to list tail
-// Returns execution code:
-// 0 - ok; 1 - list or position is NULL;
-int movePositionToTail(CyclicList* list, Position* position);
+int movePositionToFirstElement(CyclicList* list, Position* position);
 
 // Moves position to next position
 // Returns execution code:

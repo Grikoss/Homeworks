@@ -7,16 +7,16 @@ int getNumberofTheLastRemaining(const int numberOfStanding, const int step)
     Position* position = createPosition();
     for (int i = 1; i <= numberOfStanding; ++i)
     {
-        addListElement(list, position, i, true);
+        addListElement(list, position, i);
     }
-    movePositionToHead(list, position);
+    movePositionToFirstElement(list, position);
     while (!isPositionPointOnLastElement(position) && !isPositionNull(position))
     {
         for (int i = 1; i < step; ++i)
         {
             movePositionToNext(position);
         }
-        removeListElement(list, position, true);
+        removeListElement(list, position);
     }
     int value = 0;
     getValueFromListElement(position, &value);
