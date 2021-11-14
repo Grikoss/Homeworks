@@ -41,7 +41,7 @@
     <ClInclude Include="..\list\listTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sortedLustTest.h">
+    <ClInclude Include="sortedListTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

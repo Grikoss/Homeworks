@@ -8,6 +8,60 @@ typedef struct SortedList
     List* list;
 } SortedList;
 
+typedef struct SLPosition
+{
+    Position* position;
+} SLPosition;
+
+SLPosition* createSLPosition()
+{
+    SLPosition* position = calloc(1, sizeof(SLPosition));
+    if (position != NULL)
+    {
+        position->position = createPosition();
+    }
+    return position;
+}
+
+void moveSLPositionToHead(SortedList* list, SLPosition* position)
+{
+    if (list != NULL && position != NULL)
+    {
+        movePositionToHead(list->list, position->position);
+    }
+}
+
+void moveSLPositionToNext(SLPosition* position)
+{
+    if (position != NULL)
+    {
+        movePositionToNext(position->position);
+    }
+}
+
+bool isSLPositionIsNULL(SLPosition* position)
+{
+    return position == NULL || isPositionNull(position->position);
+}
+
+int getValueFromSLPosition(SLPosition* position, int* output)
+{
+    if (position == NULL)
+    {
+        return 1;
+    }
+    return getValueFromListElement(position->position, output);
+}
+
+void deleteSLPositin(SLPosition* position)
+{
+    if (position != NULL)
+    {
+        deletePosition(position->position);
+    }
+    free(position);
+}
+
 SortedList* createSortedList()
 {
     SortedList* list = calloc(1, sizeof(SortedList));
@@ -27,7 +81,7 @@ int removeElement(SortedList* sortedList, const int inputValue)
     }
     Position* position = createPosition();
     movePositionToHead(sortedList->list, position);
-    while (!isPositionNull(position))
+    while (true)
     {
         int value = 0;
         getValueFromListElement(position, &value);
@@ -36,6 +90,10 @@ int removeElement(SortedList* sortedList, const int inputValue)
             removeListElement(sortedList->list, position, true);
             deletePosition(position);
             return 0;
+        }
+        if (value > inputValue || isPositionNull(position))
+        {
+            break;
         }
         movePositionToNext(position);
     }
@@ -73,40 +131,6 @@ int addElement(SortedList* sortedList, const int inputValue)
     }
     movePositionToTail(sortedList->list, position);
     addListElement(sortedList->list, position, inputValue, true);
-    deletePosition(position);
-    return 0;
-}
-
-int getValues(SortedList* sortedList, int** outArray, int* outSize)
-{
-    if (sortedList == NULL)
-    {
-        return 1;
-    }
-    Position* position = createPosition();
-    movePositionToHead(sortedList->list, position);
-    int size = 0;
-    while (!isPositionNull(position))
-    {
-        ++size;
-        movePositionToNext(position);
-    }
-    int* array = calloc(size, sizeof(int));
-    if (array == NULL)
-    {
-        deletePosition(position);
-        return 2;
-    }
-    movePositionToHead(sortedList->list, position);
-    for (int i = 0; i < size; ++i)
-    {
-        int value = 0;
-        getValueFromListElement(position, &value);
-        array[i] = value;
-        movePositionToNext(position);
-    }
-    *outArray = array;
-    *outSize = size;
     deletePosition(position);
     return 0;
 }

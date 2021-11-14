@@ -116,7 +116,7 @@ int addListElement(List* list, Position* position, const int value, bool addAfte
         {
             return (addListElementIntoTail(list, position, value) != 0) ? 4 : 0;
         }
-            return (addListElementIntoHead(list, position, value) != 0) ? 5 : 0;
+        return (addListElementIntoHead(list, position, value) != 0) ? 5 : 0;
     }
     if (position->currentPosition->next == NULL && addAfterPosition)
     {

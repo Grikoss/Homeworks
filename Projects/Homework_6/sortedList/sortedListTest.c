@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../list/listTest.h"
 #include "sortedList.h"
-#include "sortedLustTest.h"
+#include "sortedListTest.h"
 
 bool isCreateSortedListBehavesIncorrect(SortedList** sortedList)
 {
@@ -29,13 +29,27 @@ bool isRemoveElementBehavesIncorrect(SortedList* list)
 
 bool isGetValuesBehavesIncorrect(SortedList* list)
 {
-    int* array = NULL;
-    int size;
-    bool result = getValues(NULL, &array, &size) != 1;
-    result = result || getValues(list, &array, &size);
-    result = result || size != 4 || array == NULL;
-    result = result || array[0] != 1 || array[1] != 2 || array[2] != 4 || array[3] != 5;
-    free(array);
+    SLPosition* position = createSLPosition();
+    moveSLPositionToHead(list, position);
+    int value = 0;
+    bool result = getValueFromSLPosition(NULL, &value) != 1;
+    result = result || getValueFromSLPosition(position, &value) != 0;
+    result = result || value != 1;
+    moveSLPositionToNext(position);
+    result = result || getValueFromSLPosition(position, &value) != 0;
+    result = result || value != 2;
+    moveSLPositionToNext(position);
+    result = result || getValueFromSLPosition(position, &value) != 0;
+    result = result || value != 3;
+    moveSLPositionToNext(position);
+    result = result || getValueFromSLPosition(position, &value) != 0;
+    result = result || value != 4;
+    moveSLPositionToNext(position);
+    result = result || getValueFromSLPosition(position, &value) != 0;
+    result = result || value != 5;
+    moveSLPositionToNext(position);
+    result = result || !isSLPositionIsNULL(position);
+    deleteSLPositin(position);
     return result;
 }
 
@@ -47,11 +61,11 @@ bool isDeleteSortedListBehavesIncorrect(SortedList* list)
 
 bool isSortedListBeahavesIncorrect()
 {
-    bool result = isListBehavesIncorrect();
+    bool result = isListBehavesIncorrectly();
     SortedList* sortedList = NULL;
     result = result || isCreateSortedListBehavesIncorrect(&sortedList);
     result = result || isAddElementBehavesIncorrect(sortedList);
-    result = result || isRemoveElementBehavesIncorrect(sortedList);
     result = result || isGetValuesBehavesIncorrect(sortedList);
+    result = result || isRemoveElementBehavesIncorrect(sortedList);
     return result || isDeleteSortedListBehavesIncorrect(sortedList);
 }

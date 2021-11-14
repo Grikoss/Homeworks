@@ -1,8 +1,8 @@
 #include <stdbool.h>
-#include<stdlib.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "sortedList.h"
-#include "sortedLustTest.h"
+#include "sortedListTest.h"
 
 void addElementM(SortedList* list)
 {
@@ -36,15 +36,17 @@ void removeElementM(SortedList* list)
 
 void printValues(SortedList* list)
 {
-    printf("Values:\n");
-    int* array = NULL;
-    int size = 0;
-    getValues(list, &array, &size);
-    for (int i = 0; i < size; ++i)
+    SLPosition* position = createSLPosition();
+    moveSLPositionToHead(list, position);
+    printf("Elements:\n");
+    while (!isSLPositionIsNULL(position))
     {
-        printf_s("%d\n", array[i]);
+        int value = 0;
+        getValueFromSLPosition(position, &value);
+        printf("%d\n", value);
+        moveSLPositionToNext(position);
     }
-    free(array);
+    deleteSLPositin(position);
 }
 
 int main()

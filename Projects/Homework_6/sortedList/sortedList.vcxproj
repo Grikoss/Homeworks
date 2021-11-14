@@ -149,7 +149,7 @@
     <ClInclude Include="..\list\list.h" />
     <ClInclude Include="..\list\listTest.h" />
     <ClInclude Include="sortedList.h" />
-    <ClInclude Include="sortedLustTest.h" />
+    <ClInclude Include="sortedListTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

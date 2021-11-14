@@ -2,4 +2,5 @@
 
 #include <stdbool.h>
 
-bool isListBehavesIncorrect();
+// Test - false if ok;
+bool isListBehavesIncorrectly();

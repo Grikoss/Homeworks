@@ -3,7 +3,7 @@
 #include "list.h"
 #include "listTest.h"
 
-bool isCreateListBehavesIncorrect(List** list)
+bool isCreateListBehavesIncorrectly(List** list)
 {
     *list = createList();
     return *list == NULL;
@@ -28,7 +28,6 @@ bool isMovePositionToTailBehavesIncorrect(List* list, Position* position)
     result = result || 1 != movePositionToTail(list, NULL);
     return result || !isPositionNull(position) || 0 != movePositionToTail(list, position);
 }
-
 
 bool isAddListElementBehavesIncorrect(List* list, Position* position)
 {
@@ -143,10 +142,10 @@ bool isDeleteListBehavesIncorrect(List* list)
     return deleteList(NULL) != 1 || deleteList(list) != 0;
 }
 
-bool isListBehavesIncorrect()
+bool isListBehavesIncorrectly()
 {
     List* list = NULL;
-    bool result = isCreateListBehavesIncorrect(&list);
+    bool result = isCreateListBehavesIncorrectly(&list);
     Position* position = NULL;
     result = result || isCreatePositionBehavesIncorrect(&position);
     result = result || isMovePositionToHeadBehavesIncorrect(list, position);
