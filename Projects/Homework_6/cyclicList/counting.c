@@ -1,10 +1,19 @@
+#include <stdlib.h>
 #include "counting.h"
 #include "cyclicList.h"
 
 int getNumberofTheLastRemaining(const int numberOfStanding, const int step)
 {
     CyclicList* list = createList();
+    if (list == NULL)
+    {
+        return 0;
+    }
     Position* position = createPosition();
+    if (position == NULL)
+    {
+        return 0;
+    }
     for (int i = 1; i <= numberOfStanding; ++i)
     {
         addListElement(list, position, i);

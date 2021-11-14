@@ -1,4 +1,4 @@
 #pragma once
 
 // Testing for CyclicList
-bool isListBehavesIncorrect();
+bool isListBehavesIncorrectly();

@@ -6,7 +6,7 @@
 
 int main()
 {
-	if (isListBehavesIncorrect())
+	if (isListBehavesIncorrectly())
 	{
 		return 1;
 	}
