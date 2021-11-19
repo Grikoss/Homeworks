@@ -85,16 +85,8 @@ void deleteNode(Node* node)
     free(node);
 }
 
-Node* rebalanceRecursive(Node* node, const int key)
+int calculateBalance(Node* node)
 {
-    if (key < node->key)
-    {
-       node->leftSon = rebalanceRecursive(node->leftSon, key);
-    }
-    if (key > node->key)
-    {
-       node->rightSon = rebalanceRecursive(node->rightSon, key);
-    }
     int leftHeight = 0;
     int rightHeight = 0;
     if (node->leftSon != NULL)
@@ -105,7 +97,76 @@ Node* rebalanceRecursive(Node* node, const int key)
     {
         rightHeight = getHeightRecursive(node->rightSon);
     }
-    node->balance = rightHeight - leftHeight;
+    return rightHeight - leftHeight;
+}
+
+Node* smallLeftRotation(Node* node)
+{
+    Node* rightNode = node->rightSon;
+    node->rightSon = node->rightSon->leftSon;
+    rightNode->leftSon = node;
+    node->balance = calculateBalance(node);
+    rightNode->balance = calculateBalance(rightNode);
+    return rightNode;
+}
+
+Node* smallRightRotation(Node* node)
+{
+    Node* leftNode = node->leftSon;
+    node->leftSon = node->leftSon->rightSon;
+    leftNode->rightSon = node;
+    node->balance = calculateBalance(node);
+    leftNode->balance = calculateBalance(leftNode);
+    return leftNode;
+}
+
+Node* bigLeftRotation(Node* node)
+{
+    Node* rightNode = node->rightSon;
+    Node* rightLeftNode = node->rightSon->leftSon;
+    node->rightSon = node->rightSon->leftSon->leftSon;
+    rightNode->leftSon = rightNode->leftSon->rightSon;
+    rightLeftNode->leftSon = node;
+    rightLeftNode->rightSon = node->rightSon;
+    node->balance = calculateBalance(node);
+    rightNode->balance = calculateBalance(rightNode);
+    rightLeftNode->balance = calculateBalance(rightLeftNode);
+    return rightLeftNode;
+}
+
+Node* bigRightRotation(Node* node)
+{
+    Node* leftNode = node->leftSon;
+    Node* leftRightNode = node->leftSon->rightSon;
+    node->leftSon = node->leftSon->rightSon->rightSon;
+    leftNode->rightSon = leftNode->rightSon->leftSon;
+    leftRightNode->rightSon = node;
+    leftRightNode->leftSon = leftNode;
+    node->balance = calculateBalance(node);
+    leftNode->balance = calculateBalance(leftNode);
+    leftRightNode->balance = calculateBalance(leftRightNode);
+    return leftRightNode;
+}
+
+Node* rebalanceRecursive(Node* node, const int key)
+{
+    if (key < node->key)
+    {
+       node->leftSon = rebalanceRecursive(node->leftSon, key);
+    }
+    if (key > node->key)
+    {
+       node->rightSon = rebalanceRecursive(node->rightSon, key);
+    }
+    node->balance = calculateBalance(node);
+    if (node->balance == 2)
+    {
+        return node->rightSon->balance >= 0 ? smallLeftRotation(node) : bigLeftRotation(node);
+    }
+    if (node->balance == -2)
+    {
+        return node->leftSon->balance <= 0 ? smallRightRotation(node) : bigRightRotation(node);
+    }
     return node;
 }
 
@@ -276,6 +337,8 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
         if (parent == NULL)
         {
             tree->root = node->rightSon;
+            deleteNode(node);
+            return;
         }
         else
         {

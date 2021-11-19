@@ -6,6 +6,24 @@
 
 #define SIZE 100
 
+int getMinNumberOfNodesForBalanceTree(int height)
+{
+    if (height <= 0)
+    {
+        return 0;
+    }
+    if (height == 1)
+    {
+        return 1;
+    }
+    return getMinNumberOfNodesForBalanceTree(height - 2) + getMinNumberOfNodesForBalanceTree(height - 1) + 1;
+}
+
+bool isTreeUnbalance(SearchTree* tree)
+{
+    return  getNumbersOfNodes(tree) < getMinNumberOfNodesForBalanceTree(getHeight(tree));
+}
+
 bool isCreateSearchTreeBehavesIncorrectly(SearchTree** tree)
 {
     *tree = createSearchTree();
@@ -15,16 +33,26 @@ bool isCreateSearchTreeBehavesIncorrectly(SearchTree** tree)
 bool isAddDataToSearchTreeBehavesIncorrectly(SearchTree* tree)
 {
     bool result = addDataToSearchTree(NULL, 0, NULL) != 1;
-    result = result || addDataToSearchTree(tree, 3, "3") != 0;
-    result = result || addDataToSearchTree(tree, 5, "5") != 0;
-    result = result || addDataToSearchTree(tree, 1, "1") != 0;
-    result = result || addDataToSearchTree(tree, 6, "6") != 0;
-    result = result || addDataToSearchTree(tree, 0, "0") != 0;
-    result = result || addDataToSearchTree(tree, 4, "4") != 0;
-    result = result || addDataToSearchTree(tree, 2, "10") != 0;
-    result = result || addDataToSearchTree(tree, 7, "7") != 0;
     result = result || addDataToSearchTree(tree, -1, "-1") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 0, "0") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 1, "1") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 2, "10") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 3, "3") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 4, "4") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 5, "5") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 6, "6") != 0;
+    result = result || isTreeUnbalance(tree);
+    result = result || addDataToSearchTree(tree, 7, "7") != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || addDataToSearchTree(tree, 2, "2") != 0;
+    result = result || isTreeUnbalance(tree);
     return result;
 }
 
@@ -72,16 +100,27 @@ bool isDeleteDataFromSearchTreeBehavesIncorrectly(SearchTree* tree)
 {
     bool result = deleteDataFromSearchTree(NULL, 1) != 1;
     result = result || deleteDataFromSearchTree(tree, 3) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 5) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, -1) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 4) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 6) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 7) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 1) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 0) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 10) != 2;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 2) != 0;
+    result = result || isTreeUnbalance(tree);
     result = result || deleteDataFromSearchTree(tree, 2) != 1;
+    result = result || isTreeUnbalance(tree);
     return result;
 }
 
