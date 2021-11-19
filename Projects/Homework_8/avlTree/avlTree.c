@@ -17,6 +17,34 @@ typedef struct SearchTree
     Node* root;
 } SearchTree;
 
+int getHeightRecursive(Node* node)
+{
+    if (node->leftSon == NULL && node->rightSon == NULL)
+    {
+        return 1;
+    }
+    int heightLeft = 0;
+    int heightRight = 0;
+    if (node->leftSon != NULL)
+    {
+        heightLeft = getHeightRecursive(node->leftSon) + 1;
+    }
+    if (node->rightSon != NULL)
+    {
+        heightRight = getHeightRecursive(node->rightSon) + 1;
+    }
+    return heightLeft > heightRight ? heightLeft : heightRight;
+}
+
+int getHeight(SearchTree* tree)
+{
+    if (tree == NULL || tree->root == NULL)
+    {
+        return 0;
+    }
+    return getHeightRecursive(tree->root);
+}
+
 char* createString(const char* data)
 {
     const int length = strlen(data) + 1;
@@ -59,30 +87,26 @@ void deleteNode(Node* node)
 
 Node* rebalanceRecursive(Node* node, const int key)
 {
-    Node* newNode = NULL;
     if (key < node->key)
     {
-       newNode = rebalanceRecursive(node->leftSon, key);
+       node->leftSon = rebalanceRecursive(node->leftSon, key);
     }
     if (key > node->key)
     {
-       newNode = rebalanceRecursive(node->rightSon, key);
+       node->rightSon = rebalanceRecursive(node->rightSon, key);
     }
-    int leftBalance = 0;
-    int rightBalance = 0;
+    int leftHeight = 0;
+    int rightHeight = 0;
     if (node->leftSon != NULL)
     {
-        leftBalance = 1 + node->leftSon->balance;
+        leftHeight = getHeightRecursive(node->leftSon);
     }
     if (node->rightSon != NULL)
     {
-        rightBalance = 1 + node->rightSon->balance;
+        rightHeight = getHeightRecursive(node->rightSon);
     }
-    node->balance = rightBalance - leftBalance;
-    if (node->balance == 2 && node->rightSon->balance >= 0)
-    {
-
-    }
+    node->balance = rightHeight - leftHeight;
+    return node;
 }
 
 int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
@@ -117,6 +141,7 @@ int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
                 if (node->leftSon == NULL)
                 {
                     node->leftSon = newNode;
+                    tree->root = rebalanceRecursive(tree->root, newNode->key);
                     return 0;
                 }
                 else
@@ -129,6 +154,7 @@ int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
                 if (node->rightSon == NULL)
                 {
                     node->rightSon = newNode;
+                    tree->root = rebalanceRecursive(tree->root, newNode->key);
                     return 0;
                 }
                 else
@@ -241,6 +267,7 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
             {
                 parent->rightSon = NULL;
             }
+            tree->root = rebalanceRecursive(tree->root, parent->key);
         }
         return;
     }
@@ -262,6 +289,7 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
             }
         }
         deleteNode(node);
+        tree->root = rebalanceRecursive(tree->root, parent->key);
         return;
     }
     if (node->leftSon != NULL && node->rightSon == NULL)
@@ -282,6 +310,7 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
             }
         }
         deleteNode(node);
+        tree->root = rebalanceRecursive(tree->root, parent->key);
         return;
     }
     if (node->leftSon != NULL && node->rightSon != NULL)
@@ -375,34 +404,6 @@ int getNumbersOfNodes(SearchTree* tree)
         return 0;
     }
     return getNumberOfNodesRecurcive(tree->root);
-}
-
-int getHeightRecursive(Node* node)
-{
-    if (node->leftSon == NULL && node->rightSon == NULL)
-    {
-        return 1;
-    }
-    int heightLeft = 0;
-    int heightRight = 0;
-    if (node->leftSon != NULL)
-    {
-        heightLeft = getHeightRecursive(node->leftSon) + 1;
-    }
-    if (node->rightSon != NULL)
-    {
-        heightRight = getHeightRecursive(node->rightSon) + 1;
-    }
-    return heightLeft > heightRight ? heightLeft : heightRight;
-}
-
-int getHeight(SearchTree* tree)
-{
-    if (tree == NULL || tree->root == NULL)
-    {
-        return 0;
-    }
-    return getHeightRecursive(tree->root);
 }
 
 int deleteSearchTree(SearchTree* tree)
