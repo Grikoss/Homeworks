@@ -1,22 +1,37 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "tree.h"
+
+typedef struct Node
+{
+    int value;
+    struct Node* leftSon;
+    struct Node* rigthSon;
+} Node;
+
+typedef struct ParseTree
+{
+    Node* root;
+} ParseTree;
 
 int getNumber(const char* string, int* index)
 {
-    char* buffer = calloc(strlen(string) + 1, sizeof(char));
+    char* buffer = calloc(11, sizeof(char));
     if (buffer == NULL)
     {
         return 0;
     }
     int subIndex = 0;
+    int minus = 1;
     if (string[*index] == '-')
     {
         buffer[subIndex] = string[*index];
-        ++* index;
+        ++*index;
         ++subIndex;
+        minus = 0;
     }
-    while (string[*index] != '\0' && string[*index] <= 57 && string[*index] >= 48)
+    while (string[*index] != '\0' && string[*index] <= '9' && string[*index] >= '0' && subIndex <= 11 - minus)
     {
         buffer[subIndex] = string[*index];
         ++* index;
@@ -38,14 +53,14 @@ int readString(const char* string, int* index, int* outputValue)
         case '-':
         case '*':
         case '/':
-            if (string[*index] != '-' || string[*index + 1] > 57 || string[*index + 1] < 48)
+            if (string[*index] != '-' || string[*index + 1] > '9' || string[*index + 1] < '0')
             {
                 *outputValue = string[*index];
                 ++* index;
                 return 1;
             }
         default:
-            if ((string[*index] <= 57 && string[*index] >= 48 ) || string[*index] == '-')
+            if ((string[*index] <= '9' && string[*index] >= '0') || string[*index] == '-')
             {
                 *outputValue = getNumber(string, index);
                 return 2;
@@ -56,18 +71,6 @@ int readString(const char* string, int* index, int* outputValue)
     }
     return 3;
 }
-
-typedef struct Node
-{
-    int value;
-    struct Node* leftSon;
-    struct Node* rigthSon;
-} Node;
-
-typedef struct ParceTree
-{
-    Node* root;
-} ParceTree;
 
 Node* createNode(const int inputValue)
 {
@@ -108,9 +111,9 @@ Node* fillTree(const char* string, int* index)
     }
 }
 
-ParceTree* createParceTree(const char* string)
+ParseTree* createParceTree(const char* string)
 {
-    ParceTree* tree = calloc(1, sizeof(ParceTree));
+    ParseTree* tree = calloc(1, sizeof(ParseTree));
     if (tree == NULL)
     {
         return NULL;
@@ -128,33 +131,20 @@ void printNumber(int value, int* index, char* buffer, const int sizeOfBuffer)
         ++*index;
         return;
     }
-    int dev = 1;
-    while (dev <= abs(value))
+    char* stringValue = calloc(11, sizeof(char));
+    if (stringValue == NULL)
     {
-        dev *= 10;
+        return;
     }
-    dev /= 10;
-    while (*index < sizeOfBuffer - 1 && dev != 0)
+    buffer[*index] = '\0';
+    sprintf_s(stringValue, 11, "%d", value);
+    strcat_s(buffer, sizeOfBuffer, stringValue);
+    free(stringValue);
+    while (*index < sizeOfBuffer - 1 && buffer[*index] != '\0')
     {
-        if (value < 0)
-        {
-            buffer[*index] = '-';
-            ++*index;
-            value = abs(value);
-            continue;
-        }
-        if (value <= 9 && value >= 1)
-        {
-            buffer[*index] = value + 48;
-            ++*index;
-            dev /= 10;
-            continue;
-        }
-        buffer[*index] = value / dev + 48;
         ++*index;
-        value %= dev;
-        dev /= 10;
     }
+    buffer[*index] = 'þ';
 }
 
 void printSpace(int* index, char* buffer, const int sizeOfBuffer)
@@ -186,29 +176,30 @@ void printCloseBracket(int* index, char* buffer, const int sizeOfBuffer)
 
 void getStringFromParceTreeRecursive(Node* node, int* index, char* buffer, const int sizeOfBuffer)
 {
-    if (*index < sizeOfBuffer - 1)
+    if (*index >= sizeOfBuffer - 1)
     {
-        if (node->leftSon == NULL || node->rigthSon == NULL)
-        {
-            printNumber(node->value, index, buffer, sizeOfBuffer);
-            printSpace(index, buffer, sizeOfBuffer);
-        }
-        else
-        {
-            printOpenBracket(index, buffer, sizeOfBuffer);
-            printSpace(index, buffer, sizeOfBuffer);
-            buffer[*index] = node->value;
-            ++*index;
-            printSpace(index, buffer, sizeOfBuffer);
-            getStringFromParceTreeRecursive(node->leftSon, index, buffer, sizeOfBuffer);
-            getStringFromParceTreeRecursive(node->rigthSon, index, buffer, sizeOfBuffer);
-            printCloseBracket(index, buffer, sizeOfBuffer);
-            printSpace(index, buffer, sizeOfBuffer);
-        }
+        return;
+    }
+    if (node->leftSon == NULL || node->rigthSon == NULL)
+    {
+        printNumber(node->value, index, buffer, sizeOfBuffer);
+        printSpace(index, buffer, sizeOfBuffer);
+    }
+    else
+    {
+        printOpenBracket(index, buffer, sizeOfBuffer);
+        printSpace(index, buffer, sizeOfBuffer);
+        buffer[*index] = node->value;
+        ++* index;
+        printSpace(index, buffer, sizeOfBuffer);
+        getStringFromParceTreeRecursive(node->leftSon, index, buffer, sizeOfBuffer);
+        getStringFromParceTreeRecursive(node->rigthSon, index, buffer, sizeOfBuffer);
+        printCloseBracket(index, buffer, sizeOfBuffer);
+        printSpace(index, buffer, sizeOfBuffer);
     }
 }
 
-int getStringFromParceTree(ParceTree* tree, char* buffer, const int sizeOfBuffer)
+int getStringFromParceTree(ParseTree* tree, char* buffer, const int sizeOfBuffer)
 {
     if (tree == NULL || tree->root == NULL || buffer == NULL)
     {
@@ -272,7 +263,7 @@ int getResultFromParceTreeRecursive(Node* node, int* result)
     }
 }
 
-int getResultFromParceTree(ParceTree* tree, int* result)
+int getResultFromParceTree(ParseTree* tree, int* result)
 {
     if (tree == NULL || tree->root == NULL)
     {
@@ -291,7 +282,7 @@ void deleteParceTreeRecursive(Node* node)
     free(node);
 }
 
-int  deleteParceTree(ParceTree* tree)
+int  deleteParceTree(ParseTree* tree)
 {
     if (tree == NULL || tree->root == NULL)
     {
