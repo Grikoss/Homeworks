@@ -98,7 +98,6 @@ int removeLastListElement(CyclicList* list, Position* position)
     return 0;
 }
 
-
 int removeListElement(CyclicList* list, Position* position)
 {
     if (list == NULL || position == NULL)
