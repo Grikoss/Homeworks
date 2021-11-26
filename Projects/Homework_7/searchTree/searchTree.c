@@ -8,7 +8,7 @@ typedef struct Node
     int key;
     char* data;
     struct Node* leftSon;
-    struct Node* rigthSon;
+    struct Node* rightSon;
 } Node;
 
 typedef struct SearchTree
@@ -72,8 +72,6 @@ int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
         tree->root = newNode;
         return 0;
     }
-    else
-    {
         Node* node = tree->root;
         while (true)
         {
@@ -97,18 +95,17 @@ int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
             }
             else
             {
-                if (node->rigthSon == NULL)
+                if (node->rightSon == NULL)
                 {
-                    node->rigthSon = newNode;
+                    node->rightSon = newNode;
                     return 0;
                 }
                 else
                 {
-                    node = node->rigthSon;
+                    node = node->rightSon;
                 }
             }
         }
-    }
 }
 
 Node* searchNodeParentByKey(SearchTree* tree, const int key)
@@ -127,9 +124,9 @@ Node* searchNodeParentByKey(SearchTree* tree, const int key)
                 break;
             }
         }
-        if (node->rigthSon != NULL)
+        if (node->rightSon != NULL)
         {
-            if (node->rigthSon->key == key)
+            if (node->rightSon->key == key)
             {
                 break;
             }
@@ -140,7 +137,7 @@ Node* searchNodeParentByKey(SearchTree* tree, const int key)
         }
         else
         {
-            node = node->rigthSon;
+            node = node->rightSon;
         }
     }
     return node;
@@ -176,26 +173,38 @@ int getDataFromSearchTree(SearchTree* tree, const int key, char* buffer, const i
         strcpy_s(buffer, size, node->leftSon->data);
         return 0;
     }
-    if (node->rigthSon != NULL && node->rigthSon->key == key)
+    if (node->rightSon != NULL && node->rightSon->key == key)
     {
-        strcpy_s(buffer, size, node->rigthSon->data);
+        strcpy_s(buffer, size, node->rightSon->data);
         return 0;
     }
     return 3;
 }
 
-Node* rigthmost(Node* node)
+Node* rightmost(Node* node)
 {
-    while (node->rigthSon->rigthSon != NULL)
+    while (node->rightSon->rightSon != NULL)
     {
-        node = node->rigthSon;
+        node = node->rightSon;
     }
     return node;
 }
 
+void assignSonToParent(Node* parent, Node* son, bool isLeftSon)
+{
+    if (isLeftSon)
+    {
+        parent->leftSon = son;
+    }
+    else
+    {
+        parent->rightSon = son;
+    }
+}
+
 void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon)
 {
-    if (node->leftSon == NULL && node->rigthSon == NULL)
+    if (node->leftSon == NULL && node->rightSon == NULL)
     {
         deleteNode(node);
         if (parent == NULL)
@@ -204,38 +213,24 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
         }
         else
         {
-            if (isLeftSon)
-            {
-                parent->leftSon = NULL;
-            }
-            else
-            {
-                parent->rigthSon = NULL;
-            }
+            assignSonToParent(parent, NULL, isLeftSon);
         }
         return;
     }
-    if (node->leftSon == NULL && node->rigthSon != NULL)
+    if (node->leftSon == NULL && node->rightSon != NULL)
     {
         if (parent == NULL)
         {
-            tree->root = node->rigthSon;
+            tree->root = node->rightSon;
         }
         else
         {
-            if (isLeftSon)
-            {
-                parent->leftSon = node->rigthSon;
-            }
-            else
-            {
-                parent->rigthSon = node->rigthSon;
-            }
+            assignSonToParent(parent, node->rightSon, isLeftSon);
         }
         deleteNode(node);
         return;
     }
-    if (node->leftSon != NULL && node->rigthSon == NULL)
+    if (node->leftSon != NULL && node->rightSon == NULL)
     {
         if (parent == NULL)
         {
@@ -243,41 +238,31 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
         }
         else
         {
-            if (isLeftSon)
-            {
-                parent->leftSon = node->leftSon;
-            }
-            else
-            {
-                parent->rigthSon = node->leftSon;
-            }
+            assignSonToParent(parent, node->leftSon, isLeftSon);
         }
         deleteNode(node);
         return;
     }
-    if (node->leftSon != NULL && node->rigthSon != NULL)
+    if (node->leftSon != NULL && node->rightSon != NULL)
     {
-        Node* newNode = NULL;
         int key = 0;
         char* data = NULL;
-        if (node->leftSon->rigthSon == NULL)
+        if (node->leftSon->rightSon == NULL)
         {
-            newNode = node;
-            key = newNode->leftSon->key;
-            data = createString(newNode->leftSon->data);
-            deleteNodeInTree(tree, newNode, newNode->leftSon, true);
+            key = node->leftSon->key;
+            data = createString(node->leftSon->data);
+            deleteNodeInTree(tree, node, node->leftSon, true);
         }
         else
         {
-            newNode = rigthmost(node->leftSon);
-            key = newNode->rigthSon->key;
-            data = createString(newNode->rigthSon->data);
-            deleteNodeInTree(tree, newNode, newNode->rigthSon, false);
+            Node* newNode = rightmost(node->leftSon);
+            key = newNode->rightSon->key;
+            data = createString(newNode->rightSon->data);
+            deleteNodeInTree(tree, newNode, newNode->rightSon, false);
         }
         node->key = key;
         free(node->data);
         node->data = data;
-        return;
     }
 }
 
@@ -302,9 +287,9 @@ int deleteDataFromSearchTree(SearchTree* tree, const int key)
         deleteNodeInTree(tree, node, node->leftSon, true);
         return 0;
     }
-    if (node->rigthSon != NULL && node->rigthSon->key == key)
+    if (node->rightSon != NULL && node->rightSon->key == key)
     {
-        deleteNodeInTree(tree, node, node->rigthSon, false);
+        deleteNodeInTree(tree, node, node->rightSon, false);
         return 0;
     }
     return 3;
@@ -316,9 +301,9 @@ void deleteSearchThreeRecursive(Node* node)
     {
         deleteSearchThreeRecursive(node->leftSon);
     }
-    if (node->rigthSon != NULL)
+    if (node->rightSon != NULL)
     {
-        deleteSearchThreeRecursive(node->rigthSon);
+        deleteSearchThreeRecursive(node->rightSon);
     }
     free(node->data);
     free(node);
