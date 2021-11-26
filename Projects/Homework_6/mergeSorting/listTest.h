@@ -3,4 +3,4 @@
 #include <stdbool.h>
 
 // TESTSSTTSTSTTSTST
-bool isListBehavesIncorrect(void); 
+bool isListBehavesIncorrectly(void); 

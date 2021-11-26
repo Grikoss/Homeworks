@@ -9,7 +9,7 @@
 
 int main(void)
 {
-	if (isListBehavesIncorrect())
+	if (isListBehavesIncorrectly())
 	{
 		return 1;
 	}

@@ -45,7 +45,7 @@ int getValueFromListElement(Position* position, char* outputName, const int size
 
 void addStrings(ListElement* element, const char* inputName, const char* inputTelephone)
 {
-    const int  nameLength = strlen(inputName) + 1;
+    const int nameLength = strlen(inputName) + 1;
     const int telephoneLength = strlen(inputTelephone) + 1;
     char* name = calloc(nameLength, sizeof(char));
     if (name != NULL)

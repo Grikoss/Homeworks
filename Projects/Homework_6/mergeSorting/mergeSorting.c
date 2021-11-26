@@ -6,8 +6,6 @@
 
 #define SIZE_OF_BUFFER 100
 
-
-
 List* merge(List* firtsList, List* secondList, bool isSortingByName)
 {
     Position* firstPosition = createPosition();

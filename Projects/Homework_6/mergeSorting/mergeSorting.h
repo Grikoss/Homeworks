@@ -2,5 +2,5 @@
 
 #include "list.h"
 
-//Sorts the list
+// Sorts the list
 List* sortByMergeSorting(List* list, bool isSortingByName);

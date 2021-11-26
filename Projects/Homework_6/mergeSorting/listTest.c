@@ -10,27 +10,27 @@ bool isCreateListBehavesIncorrectly(List** list)
     return *list == NULL;
 }
 
-bool isCreatePositionBehavesIncorrect(Position * *position)
+bool isCreatePositionBehavesIncorrectly(Position** position)
 {
     *position = createPosition();
     return *position == NULL;
 }
 
-bool isMovePositionToHeadBehavesIncorrect(List * list, Position * position)
+bool isMovePositionToHeadBehavesIncorrectly(List* list, Position * position)
 {
     bool result = 1 != movePositionToHead(NULL, position);
     result = result || 1 != movePositionToHead(list, NULL);
     return result || !isPositionNull(position) || 0 != movePositionToHead(list, position);
 }
 
-bool isMovePositionToTailBehavesIncorrect(List * list, Position * position)
+bool isMovePositionToTailBehavesIncorrectly(List * list, Position * position)
 {
     bool result = 1 != movePositionToTail(NULL, position);
     result = result || 1 != movePositionToTail(list, NULL);
     return result || !isPositionNull(position) || 0 != movePositionToTail(list, position);
 }
 
-bool isAddListElementBehavesIncorrect(List* list, Position* position)
+bool isAddListElementBehavesIncorrectly(List* list, Position* position)
 {
     char stringOne[] = "oneOne";
     char stringTwo[] = "twoTwo";
@@ -42,7 +42,7 @@ bool isAddListElementBehavesIncorrect(List* list, Position* position)
     return result || addListElement(list, position, stringOne, stringTwo, true);
 }
 
-bool isGetValueFromElementBehavesIncorrect(List* list, Position* position)
+bool isGetValueFromElementBehavesIncorrectly(List* list, Position* position)
 {
     movePositionToHead(list, position);
     char bufferOne[10] = { 0 };
@@ -59,7 +59,7 @@ bool isGetValueFromElementBehavesIncorrect(List* list, Position* position)
     return result || getValueFromListElement(position, bufferFour, 10, bufferThree, 10) != 1;
 }
 
-bool isMovePositionToNextOrPreviousBehavesIncorrect(List* list, Position* position)
+bool isMovePositionToNextOrPreviousBehavesIncorrectly(List* list, Position* position)
 {
     movePositionToHead(list, position);
     bool result = movePositionToNext(position) != 0;
@@ -70,7 +70,7 @@ bool isMovePositionToNextOrPreviousBehavesIncorrect(List* list, Position* positi
     return result || movePositionToNext(position) != 1 || movePositionToPrevious(position) != 1;
 }
 
-bool isFunctionisPositionNullBehavesIncorrect(List* list, Position* position)
+bool isFunctionisPositionNullBehavesIncorrectly(List* list, Position* position)
 {
     bool result = !isPositionNull(position);
     result = result || !isPositionNull(NULL);
@@ -78,7 +78,7 @@ bool isFunctionisPositionNullBehavesIncorrect(List* list, Position* position)
     return result || isPositionNull(position);
 }
 
-bool isRemoveListElementBehavesIncorrect(List* list, Position* position)
+bool isRemoveListElementBehavesIncorrectly(List* list, Position* position)
 {
     movePositionToHead(list, position);
     bool result = removeListElement(list, position, false) != 0;
@@ -89,24 +89,24 @@ bool isRemoveListElementBehavesIncorrect(List* list, Position* position)
     return result || removeListElement(NULL, position, true) != 1 || removeListElement(list, NULL, true) != 1;
 }
 
-bool isDeleteListBehavesIncorrect(List* list)
+bool isDeleteListBehavesIncorrectly(List* list)
 {
     return deleteList(NULL) != 1 || deleteList(list) != 0;
 }
 
-bool isListBehavesIncorrect(void)
+bool isListBehavesIncorrectly(void)
 {
     List* list = NULL;
     bool result = isCreateListBehavesIncorrectly(&list);
     Position* position = NULL;
-    result = result || isCreatePositionBehavesIncorrect(&position);
-    result = result || isMovePositionToHeadBehavesIncorrect(list, position);
-    result = result || isMovePositionToTailBehavesIncorrect(list, position);
-    result = result || isAddListElementBehavesIncorrect(list, position);
-    result = result || isGetValueFromElementBehavesIncorrect(list, position);
-    result = result || isMovePositionToNextOrPreviousBehavesIncorrect(list, position);
-    result = result || isFunctionisPositionNullBehavesIncorrect(list, position);
-    result = result || isRemoveListElementBehavesIncorrect(list, position);
+    result = result || isCreatePositionBehavesIncorrectly(&position);
+    result = result || isMovePositionToHeadBehavesIncorrectly(list, position);
+    result = result || isMovePositionToTailBehavesIncorrectly(list, position);
+    result = result || isAddListElementBehavesIncorrectly(list, position);
+    result = result || isGetValueFromElementBehavesIncorrectly(list, position);
+    result = result || isMovePositionToNextOrPreviousBehavesIncorrectly(list, position);
+    result = result || isFunctionisPositionNullBehavesIncorrectly(list, position);
+    result = result || isRemoveListElementBehavesIncorrectly(list, position);
     deletePosition(position);
-    return result || isDeleteListBehavesIncorrect(list);
+    return result || isDeleteListBehavesIncorrectly(list);
 }
