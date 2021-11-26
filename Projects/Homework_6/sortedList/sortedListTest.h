@@ -3,4 +3,4 @@
 #include <stdbool.h>
 
 // Test - false if ok
-bool isSortedListBeahavesIncorrect();
+bool isSortedListBehavesIncorrectly();

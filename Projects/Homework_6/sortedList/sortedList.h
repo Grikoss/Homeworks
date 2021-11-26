@@ -4,7 +4,7 @@
 
 typedef struct SortedList SortedList;
 
-typedef struct SLPosition SLPosition;
+typedef struct SortedLIstPosition SortedLIstPosition;
 
 // Returns sortedList or null if creation unsuccessful
 SortedList* createSortedList();
@@ -25,20 +25,20 @@ int addElement(SortedList* sortedList, const int inputValue);
 int deleteSortedList(SortedList* list);
 
 // Create SLPositon
-SLPosition* createSLPosition();
+SortedLIstPosition* createSLPosition();
 
-// Move SLPosition to head of sortet list
-void moveSLPositionToHead(SortedList* list, SLPosition* position);
+// Move SortedLIstPosition to head of sortet list
+void moveSLPositionToHead(SortedList* list, SortedLIstPosition* position);
 
-// Move SLPosition to next
-void moveSLPositionToNext(SLPosition* position);
+// Move SortedLIstPosition to next
+void moveSLPositionToNext(SortedLIstPosition* position);
 
 // Check is SLPositon is poiting on NULL
-bool isSLPositionIsNULL(SLPosition* position);
+bool isEnd(SortedLIstPosition* position);
 
 // Returns executionCode:
 // 0 - ok; 1 - SLPOsition is NULL or pointig on NULL
-int getValueFromSLPosition(SLPosition* position, int* output);
+int getValueFromSLPosition(SortedLIstPosition* position, int* output);
 
-// Delete SLPosition
-void deleteSLPositin(SLPosition* position);
+// Delete SortedLIstPosition
+void deleteSLPositin(SortedLIstPosition* position);

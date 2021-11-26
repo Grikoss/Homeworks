@@ -36,10 +36,10 @@ void removeElementM(SortedList* list)
 
 void printValues(SortedList* list)
 {
-    SLPosition* position = createSLPosition();
+    SortedLIstPosition* position = createSLPosition();
     moveSLPositionToHead(list, position);
     printf("Elements:\n");
-    while (!isSLPositionIsNULL(position))
+    while (!isEnd(position))
     {
         int value = 0;
         getValueFromSLPosition(position, &value);
@@ -51,7 +51,7 @@ void printValues(SortedList* list)
 
 int main()
 {
-    if (isSortedListBeahavesIncorrect())
+    if (isSortedListBehavesIncorrectly())
     {
         return 1;
     }

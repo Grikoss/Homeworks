@@ -29,7 +29,7 @@ bool isRemoveElementBehavesIncorrect(SortedList* list)
 
 bool isGetValuesBehavesIncorrect(SortedList* list)
 {
-    SLPosition* position = createSLPosition();
+    SortedLIstPosition* position = createSLPosition();
     moveSLPositionToHead(list, position);
     int value = 0;
     bool result = getValueFromSLPosition(NULL, &value) != 1;
@@ -48,7 +48,7 @@ bool isGetValuesBehavesIncorrect(SortedList* list)
     result = result || getValueFromSLPosition(position, &value) != 0;
     result = result || value != 5;
     moveSLPositionToNext(position);
-    result = result || !isSLPositionIsNULL(position);
+    result = result || !isEnd(position);
     deleteSLPositin(position);
     return result;
 }
@@ -59,7 +59,7 @@ bool isDeleteSortedListBehavesIncorrect(SortedList* list)
     return result || deleteSortedList(list) != 0;
 }
 
-bool isSortedListBeahavesIncorrect()
+bool isSortedListBehavesIncorrectly()
 {
     bool result = isListBehavesIncorrectly();
     SortedList* sortedList = NULL;

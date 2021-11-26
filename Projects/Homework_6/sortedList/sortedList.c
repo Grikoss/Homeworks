@@ -8,14 +8,14 @@ typedef struct SortedList
     List* list;
 } SortedList;
 
-typedef struct SLPosition
+typedef struct SortedLIstPosition
 {
     Position* position;
-} SLPosition;
+} SortedLIstPosition;
 
-SLPosition* createSLPosition()
+SortedLIstPosition* createSLPosition()
 {
-    SLPosition* position = calloc(1, sizeof(SLPosition));
+    SortedLIstPosition* position = calloc(1, sizeof(SortedLIstPosition));
     if (position != NULL)
     {
         position->position = createPosition();
@@ -23,7 +23,7 @@ SLPosition* createSLPosition()
     return position;
 }
 
-void moveSLPositionToHead(SortedList* list, SLPosition* position)
+void moveSLPositionToHead(SortedList* list, SortedLIstPosition* position)
 {
     if (list != NULL && position != NULL)
     {
@@ -31,7 +31,7 @@ void moveSLPositionToHead(SortedList* list, SLPosition* position)
     }
 }
 
-void moveSLPositionToNext(SLPosition* position)
+void moveSLPositionToNext(SortedLIstPosition* position)
 {
     if (position != NULL)
     {
@@ -39,12 +39,12 @@ void moveSLPositionToNext(SLPosition* position)
     }
 }
 
-bool isSLPositionIsNULL(SLPosition* position)
+bool isEnd(SortedLIstPosition* position)
 {
     return position == NULL || isPositionNull(position->position);
 }
 
-int getValueFromSLPosition(SLPosition* position, int* output)
+int getValueFromSLPosition(SortedLIstPosition* position, int* output)
 {
     if (position == NULL)
     {
@@ -53,7 +53,7 @@ int getValueFromSLPosition(SLPosition* position, int* output)
     return getValueFromListElement(position->position, output);
 }
 
-void deleteSLPositin(SLPosition* position)
+void deleteSLPositin(SortedLIstPosition* position)
 {
     if (position != NULL)
     {

@@ -2,5 +2,5 @@
 
 int main()
 {
-    return isListBehavesIncorrect() ? 1 : 0;
+    return isListBehavesIncorrectly() ? 1 : 0;
 }
