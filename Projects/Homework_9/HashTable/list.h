@@ -67,3 +67,6 @@ bool isPositionNull(Position* position);
 
 // Sets counter, if position is pointing on NULL or position is NULL does nothing
 void setCounter(Position* position, const int counter);
+
+// Gives quantity of elements in list, if list is NULL return 0
+int getQuantity(List* list);

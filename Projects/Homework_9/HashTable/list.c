@@ -15,6 +15,7 @@ typedef struct List
 {
     ListElement* head;
     ListElement* tail;
+    int quantity;
 } List;
 
 typedef struct Position
@@ -70,6 +71,7 @@ int addListElementIntoHead(List* list, Position* position, const char* inputStri
     position->currentPosition->previous = element;
     list->head = element;
     position->currentPosition = element;
+    ++list->quantity;
     return 0;
 }
 
@@ -89,6 +91,7 @@ int addListElementIntoTail(List* list, Position* position, const char* inputStri
     position->currentPosition->next = element;
     list->tail = element;
     position->currentPosition = element;
+    ++list->quantity;
     return 0;
 }
 
@@ -107,6 +110,7 @@ int addListElementIntoEmptyList(List* list, Position* position, const char* inpu
     list->head = element;
     list->tail = element;
     position->currentPosition = element;
+    ++list->quantity;
     return 0;
 }
 
@@ -161,6 +165,7 @@ int addListElement(List* list, Position* position, const char* inputString, bool
         position->currentPosition->previous = element;
     }
     position->currentPosition = element;
+    ++list->quantity;
     return 0;
 }
 
@@ -180,6 +185,7 @@ int removeLastListElement(List* list, Position* position)
     position->currentPosition = NULL;
     list->head = NULL;
     list->tail = NULL;
+    --list->quantity;
     return 0;
 }
 
@@ -194,6 +200,7 @@ int removeListElementFromHead(List* list, Position* position, bool movePositionT
     removeStrings(position->currentPosition);
     free(position->currentPosition);
     position->currentPosition = movePositionToNext ? list->head : NULL;
+    --list->quantity;
     return 0;
 }
 
@@ -208,6 +215,7 @@ int removeListElementFromTail(List* list, Position* position, bool movePositionT
     removeStrings(position->currentPosition);
     free(position->currentPosition);
     position->currentPosition = movePositionToNext ? NULL : list->tail;
+    --list->quantity;
     return 0;
 }
 
@@ -243,6 +251,7 @@ int removeListElement(List* list, Position* position, bool movePositionToNext)
     position->currentPosition = movePositionToNext ? position->currentPosition->next : position->currentPosition->previous;
     removeStrings(oldCurrentPosition);
     free(oldCurrentPosition);
+    --list->quantity;
     return 0;
 }
 
@@ -319,4 +328,9 @@ void setCounter(Position* position, const int counter)
     {
         position->currentPosition->count = counter;
     }
+}
+
+int getQuantity(List* list)
+{
+    return (list != NULL) ? list->quantity : 0;
 }

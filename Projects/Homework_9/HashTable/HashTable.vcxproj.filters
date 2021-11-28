@@ -24,12 +24,36 @@
     <ClCompile Include="listTest.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hashFunction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashFunctionTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashTable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashTableTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="listTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashFunctionTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashTableTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

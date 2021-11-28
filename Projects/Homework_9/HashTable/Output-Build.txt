@@ -1,0 +1,12 @@
+﻿Build started...
+1>------ Build started: Project: HashTable, Configuration: Debug Win32 ------
+1>hashTable.c
+1>hashTableTest.c
+1>main.c
+1>Generating Code...
+1>D:\bip\Homeworks\Projects\Homework_9\HashTable\hashTable.c(42): error C2220: the following warning is treated as an error
+1>D:\bip\Homeworks\Projects\Homework_9\HashTable\hashTable.c(42): warning C5045: Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
+1>D:\bip\Homeworks\Projects\Homework_9\HashTable\hashTable.c(40): message : index 'i' range checked by comparison on this line
+1>D:\bip\Homeworks\Projects\Homework_9\HashTable\hashTable.c(42): message : feeds call on this line
+1>Done building project "HashTable.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
