@@ -70,7 +70,7 @@ int addElementIntoHashTable(HashTable* hashTable, const char* string)
     {
         return 2;
     }
-    const int key = hashTable->keyGen(string) % hashTable->size;
+    const int key = abs(hashTable->keyGen(string)) % hashTable->size;
     Position* position = createPosition();
     if (hashTable->array[key] == NULL)
     {

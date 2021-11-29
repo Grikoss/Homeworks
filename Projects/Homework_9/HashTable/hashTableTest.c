@@ -6,7 +6,7 @@
 
 int keyGen(const char* string)
 {
-    return string[0];
+    return -string[0];
 }
 
 bool isCreateHashTableBehavesIncorrectly(void)
