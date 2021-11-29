@@ -70,3 +70,6 @@ void setCounter(Position* position, const int counter);
 
 // Gives quantity of elements in list, if list is NULL return 0
 int getQuantity(List* list);
+
+// Compares strings
+bool areStringFromPositionAndInputStringEqual(Position* position, const char* string);

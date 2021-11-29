@@ -334,3 +334,12 @@ int getQuantity(List* list)
 {
     return (list != NULL) ? list->quantity : 0;
 }
+
+bool areStringFromPositionAndInputStringEqual(Position* position, const char* string)
+{
+    if (position == NULL || position->currentPosition == NULL || string == NULL)
+    {
+        return false;
+    }
+    return strcmp(string, position->currentPosition->string) == 0;
+}
