@@ -134,20 +134,21 @@ void startReadingFromFile(List* list, FILE* file)
     free(inputTelephone);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     if (!runListModuleTest())
     {
-        printf("List test failed");
         return 1;
     }
 
     if (!runFileModuleTest())
     {
-        printf("File test failed");
         return 2;
     }
-
+    if (argc > 1)
+    {
+        return 0;
+    }
     FILE* file = fopen("telephone.txt", "r");
     if (file == NULL)
     {

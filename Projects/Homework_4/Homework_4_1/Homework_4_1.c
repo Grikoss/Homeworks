@@ -41,7 +41,11 @@ void systemTest(void) {
 	}
 }
 
-void main() {
+void main(int argc, char* argv[]) {
+	if (argc > 1)
+	{
+		return;
+	}
 	systemTest();
 	setlocale(LC_ALL, "Russian");
 	int valueOne = 0;

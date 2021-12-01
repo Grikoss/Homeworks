@@ -49,11 +49,15 @@ void printValues(SortedList* list)
     deleteSLPositin(position);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     if (isSortedListBehavesIncorrectly())
     {
         return 1;
+    }
+    if (argc > 1)
+    {
+        return 0;
     }
     int value = 10;
     SortedList* list = createSortedList();

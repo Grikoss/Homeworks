@@ -348,7 +348,11 @@ void printfArray(int array[], int size) {
 	}
 }
 
-void main() {
+void main(int argc, char* argv[]) {
+	if (argc > 1)
+	{
+		return;
+	}
 	srand(time(NULL));
 	runSystemTest();
 	int sizeOfrandomArray = 0;

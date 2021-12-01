@@ -4,7 +4,7 @@
 #include "counting.h"
 #include "cyclicListTest.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	if (isListBehavesIncorrectly())
 	{
@@ -13,6 +13,10 @@ int main()
 	if (isGetNumberofTheLastRemainingBehavesIncorrectly())
 	{
 		return 2;
+	}
+	if (argc > 1)
+	{
+		return 0;
 	}
 	printf("Enter number of standing:\n");
 	int numberOfStanding = 0;

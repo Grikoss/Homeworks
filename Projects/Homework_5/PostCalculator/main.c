@@ -5,7 +5,7 @@
 
 #define SIZE 100
 
-int main()
+int main(int argc, char* argv[])
 {
     if (stackTest())
     {
@@ -14,6 +14,10 @@ int main()
     if (isPostCalculateBehavesIncorrectly())
     {
         return 2;
+    }
+    if (argc > 1)
+    {
+        return 0;
     }
     char string[SIZE] = { '\0' };
     printf("Enter string:\n");

@@ -5,11 +5,15 @@
 
 #define SIZE 100
 
-int main()
+int main(int argc, char* argv[])
 {
     if (isSearchTreeBehavesIncorrectly())
     {
         return 1;
+    }
+    if (argc > 1)
+    {
+        return 0;
     }
     SearchTree* tree = createSearchTree();
     while (true)
