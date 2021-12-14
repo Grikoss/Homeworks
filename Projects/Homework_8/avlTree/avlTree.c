@@ -210,10 +210,7 @@ int addDataToSearchTree(SearchTree* tree, const char* key, const char* data)
                 tree->root = rebalanceRecursive(tree->root, newNode->key);
                 return 0;
             }
-            else
-            {
-                node = node->leftSon;
-            }
+            node = node->leftSon;
         }
         else
         {
@@ -223,10 +220,7 @@ int addDataToSearchTree(SearchTree* tree, const char* key, const char* data)
                 tree->root = rebalanceRecursive(tree->root, newNode->key);
                 return 0;
             }
-            else
-            {
-                node = node->rightSon;
-            }
+            node = node->rightSon;
         }
     }
 }
