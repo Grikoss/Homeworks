@@ -4,59 +4,59 @@
 #include "tree.h"
 #include "treeTest.h"
 
-bool isCreateParceTreeBehavesIncorrectly(ParseTree** tree, const char* string)
+bool isCreateParseTreeBehavesIncorrectly(ParseTree** tree, const char* string)
 {
-    *tree = createParceTree(string);
+    *tree = createParseTree(string);
     return *tree == NULL;
 }
 
-bool isGetStringFromParceTreeBehavesIncorrectly(ParseTree* tree, const char* string)
+bool isGetStringFromParseTreeBehavesIncorrectly(ParseTree* tree, const char* string)
 {
     char buffer[100] = { 0 };
-    getStringFromParceTree(tree, buffer, 100);
+    getStringFromParseTree(tree, buffer, 100);
     return strcmp(buffer, string) != 0;
 }
 
-bool isGetResultFromParceTreeBehavesIncorrectly(ParseTree* tree, const int result, const int executionCode)
+bool isGetResultFromParseTreeBehavesIncorrectly(ParseTree* tree, const int result, const int executionCode)
 {
     int subResult = 0;
-    return getResultFromParceTree(tree, &subResult) != executionCode || subResult != result;
+    return getResultFromParseTree(tree, &subResult) != executionCode || subResult != result;
 }
 
-bool isDeleteParceTreeBehavesIncorrectly(ParseTree* tree)
+bool isDeleteParseTreeBehavesIncorrectly(ParseTree* tree)
 {
-    return deleteParceTree(tree) != 0;
+    return deleteParseTree(tree) != 0;
 }
 
 bool checkOnNull()
 {
     int buffer = 0;
-    return deleteParceTree(NULL) != 1 || getResultFromParceTree(NULL, &buffer) != 2 || getStringFromParceTree(NULL, NULL, 0) != 1;
+    return deleteParseTree(NULL) != 1 || getResultFromParseTree(NULL, &buffer) != 2 || getStringFromParseTree(NULL, NULL, 0) != 1;
 }
 
-bool isParceTreeBehavesIncorrectly()
+bool isParseTreeBehavesIncorrectly()
 {
     ParseTree* tree = NULL;
-    bool result = isCreateParceTreeBehavesIncorrectly(&tree, "(* (+ 1 1) 2)");
-    result = result || isGetStringFromParceTreeBehavesIncorrectly(tree, "( * ( + 1 1 ) 2 ) ");
-    result = result || isGetResultFromParceTreeBehavesIncorrectly(tree, 4, 0);
-    result = result || isDeleteParceTreeBehavesIncorrectly(tree);
-    result = result || isCreateParceTreeBehavesIncorrectly(&tree, "- -50 -50");
-    result = result || isGetStringFromParceTreeBehavesIncorrectly(tree, "( - -50 -50 ) ");
-    result = result || isGetResultFromParceTreeBehavesIncorrectly(tree, 0, 0);
-    result = result || isDeleteParceTreeBehavesIncorrectly(tree);
-    result = result || isCreateParceTreeBehavesIncorrectly(&tree, "(* (+ 100 100) 2)");
-    result = result || isGetStringFromParceTreeBehavesIncorrectly(tree, "( * ( + 100 100 ) 2 ) ");
-    result = result || isGetResultFromParceTreeBehavesIncorrectly(tree, 400, 0);
-    result = result || isDeleteParceTreeBehavesIncorrectly(tree);
-    result = result || isCreateParceTreeBehavesIncorrectly(&tree, "(/ (+ 100 100) 0)");
-    result = result || isGetStringFromParceTreeBehavesIncorrectly(tree, "( / ( + 100 100 ) 0 ) ");
-    result = result || isGetResultFromParceTreeBehavesIncorrectly(tree, 0, 1);
-    result = result || isDeleteParceTreeBehavesIncorrectly(tree);
-    result = result || isCreateParceTreeBehavesIncorrectly(&tree, "(+ (/ 100 0) 0)");
-    result = result || isGetStringFromParceTreeBehavesIncorrectly(tree, "( + ( / 100 0 ) 0 ) ");
-    result = result || isGetResultFromParceTreeBehavesIncorrectly(tree, 0, 1);
-    result = result || isDeleteParceTreeBehavesIncorrectly(tree);
+    bool result = isCreateParseTreeBehavesIncorrectly(&tree, "(* (+ 1 1) 2)");
+    result = result || isGetStringFromParseTreeBehavesIncorrectly(tree, "( * ( + 1 1 ) 2 ) ");
+    result = result || isGetResultFromParseTreeBehavesIncorrectly(tree, 4, 0);
+    result = result || isDeleteParseTreeBehavesIncorrectly(tree);
+    result = result || isCreateParseTreeBehavesIncorrectly(&tree, "- -50 -50");
+    result = result || isGetStringFromParseTreeBehavesIncorrectly(tree, "( - -50 -50 ) ");
+    result = result || isGetResultFromParseTreeBehavesIncorrectly(tree, 0, 0);
+    result = result || isDeleteParseTreeBehavesIncorrectly(tree);
+    result = result || isCreateParseTreeBehavesIncorrectly(&tree, "(* (+ 100 100) 2)");
+    result = result || isGetStringFromParseTreeBehavesIncorrectly(tree, "( * ( + 100 100 ) 2 ) ");
+    result = result || isGetResultFromParseTreeBehavesIncorrectly(tree, 400, 0);
+    result = result || isDeleteParseTreeBehavesIncorrectly(tree);
+    result = result || isCreateParseTreeBehavesIncorrectly(&tree, "(/ (+ 100 100) 0)");
+    result = result || isGetStringFromParseTreeBehavesIncorrectly(tree, "( / ( + 100 100 ) 0 ) ");
+    result = result || isGetResultFromParseTreeBehavesIncorrectly(tree, 0, 1);
+    result = result || isDeleteParseTreeBehavesIncorrectly(tree);
+    result = result || isCreateParseTreeBehavesIncorrectly(&tree, "(+ (/ 100 0) 0)");
+    result = result || isGetStringFromParseTreeBehavesIncorrectly(tree, "( + ( / 100 0 ) 0 ) ");
+    result = result || isGetResultFromParseTreeBehavesIncorrectly(tree, 0, 1);
+    result = result || isDeleteParseTreeBehavesIncorrectly(tree);
     result = result || checkOnNull();
     return result;
 }

@@ -111,7 +111,7 @@ Node* fillTree(const char* string, int* index)
     }
 }
 
-ParseTree* createParceTree(const char* string)
+ParseTree* createParseTree(const char* string)
 {
     ParseTree* tree = calloc(1, sizeof(ParseTree));
     if (tree == NULL)
@@ -174,7 +174,7 @@ void printCloseBracket(int* index, char* buffer, const int sizeOfBuffer)
     }
 }
 
-void getStringFromParceTreeRecursive(Node* node, int* index, char* buffer, const int sizeOfBuffer)
+void getStringFromParseTreeRecursive(Node* node, int* index, char* buffer, const int sizeOfBuffer)
 {
     if (*index >= sizeOfBuffer - 1)
     {
@@ -192,21 +192,21 @@ void getStringFromParceTreeRecursive(Node* node, int* index, char* buffer, const
         buffer[*index] = node->value;
         ++* index;
         printSpace(index, buffer, sizeOfBuffer);
-        getStringFromParceTreeRecursive(node->leftSon, index, buffer, sizeOfBuffer);
-        getStringFromParceTreeRecursive(node->rigthSon, index, buffer, sizeOfBuffer);
+        getStringFromParseTreeRecursive(node->leftSon, index, buffer, sizeOfBuffer);
+        getStringFromParseTreeRecursive(node->rigthSon, index, buffer, sizeOfBuffer);
         printCloseBracket(index, buffer, sizeOfBuffer);
         printSpace(index, buffer, sizeOfBuffer);
     }
 }
 
-int getStringFromParceTree(ParseTree* tree, char* buffer, const int sizeOfBuffer)
+int getStringFromParseTree(ParseTree* tree, char* buffer, const int sizeOfBuffer)
 {
     if (tree == NULL || tree->root == NULL || buffer == NULL)
     {
         return 1;
     }
     int index = 0;
-    getStringFromParceTreeRecursive(tree->root, &index, buffer, sizeOfBuffer);
+    getStringFromParseTreeRecursive(tree->root, &index, buffer, sizeOfBuffer);
     buffer[index] = '\0';
     return 0;
 }
@@ -227,7 +227,7 @@ int checkSign(char sign)
     return -1;
 }
 
-int getResultFromParceTreeRecursive(Node* node, int* result)
+int getResultFromParseTreeRecursive(Node* node, int* result)
 {
     if (node->leftSon == NULL || node->rigthSon == NULL)
     {
@@ -236,7 +236,7 @@ int getResultFromParceTreeRecursive(Node* node, int* result)
     }
     int resultOne = 0;
     int resultTwo = 0;
-    if (getResultFromParceTreeRecursive(node->leftSon, &resultOne) != 0 || getResultFromParceTreeRecursive(node->rigthSon, &resultTwo) != 0)
+    if (getResultFromParseTreeRecursive(node->leftSon, &resultOne) != 0 || getResultFromParseTreeRecursive(node->rigthSon, &resultTwo) != 0)
     {
         return 1;
     }
@@ -263,32 +263,32 @@ int getResultFromParceTreeRecursive(Node* node, int* result)
     }
 }
 
-int getResultFromParceTree(ParseTree* tree, int* result)
+int getResultFromParseTree(ParseTree* tree, int* result)
 {
     if (tree == NULL || tree->root == NULL)
     {
         return 2;
     }
-    return getResultFromParceTreeRecursive(tree->root, result);
+    return getResultFromParseTreeRecursive(tree->root, result);
 }
 
-void deleteParceTreeRecursive(Node* node)
+void deleteParseTreeRecursive(Node* node)
 {
     if (node->leftSon != NULL && node->rigthSon != NULL)
     {
-        deleteParceTreeRecursive(node->leftSon);
-        deleteParceTreeRecursive(node->rigthSon);
+        deleteParseTreeRecursive(node->leftSon);
+        deleteParseTreeRecursive(node->rigthSon);
     }
     free(node);
 }
 
-int  deleteParceTree(ParseTree* tree)
+int  deleteParseTree(ParseTree* tree)
 {
     if (tree == NULL || tree->root == NULL)
     {
         return 1;
     }
-    deleteParceTreeRecursive(tree->root);
+    deleteParseTreeRecursive(tree->root);
     free(tree);
     return 0;
 }
