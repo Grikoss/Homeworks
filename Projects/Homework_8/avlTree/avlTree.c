@@ -3,9 +3,15 @@
 #include <string.h>
 #include "avlTree.h"
 
+typedef enum Direction
+{
+    right,
+    left
+} Direction;
+
 typedef struct Node
 {
-    int key;
+    char* key;
     int balance;
     char* data;
     struct Node* leftSon;
@@ -56,12 +62,12 @@ char* createString(const char* data)
     return string;
 }
 
-Node* createNode(const int key, const char* data)
+Node* createNode(const char* key, const char* data)
 {
     Node* node = calloc(1, sizeof(Node));
     if (node != NULL)
     {
-        node->key = key;
+        node->key = createString(key);
         node->data = createString(data);
     }
     return node;
@@ -81,6 +87,7 @@ void swapData(Node* nodeOne, Node* nodeTwo)
 
 void deleteNode(Node* node)
 {
+    free(node->key);
     free(node->data);
     free(node);
 }
@@ -148,13 +155,13 @@ Node* bigRightRotation(Node* node)
     return leftRightNode;
 }
 
-Node* rebalanceRecursive(Node* node, const int key)
+Node* rebalanceRecursive(Node* node, const char* key)
 {
-    if (key < node->key)
+    if (strcmp(key, node->key) < 0)
     {
        node->leftSon = rebalanceRecursive(node->leftSon, key);
     }
-    if (key > node->key)
+    if (strcmp(key, node->key) > 0)
     {
        node->rightSon = rebalanceRecursive(node->rightSon, key);
     }
@@ -170,7 +177,7 @@ Node* rebalanceRecursive(Node* node, const int key)
     return node;
 }
 
-int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
+int addDataToSearchTree(SearchTree* tree, const char* key, const char* data)
 {
     if (tree == NULL)
     {
@@ -186,50 +193,47 @@ int addDataToSearchTree(SearchTree* tree, const int key, const char* data)
         tree->root = newNode;
         return 0;
     }
-    else
+    Node* node = tree->root;
+    while (true)
     {
-        Node* node = tree->root;
-        while (true)
+        if (strcmp(newNode->key, node->key) == 0)
         {
-            if (newNode->key == node->key)
+            swapData(newNode, node);
+            deleteNode(newNode);
+            return 0;
+        }
+        if (strcmp(newNode->key, node->key) < 0)
+        {
+            if (node->leftSon == NULL)
             {
-                swapData(newNode, node);
-                deleteNode(newNode);
+                node->leftSon = newNode;
+                tree->root = rebalanceRecursive(tree->root, newNode->key);
                 return 0;
-            }
-            if (newNode->key < node->key)
-            {
-                if (node->leftSon == NULL)
-                {
-                    node->leftSon = newNode;
-                    tree->root = rebalanceRecursive(tree->root, newNode->key);
-                    return 0;
-                }
-                else
-                {
-                    node = node->leftSon;
-                }
             }
             else
             {
-                if (node->rightSon == NULL)
-                {
-                    node->rightSon = newNode;
-                    tree->root = rebalanceRecursive(tree->root, newNode->key);
-                    return 0;
-                }
-                else
-                {
-                    node = node->rightSon;
-                }
+                node = node->leftSon;
+            }
+        }
+        else
+        {
+            if (node->rightSon == NULL)
+            {
+                node->rightSon = newNode;
+                tree->root = rebalanceRecursive(tree->root, newNode->key);
+                return 0;
+            }
+            else
+            {
+                node = node->rightSon;
             }
         }
     }
 }
 
-Node* searchNodeParentByKey(SearchTree* tree, const int key)
+Node* searchNodeParentByKey(SearchTree* tree, const char* key)
 {
-    if (tree->root->key == key)
+    if (strcmp(tree->root->key, key) == 0)
     {
         return tree->root;
     }
@@ -238,19 +242,19 @@ Node* searchNodeParentByKey(SearchTree* tree, const int key)
     {
         if (node->leftSon != NULL)
         {
-            if (node->leftSon->key == key)
+            if (strcmp(node->leftSon->key, key) == 0)
             {
                 break;
             }
         }
         if (node->rightSon != NULL)
         {
-            if (node->rightSon->key == key)
+            if (strcmp(node->rightSon->key, key) == 0)
             {
                 break;
             }
         }
-        if (key < node->key)
+        if (strcmp(key, node->key) < 0)
         {
             node = node->leftSon;
         }
@@ -262,7 +266,7 @@ Node* searchNodeParentByKey(SearchTree* tree, const int key)
     return node;
 }
 
-bool isThereKeyInSearchTree(SearchTree* tree, const int key)
+bool isThereKeyInSearchTree(SearchTree* tree, const char* key)
 {
     if (tree == NULL || tree->root == NULL)
     {
@@ -271,7 +275,7 @@ bool isThereKeyInSearchTree(SearchTree* tree, const int key)
     return searchNodeParentByKey(tree, key) != NULL;
 }
 
-int getDataFromSearchTree(SearchTree* tree, const int key, char* buffer, const int size)
+int getDataFromSearchTree(SearchTree* tree, const char* key, char* buffer, const int size)
 {
     if (tree == NULL || tree->root == NULL)
     {
@@ -282,17 +286,17 @@ int getDataFromSearchTree(SearchTree* tree, const int key, char* buffer, const i
     {
         return 2;
     }
-    if (node->key == key)
+    if (strcmp(node->key, key) == 0)
     {
         strcpy_s(buffer, size, node->data);
         return 0;
     }
-    if (node->leftSon != NULL && node->leftSon->key == key)
+    if (node->leftSon != NULL && strcmp(node->leftSon->key, key) == 0)
     {
         strcpy_s(buffer, size, node->leftSon->data);
         return 0;
     }
-    if (node->rightSon != NULL && node->rightSon->key == key)
+    if (node->rightSon != NULL && strcmp(node->rightSon->key, key) == 0)
     {
         strcpy_s(buffer, size, node->rightSon->data);
         return 0;
@@ -309,7 +313,7 @@ Node* rigthmost(Node* node)
     return node;
 }
 
-void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon)
+void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, Direction direction)
 {
     if (node->leftSon == NULL && node->rightSon == NULL)
     {
@@ -320,7 +324,7 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
         }
         else
         {
-            if (isLeftSon)
+            if (direction == left)
             {
                 parent->leftSon = NULL;
             }
@@ -340,16 +344,13 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
             deleteNode(node);
             return;
         }
+        if (direction == left)
+        {
+            parent->leftSon = node->rightSon;
+        }
         else
         {
-            if (isLeftSon)
-            {
-                parent->leftSon = node->rightSon;
-            }
-            else
-            {
-                parent->rightSon = node->rightSon;
-            }
+            parent->rightSon = node->rightSon;
         }
         deleteNode(node);
         tree->root = rebalanceRecursive(tree->root, parent->key);
@@ -360,17 +361,16 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
         if (parent == NULL)
         {
             tree->root = node->leftSon;
+            deleteNode(node);
+            return;
+        }
+        if (direction == left)
+        {
+            parent->leftSon = node->leftSon;
         }
         else
         {
-            if (isLeftSon)
-            {
-                parent->leftSon = node->leftSon;
-            }
-            else
-            {
-                parent->rightSon = node->leftSon;
-            }
+            parent->rightSon = node->leftSon;
         }
         deleteNode(node);
         tree->root = rebalanceRecursive(tree->root, parent->key);
@@ -379,30 +379,30 @@ void deleteNodeInTree(SearchTree* tree, Node* parent, Node* node, bool isLeftSon
     if (node->leftSon != NULL && node->rightSon != NULL)
     {
         Node* newNode = NULL;
-        int key = 0;
+        char* key = NULL;
         char* data = NULL;
         if (node->leftSon->rightSon == NULL)
         {
             newNode = node;
-            key = newNode->leftSon->key;
+            key = createString(newNode->leftSon->key);
             data = createString(newNode->leftSon->data);
-            deleteNodeInTree(tree, newNode, newNode->leftSon, true);
+            deleteNodeInTree(tree, newNode, newNode->leftSon, left);
         }
         else
         {
             newNode = rigthmost(node->leftSon);
-            key = newNode->rightSon->key;
+            key = createString(newNode->rightSon->key);
             data = createString(newNode->rightSon->data);
-            deleteNodeInTree(tree, newNode, newNode->rightSon, false);
+            deleteNodeInTree(tree, newNode, newNode->rightSon, right);
         }
+        free(node->key);
         node->key = key;
         free(node->data);
         node->data = data;
-        return;
     }
 }
 
-int deleteDataFromSearchTree(SearchTree* tree, const int key)
+int deleteDataFromSearchTree(SearchTree* tree, const char* key)
 {
     if (tree == NULL || tree->root == NULL)
     {
@@ -413,19 +413,19 @@ int deleteDataFromSearchTree(SearchTree* tree, const int key)
     {
         return 2;
     }
-    if (node->key == key)
+    if (strcmp(node->key, key) == 0)
     {
-        deleteNodeInTree(tree, NULL, node, true);
+        deleteNodeInTree(tree, NULL, node, left);
         return 0;
     }
-    if (node->leftSon != NULL && node->leftSon->key == key)
+    if (node->leftSon != NULL && strcmp(node->leftSon->key, key) == 0)
     {
-        deleteNodeInTree(tree, node, node->leftSon, true);
+        deleteNodeInTree(tree, node, node->leftSon, left);
         return 0;
     }
-    if (node->rightSon != NULL && node->rightSon->key == key)
+    if (node->rightSon != NULL && strcmp(node->rightSon->key, key) == 0)
     {
-        deleteNodeInTree(tree, node, node->rightSon, false);
+        deleteNodeInTree(tree, node, node->rightSon, right);
         return 0;
     }
     return 3;
@@ -442,20 +442,21 @@ void deleteSearchThreeRecursive(Node* node)
         deleteSearchThreeRecursive(node->rightSon);
     }
     free(node->data);
+    free(node->key);
     free(node);
 }
 
-int getNumberOfNodesRecurcive(Node* node)
+int getNumberOfNodesRecursive(Node* node)
 {
     int leftValue = 0;
     int rightValue = 0;
     if (node->leftSon != NULL)
     {
-        leftValue = getNumberOfNodesRecurcive(node->leftSon);
+        leftValue = getNumberOfNodesRecursive(node->leftSon);
     }
     if (node->rightSon != NULL)
     {
-        rightValue = getNumberOfNodesRecurcive(node->rightSon);
+        rightValue = getNumberOfNodesRecursive(node->rightSon);
     }
     return leftValue + rightValue + 1;
 }
@@ -466,7 +467,7 @@ int getNumbersOfNodes(SearchTree* tree)
     {
         return 0;
     }
-    return getNumberOfNodesRecurcive(tree->root);
+    return getNumberOfNodesRecursive(tree->root);
 }
 
 int deleteSearchTree(SearchTree* tree)
