@@ -34,7 +34,7 @@ int getNumber(const char* string, int* index)
     while (string[*index] != '\0' && string[*index] <= '9' && string[*index] >= '0' && subIndex <= 11 - minus)
     {
         buffer[subIndex] = string[*index];
-        ++* index;
+        ++*index;
         ++subIndex;
     }
     buffer[subIndex] = '\0';
@@ -56,7 +56,7 @@ int readString(const char* string, int* index, int* outputValue)
             if (string[*index] != '-' || string[*index + 1] > '9' || string[*index + 1] < '0')
             {
                 *outputValue = string[*index];
-                ++* index;
+                ++*index;
                 return 1;
             }
         default:
@@ -65,7 +65,7 @@ int readString(const char* string, int* index, int* outputValue)
                 *outputValue = getNumber(string, index);
                 return 2;
             }
-            ++* index;
+            ++*index;
             break;
         }
     }
@@ -161,7 +161,7 @@ void printOpenBracket(int* index, char* buffer, const int sizeOfBuffer)
     if (*index < sizeOfBuffer - 1)
     {
         buffer[*index] = '(';
-        ++* index;
+        ++*index;
     }
 }
 
@@ -170,7 +170,7 @@ void printCloseBracket(int* index, char* buffer, const int sizeOfBuffer)
     if (*index < sizeOfBuffer - 1)
     {
         buffer[*index] = ')';
-        ++* index;
+        ++*index;
     }
 }
 
@@ -190,7 +190,7 @@ void getStringFromParseTreeRecursive(Node* node, int* index, char* buffer, const
         printOpenBracket(index, buffer, sizeOfBuffer);
         printSpace(index, buffer, sizeOfBuffer);
         buffer[*index] = node->value;
-        ++* index;
+        ++*index;
         printSpace(index, buffer, sizeOfBuffer);
         getStringFromParseTreeRecursive(node->leftSon, index, buffer, sizeOfBuffer);
         getStringFromParseTreeRecursive(node->rigthSon, index, buffer, sizeOfBuffer);
